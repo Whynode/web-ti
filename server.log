@@ -1,0 +1,38 @@
+
+> tmp_app@0.1.0 dev
+> next dev
+
+⚠ Port 3000 is in use by an unknown process, using available port 3001 instead.
+▲ Next.js 16.1.7 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://192.168.0.2:3001
+
+✓ Starting...
+✓ Ready in 1320ms
+○ Compiling / ...
+ GET / 200 in 4.5s (compile: 3.3s, render: 1200ms)
+ GET / 200 in 395ms (compile: 6ms, render: 389ms)
+✓ Compiled in 124ms
+ GET / 200 in 644ms (compile: 89ms, render: 555ms)
+✓ Compiled in 6.7s
+✓ Compiled in 781ms
+ GET / 200 in 4.3s (compile: 2.0s, render: 2.3s)
+ GET / 200 in 2.5s (compile: 1038ms, render: 1489ms)
+○ Compiling /profil ...
+ GET /profil 200 in 10.0s (compile: 7.7s, render: 2.3s)
+⨯ ReferenceError: CheckCircle2 is not defined
+    at Fasilitas (src/app/fasilitas/page.tsx:104:109)
+  102 |                 { title: 'Akses Wi-Fi High Speed', desc: 'Tersebar di seluruh area publik kampus.', icon: <Wifi className="w-4 h-4" /> },
+  103 |                 { title: 'Area Parkir Luas', desc: 'Dilengkapi CCTV & petugas keamanan 24/7.', icon: <Camera className="w-4 h-4" /> },
+> 104 |                 { title: 'UKS (Unit Kesehatan)', desc: 'Pertolongan pertama & cek kesehatan rutin.', icon: <CheckCircle2 className="w-4 h-4" /> },
+      |                                                                                                             ^
+  105 |               ].map((item, i) => (
+  106 |                 <motion.div key={i} variants={itemVariants} className="bg-white/5 border border-white/10 p-4 rounded-[1.2rem] flex items-start gap-4 hover:bg-white/10 transition-colors group">
+  107 |                   <div className="w-10 h-10 rounded-xl bg-brand-navy border border-white/20 text-white flex items-center justify-center shrink-0 group-hover:border-brand-pink-start group-hover:text-brand-pink-start transition-colors"> {
+  digest: '625025273'
+}
+ GET /fasilitas 500 in 3.4s (compile: 3.0s, render: 398ms)
+○ Compiling /student-life ...
+ GET /student-life 200 in 9.6s (compile: 7.2s, render: 2.4s)
+ GET /elearning 200 in 1803ms (compile: 1650ms, render: 153ms)
+ GET /galeri 200 in 1700ms (compile: 1532ms, render: 167ms)

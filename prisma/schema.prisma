@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum RoleUser {
+  ADMIN
+  GURU
+}
+
+enum TipeMedia {
+  VIDEO
+  PDF
+}
+
+enum PeranSiswa {
+  SISWA
+  KETUA_KELAS
+  WAKIL_KETUA
+  SEKRETARIS
+  BENDAHARA
+}
+
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  passwordHash String   @map("password_hash")
+  role         RoleUser @default(GURU)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Guru {
+  id        Int      @id @default(autoincrement())
+  nama      String
+  posisi    String
+  mapel     String
+  fotoUrl   String?  @map("foto_url")
+  createdAt DateTime @default(now())
+
+  kelas     Kelas[]
+
+  @@map("guru")
+}
+
+model Kelas {
+  id          Int      @id @default(autoincrement())
+  namaKelas   String   @map("nama_kelas")
+  waliKelasId Int      @map("wali_kelas_id")
+  deskripsi   String?
+  createdAt   DateTime @default(now())
+
+  waliKelas  Guru     @relation(fields: [waliKelasId], references: [id])
+  siswa      Siswa[]
+
+  @@map("kelas")
+}
+
+model Siswa {
+  id        Int         @id @default(autoincrement())
+  nama      String
+  peran     PeranSiswa  @default(SISWA)
+  fotoUrl   String?     @map("foto_url")
+  kelasId   Int         @map("kelas_id")
+  createdAt DateTime     @default(now())
+
+  kelas     Kelas       @relation(fields: [kelasId], references: [id])
+
+  @@map("siswa")
+}
+
+model MateriElearning {
+  id          Int       @id @default(autoincrement())
+  judul       String
+  tipeMedia   TipeMedia @map("tipe_media")
+  linkUrl     String    @map("link_url")
+  kelasTarget String    @map("kelas_target")
+  createdAt   DateTime  @default(now())
+
+  @@map("materi_elearning")
+}
+
+model ArtikelBlog {
+  id             Int       @id @default(autoincrement())
+  judul          String
+  slug           String    @unique
+  konten         String    @db.Text
+  thumbnailUrl   String?   @map("thumbnail_url")
+  tanggalPublish DateTime  @default(now()) @map("tanggal_publish")
+  createdAt      DateTime  @default(now())
+
+  @@map("artikel_blog")
+}
+
+model StatistikSekolah {
+  id            Int      @id @default(1)
+  totalSiswa    Int      @map("total_siswa")
+  totalGuru     Int      @map("total_guru")
+  totalKelas    Int      @map("total_kelas")
+  totalAlumni   Int      @map("total_alumni")
+  updatedAt     DateTime @updatedAt
+
+  @@map("statistik_sekolah")
+}
+
+model LowonganBKK {
+  id              Int       @id @default(autoincrement())
+  posisi          String
+  perusahaan      String
+  lokasi          String
+  tipePekerjaan  String    @map("tipe_pekerjaan")
+  deskripsi       String    @db.Text
+  persyaratan     String    @db.Text
+  batasLamaran   DateTime  @map("batas_lamaran")
+  statusAktif    Boolean   @default(true) @map("status_aktif")
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@map("lowongan_bkk")
+}
