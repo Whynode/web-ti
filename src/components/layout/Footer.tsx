@@ -94,11 +94,24 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="bg-gradient-to-r from-brand-pink-start to-brand-blue-start py-3 text-center w-full mt-auto">
-        <p className="text-white/90 text-[11px] font-medium">
-          Hak Cipta © {new Date().getFullYear()} SMKS Telematika Indramayu. Semua Hak Dilindungi.
-        </p>
+      {/* Bottom Bar (Updated with Credit Link) */}
+      <div className="bg-gradient-to-r from-brand-pink-start to-brand-blue-start py-4 w-full mt-auto">
+        <div className="container max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-white/90 text-[11px] md:text-xs font-medium">
+          <p className="text-center md:text-left">
+            Hak Cipta © {new Date().getFullYear()} SMKS Telematika Indramayu. Semua Hak Dilindungi.
+          </p>
+          <p className="mt-2 md:mt-0 text-center md:text-right">
+            Dirancang & Dikembangkan oleh{" "}
+            <a
+              href="https://arya-portfolio-web3.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white font-bold hover:text-brand-navy hover:underline underline-offset-2 transition-all duration-300"
+            >
+              Arya Suhendra
+            </a>
+          </p>
+        </div>
       </div>
     </footer>
   );
