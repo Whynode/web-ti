@@ -94,13 +94,13 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom Bar (Updated with Credit Link) */}
-      <div className="bg-gradient-to-r from-brand-pink-start to-brand-blue-start py-4 w-full mt-auto">
-        <div className="container max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-white/90 text-[11px] md:text-xs font-medium">
-          <p className="text-center md:text-left">
+      {/* Bottom Bar (Updated: Posisi Rata Tengah Sempurna) */}
+      <div className="bg-gradient-to-r from-brand-pink-start to-brand-blue-start py-5 w-full mt-auto">
+        <div className="container max-w-7xl mx-auto px-4 flex flex-col justify-center items-center text-center text-white/90 text-[11px] md:text-xs font-medium space-y-1.5">
+          <p>
             Hak Cipta © {new Date().getFullYear()} SMKS Telematika Indramayu. Semua Hak Dilindungi.
           </p>
-          <p className="mt-2 md:mt-0 text-center md:text-right">
+          <p>
             Dirancang & Dikembangkan oleh{" "}
             <a
               href="https://arya-portfolio-web3.vercel.app"
