@@ -13,10 +13,6 @@ export default function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
 
-  if (pathname?.startsWith('/admin')) return null;
-
-  const isHomepage = pathname === "/";
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -24,6 +20,10 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  if (pathname?.startsWith('/admin')) return null;
+
+  const isHomepage = pathname === "/";
 
   const getHeaderStyle = () => {
     if (isScrolled) return "bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100 py-3";

@@ -125,3 +125,29 @@ model LowonganBKK {
 
   @@map("lowongan_bkk")
 }
+
+enum StatusPPDB {
+  PENDING
+  DITERIMA
+  DITOLAK
+}
+
+model PPDB {
+  id              String      @id @default(uuid())
+  namaLengkap     String      @map("nama_lengkap")
+  nisn            String      @unique
+  asalSekolah     String      @map("asal_sekolah")
+  jenisKelamin    String      @map("jenis_kelamin")
+  noWA            String      @map("no_wa")
+  email           String?
+  alamat          String?
+  nilaiRata       Float?      @map("nilai_rata")
+ JurusanPilihan  String      @map("jurusan_pilihan")
+  status          StatusPPDB @default(PENDING)
+  catatan         String?     @db.Text
+  tanggalDaftar   DateTime    @default(now()) @map("tanggal_daftar")
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@map("ppdb")
+}

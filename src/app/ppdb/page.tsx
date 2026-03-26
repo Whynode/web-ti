@@ -1,23 +1,28 @@
-"use client";
+'use client'
 
+import { useActionState, useState } from 'react'
 import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { CheckCircle, ClipboardList, Send, FileText, UserPlus, FileCheck, CreditCard, MonitorPlay } from "lucide-react"
+import { CheckCircle, ClipboardList, Send, FileText, UserPlus, FileCheck, CreditCard } from "lucide-react"
 import { MarqueeTicker } from "@/components/ui/MarqueeTicker"
-import PlaceholderImage from "@/components/ui/PlaceholderImage"
+import { daftarPPDB, FormState } from "@/actions/ppdb"
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.1 } }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 100 } }
-};
+const initialState: FormState = {}
 
 export default function PPDB() {
+  const [state, action, isPending] = useActionState(daftarPPDB, initialState)
+  const [showSuccess, setShowSuccess] = useState(false)
+
+  const handleSuccess = () => {
+    if (state.success) {
+      setShowSuccess(true)
+      const form = document.getElementById('ppdb-form') as HTMLFormElement
+      if (form) form.reset()
+      setTimeout(() => setShowSuccess(false), 8000)
+    }
+  }
+
   return (
     <main className="min-h-screen bg-[#FDFDFD] text-gray-900 pb-20">
 
@@ -25,9 +30,9 @@ export default function PPDB() {
       <section className="relative pt-32 pb-20 bg-brand-navy bg-grid-dark overflow-hidden">
         <div className="container mx-auto px-6 max-w-[1120px] relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <span className="text-brand-pink-start font-bold uppercase tracking-widest text-[10px] mb-4 block">Pendaftaran Siswa Baru 2024/2025</span>
+            <span className="text-brand-pink-start font-bold uppercase tracking-widest text-[10px] mb-4 block">Pendaftaran Siswa Baru 2025/2026</span>
             <h1 className="text-4xl md:text-6xl font-bold text-white font-serif mb-6 leading-tight">Bergabunglah <span className="text-brand-pink-start">Bersama Kami</span></h1>
-            <p className="text-sm text-white/80 max-w-2xl mx-auto font-medium leading-relaxed">Jadilah bagian dari generasi emas digital. Siapkan diri Anda untuk berkarir di industri IT atau melanjutkan pendidikan tinggi terbaik.</p>
+            <p className="text-sm text-white/80 max-w-2xl mx-auto font-medium leading-relaxed">SMK Telematika Indramayu siap menjadi langkah awal kariermu di dunia teknologi.</p>
           </motion.div>
         </div>
       </section>
@@ -51,11 +56,11 @@ export default function PPDB() {
 
               <div className="space-y-6 relative before:absolute before:inset-y-0 before:left-[19px] before:w-[2px] before:bg-gray-100 before:z-0">
                 {[
-                  { step: '1', title: 'Pendaftaran Online', desc: 'Mengisi formulir pendaftaran melalui website resmi sekolah atau datang langsung ke sekretariat PPDB.', icon: <ClipboardList className="w-4 h-4 text-brand-pink-start" /> },
-                  { step: '2', title: 'Pembayaran Biaya Formulir', desc: 'Melakukan pembayaran biaya formulir ke rekening resmi sekolah dan mengunggah bukti transfer.', icon: <CreditCard className="w-4 h-4 text-brand-pink-start" /> },
-                  { step: '3', title: 'Melengkapi Berkas', desc: 'Menyiapkan FC Ijazah/SKL, KK, Akta Kelahiran, dan pas foto sesuai persyaratan administrasi.', icon: <FileText className="w-4 h-4 text-brand-pink-start" /> },
-                  { step: '4', title: 'Tes Seleksi & Wawancara', desc: 'Mengikuti tes potensi akademik (TPA) dan wawancara minat bakat secara luring/daring.', icon: <UserPlus className="w-4 h-4 text-brand-pink-start" /> },
-                  { step: '5', title: 'Pengumuman Kelulusan', desc: 'Melihat hasil seleksi melalui website atau papan pengumuman. Jika lulus, lanjut ke proses Daftar Ulang.', icon: <FileCheck className="w-4 h-4 text-brand-pink-start" /> },
+                  { step: '1', title: 'Pendaftaran Online', desc: 'Mengisi formulir pendaftaran melalui website resmi sekolah.', icon: <ClipboardList className="w-4 h-4 text-brand-pink-start" /> },
+                  { step: '2', title: 'Verifikasi Data', desc: 'Panitia akan memverifikasi data dan menghubungi via WhatsApp.', icon: <FileText className="w-4 h-4 text-brand-pink-start" /> },
+                  { step: '3', title: 'Tes Seleksi', desc: 'Mengikuti tes potensi akademik dan wawancara.', icon: <UserPlus className="w-4 h-4 text-brand-pink-start" /> },
+                  { step: '4', title: 'Pengumuman', desc: 'Meliihat hasil seleksi melalui website.', icon: <FileCheck className="w-4 h-4 text-brand-pink-start" /> },
+                  { step: '5', title: 'Daftar Ulang', desc: 'Jika lulus, lakukan daftar ulang di sekretariat.', icon: <CreditCard className="w-4 h-4 text-brand-pink-start" /> },
                 ].map((alur, i) => (
                   <div key={i} className="flex gap-6 relative z-10 group">
                     <div className="w-10 h-10 rounded-[10px] bg-[#FDFDFD] border-[3px] border-brand-pink-start flex items-center justify-center shrink-0 shadow-md group-hover:bg-brand-pink-start transition-colors">
@@ -70,16 +75,16 @@ export default function PPDB() {
               </div>
             </motion.div>
 
-            {/* Form & Syarat (Kanan) */}
+            {/* Form PPDB (Kanan) */}
             <motion.div
               initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-              className="lg:w-1/2 flex flex-col gap-8"
+              className="lg:w-1/2"
             >
               {/* Box Syarat Minimalis */}
-              <div className="bg-brand-navy p-8 rounded-[1.5rem] shadow-xl text-white">
+              <div className="bg-brand-navy p-8 rounded-[1.5rem] shadow-xl text-white mb-8">
                 <h3 className="font-serif font-bold text-xl mb-6 flex items-center gap-2"><CheckCircle className="w-5 h-5 text-brand-pink-start" /> Persyaratan Administrasi</h3>
                 <ul className="space-y-3">
-                  {['Lulusan SMP/MTs sederajat tahun berjalan atau maksimal 2 tahun sebelumnya.', 'Menyerahkan Fotocopy Ijazah/SKL yang dilegalisir (2 lembar).', 'Menyerahkan Fotocopy Kartu Keluarga (KK) dan Akta Kelahiran (2 lembar).', 'Pas foto berwarna ukuran 3x4 dan 4x6 (masing-masing 4 lembar).', 'Surat Keterangan Sehat dari dokter/puskesmas.', 'Mengisi formulir pendaftaran dan surat pernyataan bermaterai.'].map((syarat, i) => (
+                  {['Lulusan SMP/MTs tahun 2024/2025.', 'Menyerahkan Fotocopy Ijazah/SKL (2 lembar).', 'Menyerahkan Fotocopy KK dan Akta Kelahiran.', 'Pas foto berwarna 3x4 dan 4x6.', 'Siapkan nomor WhatsApp aktif untuk komunikasi.'].map((syarat, i) => (
                     <li key={i} className="flex items-start gap-3">
                       <div className="w-4 h-4 rounded-[10px] bg-brand-pink-start/20 text-brand-pink-start flex items-center justify-center shrink-0 mt-0.5"><CheckCircle className="w-3 h-3" /></div>
                       <p className="text-[11px] text-white/80 font-medium leading-relaxed">{syarat}</p>
@@ -88,32 +93,174 @@ export default function PPDB() {
                 </ul>
               </div>
 
-              {/* Form CTA Minimalis */}
+              {/* Form PPDB */}
               <div className="bg-white p-8 rounded-[1.5rem] border border-gray-100 shadow-xl">
-                <span className="text-brand-pink-start font-bold uppercase tracking-widest text-[9px] mb-3 block">Formulir Singkat</span>
-                <h3 className="font-serif font-bold text-xl text-brand-navy mb-6">Mulai Pendaftaran Anda</h3>
-                <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-                  <div className="grid grid-cols-2 gap-4">
+                <span className="text-brand-pink-start font-bold uppercase tracking-widest text-[9px] mb-3 block">Formulir PPDB</span>
+                <h3 className="font-serif font-bold text-xl text-brand-navy mb-6">Daftar Sekarang</h3>
+
+                {/* Success Message */}
+                {showSuccess && (
+                  <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-[10px] text-green-700 text-sm font-medium flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5" />
+                    {state.message}
+                  </div>
+                )}
+
+                {/* Error Message */}
+                {state.message && !state.success && (
+                  <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-[10px] text-red-700 text-sm font-medium">
+                    {state.message}
+                  </div>
+                )}
+
+                <form id="ppdb-form" action={action} onSubmit={(e) => {
+                  if (!isPending) {
+                    setTimeout(handleSuccess, 100)
+                  }
+                }} className="space-y-5">
+                  
+                  {/* Nama Lengkap & NISN */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Nama Lengkap</label>
-                      <input type="text" className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-xs focus:outline-none focus:border-brand-pink-start transition-colors" placeholder="Cth: Budi Santoso" />
+                      <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Nama Lengkap <span className="text-red-500">*</span></label>
+                      <input 
+                        type="text" 
+                        name="namaLengkap"
+                        required
+                        className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-sm focus:outline-none focus:border-brand-pink-start transition-colors" 
+                        placeholder="Nama lengkap sesuai ijazah"
+                      />
+                      {state.errors?.namaLengkap && <p className="text-red-500 text-xs mt-1">{state.errors.namaLengkap}</p>}
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">NISN</label>
-                      <input type="text" className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-xs focus:outline-none focus:border-brand-pink-start transition-colors" placeholder="10 Digit Angka" />
+                      <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">NISN <span className="text-red-500">*</span></label>
+                      <input 
+                        type="text" 
+                        name="nisn"
+                        required
+                        maxLength={10}
+                        className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-sm focus:outline-none focus:border-brand-pink-start transition-colors" 
+                        placeholder="10 digit angka"
+                      />
+                      {state.errors?.nisn && <p className="text-red-500 text-xs mt-1">{state.errors.nisn}</p>}
                     </div>
                   </div>
+
+                  {/* Asal Sekolah */}
                   <div>
-                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Asal Sekolah</label>
-                    <input type="text" className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-xs focus:outline-none focus:border-brand-pink-start transition-colors" placeholder="SMP/MTs..." />
+                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Asal Sekolah <span className="text-red-500">*</span></label>
+                    <input 
+                      type="text" 
+                      name="asalSekolah"
+                      required
+                      className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-sm focus:outline-none focus:border-brand-pink-start transition-colors" 
+                      placeholder="SMP/MTs negri atau swasta"
+                    />
+                    {state.errors?.asalSekolah && <p className="text-red-500 text-xs mt-1">{state.errors.asalSekolah}</p>}
                   </div>
+
+                  {/* Jenis Kelamin */}
                   <div>
-                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">No. WhatsApp Aktif</label>
-                    <input type="tel" className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-xs focus:outline-none focus:border-brand-pink-start transition-colors" placeholder="08..." />
+                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Jenis Kelamin <span className="text-red-500">*</span></label>
+                    <div className="flex gap-4">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="jenisKelamin" value="Laki-laki" required className="w-4 h-4 text-brand-pink-start accent-brand-pink-start" />
+                        <span className="text-sm text-gray-700">Laki-laki</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name="jenisKelamin" value="Perempuan" required className="w-4 h-4 text-brand-pink-start accent-brand-pink-start" />
+                        <span className="text-sm text-gray-700">Perempuan</span>
+                      </label>
+                    </div>
+                    {state.errors?.jenisKelamin && <p className="text-red-500 text-xs mt-1">{state.errors.jenisKelamin}</p>}
                   </div>
-                  <button type="submit" className="w-full bg-brand-navy hover:bg-brand-pink-start text-white px-6 py-4 rounded-[10px] font-bold transition-all flex items-center justify-center gap-2 text-sm shadow-md mt-6">
-                    Kirim Data Awal <Send className="w-4 h-4" />
+
+                  {/* No WA & Email */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">No. WhatsApp <span className="text-red-500">*</span></label>
+                      <input 
+                        type="tel" 
+                        name="noWA"
+                        required
+                        className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-sm focus:outline-none focus:border-brand-pink-start transition-colors" 
+                        placeholder="08xxxxxxxxxx"
+                      />
+                      {state.errors?.noWA && <p className="text-red-500 text-xs mt-1">{state.errors.noWA}</p>}
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Email <span className="text-gray-400">(opsional)</span></label>
+                      <input 
+                        type="email" 
+                        name="email"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-sm focus:outline-none focus:border-brand-pink-start transition-colors" 
+                        placeholder="email@example.com"
+                      />
+                      {state.errors?.email && <p className="text-red-500 text-xs mt-1">{state.errors.email}</p>}
+                    </div>
+                  </div>
+
+                  {/* Alamat */}
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Alamat <span className="text-gray-400">(opsional)</span></label>
+                    <textarea 
+                      name="alamat"
+                      rows={2}
+                      className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-sm focus:outline-none focus:border-brand-pink-start transition-colors resize-none" 
+                      placeholder="Alamat lengkap"
+                    />
+                  </div>
+
+                  {/* Nilai Rata-rata & Jurusan */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Nilai Rata-rata <span className="text-gray-400">(opsional)</span></label>
+                      <input 
+                        type="number" 
+                        name="nilaiRata"
+                        step="0.01"
+                        min="0"
+                        max="100"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-sm focus:outline-none focus:border-brand-pink-start transition-colors" 
+                        placeholder="0-100"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Jurusan Pilihan <span className="text-red-500">*</span></label>
+                      <select 
+                        name="jurusanPilihan"
+                        required
+                        className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-sm focus:outline-none focus:border-brand-pink-start transition-colors"
+                      >
+                        <option value="">Pilih Jurusan</option>
+                        <option value="Teknik Komputer dan Jaringan">Teknik Komputer dan Jaringan</option>
+                        <option value="Rekayasa Perangkat Lunak">Rekayasa Perangkat Lunak</option>
+                        <option value="Multimedia">Multimedia</option>
+                        <option value="Teknik Ototronik">Teknik Ototronik</option>
+                      </select>
+                      {state.errors?.jurusanPilihan && <p className="text-red-500 text-xs mt-1">{state.errors.jurusanPilihan}</p>}
+                    </div>
+                  </div>
+
+                  {/* Submit Button */}
+                  <button 
+                    type="submit" 
+                    disabled={isPending}
+                    className="w-full bg-brand-navy hover:bg-brand-pink-start disabled:bg-gray-400 text-white px-6 py-4 rounded-[10px] font-bold transition-all flex items-center justify-center gap-2 text-sm shadow-md mt-6"
+                  >
+                    {isPending ? (
+                      <>
+                        <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                        </svg>
+                        Mengirim Data...
+                      </>
+                    ) : (
+                      <>Daftar Sekarang <Send className="w-4 h-4" /></>
+                    )}
                   </button>
+                  
                   <p className="text-[9px] text-gray-400 text-center mt-3">*Panitia akan menghubungi Anda via WhatsApp setelah data terkirim.</p>
                 </form>
               </div>

@@ -18,13 +18,15 @@ import {
   ChevronRight,
   LogOut,
   GraduationCap,
-  ShieldCheck
+  ShieldCheck,
+  ClipboardList
 } from "lucide-react";
 import LogoutButton from "@/components/admin/LogoutButton";
 import { ClockDisplay } from "@/components/ui/ClockDisplay";
 
 const menuItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/ppdb", label: "PPDB", icon: ClipboardList },
   { href: "/admin/guru", label: "Guru", icon: Users },
   { href: "/admin/kelas", label: "Kelas", icon: GraduationCap },
   { href: "/admin/siswa", label: "Siswa", icon: UserCircle },
