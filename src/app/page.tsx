@@ -25,11 +25,13 @@ const itemVariants = {
 };
 
 export default function Home() {
-  const [isDesktop, setIsDesktop] = useState(true);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { scrollYProgress } = useScroll();
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
 
   useEffect(() => {
+    setMounted(true);
     const checkDesktop = () => {
       setIsDesktop(window.innerWidth >= 1024);
     };
@@ -37,6 +39,14 @@ export default function Home() {
     window.addEventListener("resize", checkDesktop);
     return () => window.removeEventListener("resize", checkDesktop);
   }, []);
+
+  if (!mounted) {
+    return (
+      <main className="min-h-screen bg-[#FDFDFD]">
+        <div className="h-[85vh]" />
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-[#FDFDFD] text-gray-900 overflow-hidden">

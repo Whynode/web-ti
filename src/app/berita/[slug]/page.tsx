@@ -23,9 +23,15 @@ async function getArticle(slug: string) {
 
 export default async function ArticleDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const artikel = await getArticle(slug);
+  
+  let artikel = null;
+  try {
+    artikel = await getArticle(slug);
+  } catch (error) {
+    console.error("Error fetching article:", error);
+  }
 
-  if (!artikel) {
+  if (!artikel || !artikel.judul) {
     notFound();
   }
 
