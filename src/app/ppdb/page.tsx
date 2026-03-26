@@ -209,37 +209,6 @@ export default function PPDB() {
                     />
                   </div>
 
-                  {/* Nilai Rata-rata & Jurusan */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Nilai Rata-rata <span className="text-gray-400">(opsional)</span></label>
-                      <input 
-                        type="number" 
-                        name="nilaiRata"
-                        step="0.01"
-                        min="0"
-                        max="100"
-                        className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-sm focus:outline-none focus:border-brand-pink-start transition-colors" 
-                        placeholder="0-100"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Jurusan Pilihan <span className="text-red-500">*</span></label>
-                      <select 
-                        name="jurusanPilihan"
-                        required
-                        className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-sm focus:outline-none focus:border-brand-pink-start transition-colors"
-                      >
-                        <option value="">Pilih Jurusan</option>
-                        <option value="Teknik Komputer dan Jaringan">Teknik Komputer dan Jaringan</option>
-                        <option value="Rekayasa Perangkat Lunak">Rekayasa Perangkat Lunak</option>
-                        <option value="Multimedia">Multimedia</option>
-                        <option value="Teknik Ototronik">Teknik Ototronik</option>
-                      </select>
-                      {state.errors?.jurusanPilihan && <p className="text-red-500 text-xs mt-1">{state.errors.jurusanPilihan}</p>}
-                    </div>
-                  </div>
-
                   {/* Submit Button */}
                   <button 
                     type="submit" 

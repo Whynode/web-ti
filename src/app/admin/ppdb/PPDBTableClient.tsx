@@ -87,7 +87,6 @@ export default function PPDBTableClient({ ppdbList }: Props) {
               <th className="px-4 py-4 text-left text-xs font-semibold text-[#999] uppercase tracking-wider">Nama Lengkap</th>
               <th className="px-4 py-4 text-left text-xs font-semibold text-[#999] uppercase tracking-wider">NISN</th>
               <th className="px-4 py-4 text-left text-xs font-semibold text-[#999] uppercase tracking-wider">Asal Sekolah</th>
-              <th className="px-4 py-4 text-left text-xs font-semibold text-[#999] uppercase tracking-wider">Jurusan</th>
               <th className="px-4 py-4 text-left text-xs font-semibold text-[#999] uppercase tracking-wider">Status</th>
               <th className="px-4 py-4 text-left text-xs font-semibold text-[#999] uppercase tracking-wider">Tanggal Daftar</th>
               <th className="px-4 py-4 text-right text-xs font-semibold text-[#999] uppercase tracking-wider">Aksi</th>
@@ -103,7 +102,6 @@ export default function PPDBTableClient({ ppdbList }: Props) {
                 </td>
                 <td className="px-4 py-4 text-sm text-[#999] font-mono">{ppdb.nisn}</td>
                 <td className="px-4 py-4 text-sm text-[#999]">{ppdb.asalSekolah}</td>
-                <td className="px-4 py-4 text-sm text-[#999]">{ppdb.JurusanPilihan}</td>
                 <td className="px-4 py-4">{getStatusBadge(ppdb.status)}</td>
                 <td className="px-4 py-4 text-sm text-[#666]">
                   {new Date(ppdb.tanggalDaftar).toLocaleDateString("id-ID", {

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 export const dynamic = 'force-dynamic';
 import { ClipboardList } from "lucide-react";
 import PPDBTableClient from "./PPDBTableClient";
+import ExportPPDBButton from "@/components/admin/ExportPPDBButton";
 
 async function getPPDB() {
   try {
@@ -30,6 +31,7 @@ export default async function PPDBManagementPage() {
             Kelola data pendaftaran siswa baru
           </p>
         </div>
+        {ppdbList.length > 0 && <ExportPPDBButton data={ppdbList} />}
       </div>
 
       {ppdbList.length === 0 ? (

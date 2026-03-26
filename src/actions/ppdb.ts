@@ -12,8 +12,6 @@ const ppdbSchema = z.object({
   noWA: z.string().min(10, 'Nomor WA wajib diisi').regex(/^[0-9]+$/, 'Nomor WA harus angka'),
   email: z.string().email('Email tidak valid').optional().or(z.literal('')),
   alamat: z.string().optional(),
-  nilaiRata: z.string().optional(),
-  JurusanPilihan: z.string().min(1, 'Jurusan pilihan wajib diisi'),
 })
 
 export type FormState = {
@@ -31,8 +29,6 @@ export async function daftarPPDB(prevState: FormState, formData: FormData): Prom
     noWA: formData.get('noWA'),
     email: formData.get('email') || undefined,
     alamat: formData.get('alamat') || undefined,
-    nilaiRata: formData.get('nilaiRata') || undefined,
-    JurusanPilihan: formData.get('jurusanPilihan'),
   }
 
   const validated = ppdbSchema.safeParse(rawData)
@@ -56,8 +52,8 @@ export async function daftarPPDB(prevState: FormState, formData: FormData): Prom
         noWA: validated.data.noWA,
         email: validated.data.email,
         alamat: validated.data.alamat,
-        nilaiRata: validated.data.nilaiRata ? parseFloat(validated.data.nilaiRata) : null,
-        JurusanPilihan: validated.data.JurusanPilihan,
+        nilaiRata: null,
+        JurusanPilihan: "Teknik Komputer dan Jaringan",
         status: 'PENDING',
       },
     })
