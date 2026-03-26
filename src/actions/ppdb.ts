@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma'
 import { z } from 'zod'
+import { revalidatePath } from 'next/cache'
 
 const ppdbSchema = z.object({
   namaLengkap: z.string().min(1, 'Nama lengkap wajib diisi'),
@@ -61,6 +62,8 @@ export async function daftarPPDB(prevState: FormState, formData: FormData): Prom
       },
     })
 
+    revalidatePath('/admin/ppdb')
+
     return { success: true, message: 'Pendaftaran berhasil! Silakan tunggu info selanjutnya via WhatsApp.' }
   } catch (error: any) {
     if (error.code === 'P2002') {
@@ -77,9 +80,23 @@ export async function updateStatusPPDB(id: string, status: 'PENDING' | 'DITERIMA
       where: { id },
       data: { status },
     })
+    revalidatePath('/admin/ppdb')
     return { success: true }
   } catch (error) {
     console.error('Update Status Error:', error)
     return { success: false, message: 'Gagal memperbarui status' }
+  }
+}
+
+export async function deletePPDB(id: string) {
+  try {
+    await prisma.pPDB.delete({
+      where: { id },
+    })
+    revalidatePath('/admin/ppdb')
+    return { success: true }
+  } catch (error) {
+    console.error('Delete PPDB Error:', error)
+    return { success: false, message: 'Gagal menghapus data' }
   }
 }

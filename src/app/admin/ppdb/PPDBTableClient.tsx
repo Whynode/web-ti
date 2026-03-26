@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check, X, FileText } from "lucide-react";
-import { updateStatusPPDB } from "@/actions/ppdb";
+import { Check, X, Trash2 } from "lucide-react";
+import { updateStatusPPDB, deletePPDB } from "@/actions/ppdb";
 
 type PPDB = {
   id: string;
@@ -38,6 +38,25 @@ export default function PPDBTableClient({ ppdbList }: Props) {
         router.refresh();
       } else {
         alert(result.message || "Gagal memperbarui status");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Terjadi kesalahan");
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  const handleDelete = async (id: string, nama: string) => {
+    if (!confirm(`Yakin ingin menghapus data "${nama}"? Data tidak bisa dikembalikan.`)) return;
+
+    setUpdatingId(id);
+    try {
+      const result = await deletePPDB(id);
+      if (result.success) {
+        router.refresh();
+      } else {
+        alert(result.message || "Gagal menghapus data");
       }
     } catch (error) {
       console.error(error);
@@ -118,6 +137,14 @@ export default function PPDBTableClient({ ppdbList }: Props) {
                     {ppdb.status !== "PENDING" && (
                       <span className="text-xs text-[#666]">Selesai</span>
                     )}
+                    <button
+                      onClick={() => handleDelete(ppdb.id, ppdb.namaLengkap)}
+                      disabled={updatingId === ppdb.id}
+                      className="flex items-center gap-1 px-3 py-1.5 bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-medium rounded transition-colors disabled:opacity-50"
+                      title="Hapus data"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
                   </div>
                 </td>
               </tr>

@@ -1,5 +1,8 @@
 import React from "react";
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
+
+export const dynamic = 'force-dynamic';
 import { ClipboardList } from "lucide-react";
 import PPDBTableClient from "./PPDBTableClient";
 

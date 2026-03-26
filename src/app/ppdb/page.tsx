@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useState } from 'react'
+import { useActionState, useState, useEffect } from 'react'
 import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
@@ -13,15 +13,17 @@ const initialState: FormState = {}
 export default function PPDB() {
   const [state, action, isPending] = useActionState(daftarPPDB, initialState)
   const [showSuccess, setShowSuccess] = useState(false)
+  const [formKey, setFormKey] = useState(0)
 
-  const handleSuccess = () => {
+  useEffect(() => {
     if (state.success) {
       setShowSuccess(true)
-      const form = document.getElementById('ppdb-form') as HTMLFormElement
-      if (form) form.reset()
-      setTimeout(() => setShowSuccess(false), 8000)
+      setTimeout(() => {
+        setShowSuccess(false)
+        setFormKey(prev => prev + 1)
+      }, 8000)
     }
-  }
+  }, [state.success])
 
   return (
     <main className="min-h-screen bg-[#FDFDFD] text-gray-900 pb-20">
@@ -113,11 +115,7 @@ export default function PPDB() {
                   </div>
                 )}
 
-                <form id="ppdb-form" action={action} onSubmit={(e) => {
-                  if (!isPending) {
-                    setTimeout(handleSuccess, 100)
-                  }
-                }} className="space-y-5">
+                <form key={formKey} id="ppdb-form" action={action} className="space-y-5">
                   
                   {/* Nama Lengkap & NISN */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
