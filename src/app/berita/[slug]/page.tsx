@@ -3,11 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, Calendar, User, Clock } from "lucide-react";
 import prisma from "@/lib/prisma";
 import { MarqueeTicker } from "@/components/ui/MarqueeTicker";
-import DOMPurify from "dompurify";
-import { JSDOM } from "jsdom";
-
-const window = new JSDOM("").window;
-const purify = DOMPurify(window);
+import DOMPurify from "isomorphic-dompurify";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -96,7 +92,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
 
           <div 
             className="prose prose-lg prose-slate max-w-none prose-headings:font-bold prose-a:text-blue-600 mt-8 w-full"
-            dangerouslySetInnerHTML={{ __html: purify.sanitize(artikel.konten.replace(/&nbsp;/g, ' ')) }} 
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(artikel.konten.replace(/&nbsp;/g, ' ')) }} 
           />
         </article>
       </section>

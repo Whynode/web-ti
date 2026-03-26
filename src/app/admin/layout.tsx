@@ -18,10 +18,10 @@ import {
   ChevronRight,
   LogOut,
   GraduationCap,
-  Clock,
   ShieldCheck
 } from "lucide-react";
 import LogoutButton from "@/components/admin/LogoutButton";
+import { ClockDisplay } from "@/components/ui/ClockDisplay";
 
 const menuItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -139,16 +139,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
             
             <div className="flex items-center gap-4">
-              <div className="hidden sm:flex items-center gap-2 text-zinc-500">
-                <Clock className="w-4 h-4" />
-                <span className="text-xs">
-                  {new Date().toLocaleDateString("id-ID", { 
-                    weekday: "long", 
-                    day: "numeric", 
-                    month: "long", 
-                    year: "numeric" 
-                  })}
-                </span>
+              <div className="hidden sm:flex">
+                <ClockDisplay />
               </div>
             </div>
           </div>

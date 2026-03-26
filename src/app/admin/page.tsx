@@ -1,20 +1,28 @@
 import prisma from "@/lib/prisma";
 import Link from "next/link";
-import { Users, BookOpen, Briefcase, FileText, GraduationCap, ArrowRight, ShieldCheck, Clock } from "lucide-react";
+import { Users, BookOpen, Briefcase, FileText, GraduationCap, ArrowRight, ShieldCheck } from "lucide-react";
+import { ClockDisplay, DateDisplay } from "@/components/ui/ClockDisplay";
 
 async function getStats() {
-  try {
-    const [guru, siswa, kelas, lowongan, artikel] = await Promise.all([
-      prisma.guru.count(),
-      prisma.siswa.count(),
-      prisma.kelas.count(),
-      prisma.lowonganBKK.count({ where: { statusAktif: true } }),
-      prisma.artikelBlog.count(),
-    ]);
-    return { guru, siswa, kelas, lowongan, artikel };
-  } catch {
-    return { guru: 0, siswa: 0, kelas: 0, lowongan: 0, artikel: 0 };
+  let retries = 3;
+  while (retries > 0) {
+    try {
+      const [guru, siswa, kelas, lowongan, artikel] = await Promise.all([
+        prisma.guru.count(),
+        prisma.siswa.count(),
+        prisma.kelas.count(),
+        prisma.lowonganBKK.count({ where: { statusAktif: true } }),
+        prisma.artikelBlog.count(),
+      ]);
+      return { guru, siswa, kelas, lowongan, artikel };
+    } catch (error) {
+      console.error("Error fetching stats, retries left:", retries, error);
+      retries--;
+      if (retries === 0) break;
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
   }
+  return { guru: 0, siswa: 0, kelas: 0, lowongan: 0, artikel: 0 };
 }
 
 export default async function AdminDashboard() {
@@ -43,16 +51,8 @@ export default async function AdminDashboard() {
           <h1 className="text-2xl font-bold text-white tracking-tight">Dashboard</h1>
           <p className="text-sm text-zinc-500 mt-1">Selamat datang di panel administrasi</p>
         </div>
-        <div className="hidden sm:flex items-center gap-2 text-zinc-500">
-          <Clock className="w-4 h-4" />
-          <span className="text-xs">
-            {new Date().toLocaleDateString("id-ID", { 
-              weekday: "long", 
-              day: "numeric", 
-              month: "long", 
-              year: "numeric" 
-            })}
-          </span>
+        <div className="hidden sm:flex">
+          <ClockDisplay />
         </div>
       </div>
 
@@ -141,7 +141,7 @@ export default async function AdminDashboard() {
             </div>
             <div className="flex items-center justify-between py-3">
               <span className="text-sm text-zinc-500">Terakhir Update</span>
-              <span className="text-sm font-bold text-white">{new Date().toLocaleDateString("id-ID")}</span>
+              <DateDisplay />
             </div>
           </div>
         </div>
