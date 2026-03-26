@@ -4,20 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Mail, Phone, MapPin, Printer } from "lucide-react";
-import { useState, useEffect } from "react";
 import NewsletterForm from "@/components/ui/NewsletterForm";
 
 export default function Footer() {
   const pathname = usePathname();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   if (pathname?.startsWith('/admin')) return null;
   
-  if (!mounted) return null;
   return (
     <footer className="bg-brand-navy bg-grid-dark text-white pt-16 flex flex-col min-h-max relative">
       <div className="container max-w-7xl mx-auto px-4 pb-12">
@@ -111,7 +104,7 @@ export default function Footer() {
       <div className="bg-gradient-to-r from-brand-pink-start to-brand-blue-start py-5 w-full mt-auto">
         <div className="container max-w-7xl mx-auto px-4 flex flex-col justify-center items-center text-center text-white/90 text-[11px] md:text-xs font-medium space-y-1.5">
           <p>
-            Hak Cipta © {mounted ? new Date().getFullYear() : '2026'} SMKS Telematika Indramayu. Semua Hak Dilindungi.
+            Hak Cipta © 2026 SMKS Telematika Indramayu. Semua Hak Dilindungi.
           </p>
           <p>
             Dirancang & Dikembangkan oleh{" "}
