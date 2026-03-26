@@ -3,7 +3,27 @@ import Link from "next/link";
 import { ArrowLeft, Calendar, User } from "lucide-react";
 import prisma from "@/lib/prisma";
 import { MarqueeTicker } from "@/components/ui/MarqueeTicker";
-import DOMPurify from "isomorphic-dompurify";
+
+const sanitizeHtml = (html: string): string => {
+  const allowedTags = ['p', 'br', 'strong', 'b', 'em', 'i', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'img', 'blockquote', 'pre', 'code', 'span', 'div', 'table', 'tr', 'td', 'th', 'thead', 'tbody'];
+  const allowedAttrs = ['href', 'src', 'alt', 'title', 'class', 'target', 'rel'];
+  
+  let result = html
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"');
+  
+  allowedTags.forEach(tag => {
+    const regex = new RegExp(`<(?!\/?(?:${allowedTags.join('|')})\\b)[^>]*>`, 'gi');
+    result = result.replace(regex, '');
+  });
+  
+  result = result.replace(/javascript:/gi, '').replace(/on\w+=/gi, '');
+  
+  return result;
+};
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -90,7 +110,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
 
           <div 
             className="prose prose-lg prose-slate max-w-none prose-headings:font-bold prose-a:text-blue-600 mt-8 w-full"
-            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(artikel.konten.replace(/&nbsp;/g, ' ')) }} 
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(artikel.konten) }} 
           />
         </article>
       </section>
