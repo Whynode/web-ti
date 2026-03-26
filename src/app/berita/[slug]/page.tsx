@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Calendar, User, Clock } from "lucide-react";
+import { ArrowLeft, Calendar, User } from "lucide-react";
 import prisma from "@/lib/prisma";
 import { MarqueeTicker } from "@/components/ui/MarqueeTicker";
 import DOMPurify from "isomorphic-dompurify";
@@ -9,30 +9,22 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-async function getArticle(slug: string) {
-  try {
-    const artikel = await prisma.artikelBlog.findUnique({
-      where: { slug },
-    });
-    return artikel;
-  } catch (error) {
-    console.error("Error fetching article:", error);
-    return null;
-  }
-}
-
 export default async function ArticleDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  
+
   let artikel = null;
+  
   try {
-    artikel = await getArticle(slug);
+    artikel = await prisma.artikelBlog.findUnique({
+      where: { slug },
+    });
   } catch (error) {
     console.error("Error fetching article:", error);
+    return notFound();
   }
 
   if (!artikel || !artikel.judul) {
-    notFound();
+    return notFound();
   }
 
   const formatDate = (date: Date) => {
@@ -46,7 +38,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
   const getCategoryFromContent = (konten: string): string => {
     const lower = konten.toLowerCase();
     if (lower.includes("ppdb") || lower.includes("pendaftaran")) return "Pengumuman";
-    if (lower.includes("kunjungan") || lower.includes("kegiatan")) return "Kegiatan";
+    if (lower.includes("kunjungan") || lower.includes("kegiatan")) return "Keseluruhan";
     if (lower.includes("workshop") || lower.includes("pelajaran")) return "Akademik";
     if (lower.includes("juara") || lower.includes("prestasi")) return "Prestasi";
     if (lower.includes("bkk") || lower.includes("lowongan")) return "BKK";

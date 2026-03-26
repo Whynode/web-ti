@@ -14,11 +14,11 @@ export function middleware(request: NextRequest) {
       "max-age=31536000; includeSubDomains; preload",
     "Content-Security-Policy": [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.vercel.app https://*.vercel.live",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.vercel.app https://vercel.live",
       "style-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https://images.unsplash.com https://randomuser.me https://tqvdxqmdiynqlrlplcqc.supabase.co",
-      "connect-src 'self' https://tqvdxqmdiynqlrlplcqc.supabase.co https://*.vercel.app",
+      "connect-src 'self' https://tqvdxqmdiynqlrlplcqc.supabase.co https://*.vercel.app https://vercel.live",
       "frame-src 'self'",
       "object-src 'none'",
       "base-uri 'self'",
