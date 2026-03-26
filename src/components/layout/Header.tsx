@@ -13,6 +13,8 @@ export default function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
 
+  if (pathname?.startsWith('/admin')) return null;
+
   const isHomepage = pathname === "/";
 
   useEffect(() => {
@@ -104,7 +106,6 @@ export default function Header() {
                     >
                       <div className="bg-white rounded-[10px] shadow-lg border border-gray-100 overflow-hidden py-1">
                         <Link href="/student-life" className="block px-4 py-2 text-xs text-brand-navy/70 font-medium hover:bg-brand-navy/5 hover:text-brand-pink-start transition-colors">Student Life</Link>
-                        <Link href="/elearning" className="block px-4 py-2 text-xs text-brand-navy/70 font-medium hover:bg-brand-navy/5 hover:text-brand-pink-start transition-colors">E-Learning</Link>
                         <Link href="/galeri" className="block px-4 py-2 text-xs text-brand-navy/70 font-medium hover:bg-brand-navy/5 hover:text-brand-pink-start transition-colors">Galeri Kampus</Link>
                         <Link href="/berita" className="block px-4 py-2 text-xs text-brand-navy/70 font-medium hover:bg-brand-navy/5 hover:text-brand-pink-start transition-colors">Berita & Agenda</Link>
                         <Link href="/kontak" className="block px-4 py-2 text-xs text-brand-navy/70 font-medium hover:bg-brand-navy/5 hover:text-brand-pink-start transition-colors">Hubungi Kami</Link>
@@ -153,7 +154,6 @@ export default function Header() {
               <Link href="/bkk" onClick={() => setMobileMenuOpen(false)}>BKK</Link>
               <Link href="/kelas" onClick={() => setMobileMenuOpen(false)}>Kelas</Link>
               <Link href="/student-life" onClick={() => setMobileMenuOpen(false)}>Student Life</Link>
-              <Link href="/elearning" onClick={() => setMobileMenuOpen(false)}>E-Learning</Link>
               <Link href="/galeri" onClick={() => setMobileMenuOpen(false)}>Galeri</Link>
               <Link href="/berita" onClick={() => setMobileMenuOpen(false)}>Berita</Link>
               <Link href="/kontak" onClick={() => setMobileMenuOpen(false)}>Kontak</Link>

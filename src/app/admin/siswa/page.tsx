@@ -3,6 +3,7 @@ import Link from "next/link";
 import prisma from "@/lib/prisma";
 import { Plus, Users, GraduationCap, Crown, User } from "lucide-react";
 import { EditSiswaButton, HapusSiswaButton } from "@/components/admin/KelasSiswaButtons";
+import SiswaTableClient from "./SiswaTableClient";
 
 interface PageProps {
   searchParams: Promise<{ kelas?: string }>;
@@ -152,62 +153,7 @@ export default async function SiswaManagementPage({ searchParams }: PageProps) {
           </div>
         </div>
       ) : (
-        <div className="bg-[#141414] border border-[#262626] overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-[#1a1a1a] border-b border-[#262626]">
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#999] uppercase tracking-wider">No</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#999] uppercase tracking-wider">Nama Siswa</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#999] uppercase tracking-wider">Kelas</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#999] uppercase tracking-wider">Peran</th>
-                  <th className="px-6 py-4 text-right text-xs font-semibold text-[#999] uppercase tracking-wider">Aksi</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#1f1f1f]">
-                {siswaList.map((siswa, index) => {
-                  const badge = getPeranBadge(siswa.peran);
-                  return (
-                    <tr key={siswa.id} className="hover:bg-[#1a1a1a]">
-                      <td className="px-6 py-4 text-sm text-[#666]">{index + 1}</td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-[#1a1a1a] border border-[#262626] flex items-center justify-center text-[#c0c0c0] font-semibold text-sm">
-                            {siswa.nama.split(" ").map((n) => n[0]).slice(0, 2).join("")}
-                          </div>
-                          <span className="text-sm font-medium text-[#c0c0c0]">{siswa.nama}</span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex flex-col">
-                          <span className="text-sm font-medium text-[#c0c0c0]">{siswa.kelas.namaKelas}</span>
-                          <span className="text-xs text-[#666]">{siswa.kelas.waliKelas.nama}</span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium ${badge.bg}`}>
-                          {badge.icon}
-                          {badge.text}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center justify-end gap-2">
-                          <EditSiswaButton id={siswa.id} />
-                          <HapusSiswaButton id={siswa.id} nama={siswa.nama} />
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          <div className="px-6 py-4 border-t border-[#262626] bg-[#1a1a1a]">
-            <p className="text-sm text-[#666]">
-              Total: <span className="font-medium text-[#999]">{siswaList.length}</span> siswa
-            </p>
-          </div>
-        </div>
+        <SiswaTableClient siswaList={siswaList as any} />
       )}
 
       <div className="bg-[#141414] border border-[#262626] p-6">

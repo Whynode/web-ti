@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import React, { useState, useTransition, useRef } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Save, Loader2, X, ImageIcon } from "lucide-react";
@@ -23,6 +23,7 @@ export default function EditGuruForm({ guru }: PageProps) {
   const [preview, setPreview] = useState<string | null>(guru.fotoUrl);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -43,19 +44,34 @@ export default function EditGuruForm({ guru }: PageProps) {
     } else {
       setPreview(null);
     }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   }
 
   async function handleSubmit(formData: FormData) {
     setError(null);
+
+    let finalFormData = formData;
     
     if (selectedFile) {
-      formData.set("foto", selectedFile);
+      const fotoFile = formData.get("foto");
+      if (!fotoFile || !(fotoFile instanceof File)) {
+        finalFormData = new FormData();
+        finalFormData.append("nama", formData.get("nama") as string);
+        finalFormData.append("posisi", formData.get("posisi") as string);
+        finalFormData.append("mapel", formData.get("mapel") as string);
+        finalFormData.append("foto", selectedFile);
+      }
     }
-
+    
     startTransition(async () => {
-      const result = await updateGuru(guru.id, formData);
+      const result = await updateGuru(guru.id, finalFormData);
       if (result?.error) {
         setError(result.error);
+        if (result.uploadFailed) {
+          alert("Gagal mengunggah gambar: " + result.error);
+        }
       }
     });
   }
@@ -179,6 +195,7 @@ export default function EditGuruForm({ guru }: PageProps) {
                   accept="image/*"
                   onChange={handleFileChange}
                   className="hidden"
+                  ref={fileInputRef}
                 />
               </label>
             )}

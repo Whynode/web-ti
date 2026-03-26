@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { uploadImage } from "@/app/admin/actions/upload";
 
 function generateSlug(judul: string): string {
   return judul
@@ -14,10 +15,21 @@ function generateSlug(judul: string): string {
 export async function tambahArtikel(formData: FormData): Promise<void> {
   const judul = formData.get("judul") as string;
   const konten = formData.get("konten") as string;
-  const thumbnailUrl = formData.get("thumbnailUrl") as string;
+  const thumbnailFile = formData.get("thumbnailUrl") as File | null;
 
   if (!judul || !konten) {
     throw new Error("Judul dan konten wajib diisi");
+  }
+
+  let finalThumbnailUrl: string | null = null;
+  if (thumbnailFile && thumbnailFile.size > 0) {
+    const uploadFormData = new FormData();
+    uploadFormData.append("file", thumbnailFile);
+    const uploadResult = await uploadImage(uploadFormData);
+    if (!uploadResult.success) {
+      throw new Error(uploadResult.error || "Gagal mengunggah thumbnail");
+    }
+    finalThumbnailUrl = uploadResult.url || null;
   }
 
   let slug = generateSlug(judul);
@@ -34,7 +46,7 @@ export async function tambahArtikel(formData: FormData): Promise<void> {
         judul: judul.trim(),
         slug,
         konten: konten.trim(),
-        thumbnailUrl: thumbnailUrl && thumbnailUrl.trim() !== "" ? thumbnailUrl.trim() : null,
+        thumbnailUrl: finalThumbnailUrl,
       },
     });
   } catch (error) {
@@ -43,6 +55,8 @@ export async function tambahArtikel(formData: FormData): Promise<void> {
   }
 
   revalidatePath("/admin/blog");
+  revalidatePath("/berita");
+  revalidatePath("/");
   redirect("/admin/blog");
 }
 
@@ -52,20 +66,31 @@ export async function updateArtikel(
 ): Promise<void> {
   const judul = formData.get("judul") as string;
   const konten = formData.get("konten") as string;
-  const thumbnailUrl = formData.get("thumbnailUrl") as string;
+  const thumbnailFile = formData.get("thumbnailUrl") as File | null;
 
   if (!judul || !konten) {
     throw new Error("Judul dan konten wajib diisi");
   }
 
+  const updateData: any = {
+    judul: judul.trim(),
+    konten: konten.trim(),
+  };
+
+  if (thumbnailFile && thumbnailFile.size > 0) {
+    const uploadFormData = new FormData();
+    uploadFormData.append("file", thumbnailFile);
+    const uploadResult = await uploadImage(uploadFormData);
+    if (!uploadResult.success) {
+      throw new Error(uploadResult.error || "Gagal mengunggah thumbnail");
+    }
+    updateData.thumbnailUrl = uploadResult.url || null;
+  }
+
   try {
     await prisma.artikelBlog.update({
       where: { id },
-      data: {
-        judul: judul.trim(),
-        konten: konten.trim(),
-        thumbnailUrl: thumbnailUrl && thumbnailUrl.trim() !== "" ? thumbnailUrl.trim() : null,
-      },
+      data: updateData,
     });
   } catch (error) {
     console.error("Error updating artikel:", error);
@@ -73,6 +98,8 @@ export async function updateArtikel(
   }
 
   revalidatePath("/admin/blog");
+  revalidatePath("/berita");
+  revalidatePath("/");
   redirect("/admin/blog");
 }
 
@@ -87,4 +114,21 @@ export async function hapusArtikel(id: number): Promise<void> {
   }
 
   revalidatePath("/admin/blog");
+  revalidatePath("/berita");
+  revalidatePath("/");
+}
+
+export async function hapusArtikelBulk(ids: number[]): Promise<void> {
+  try {
+    await prisma.artikelBlog.deleteMany({
+      where: { id: { in: ids } },
+    });
+  } catch (error) {
+    console.error("Error bulk deleting artikel:", error);
+    throw new Error("Gagal menghapus artikel secara massal");
+  }
+
+  revalidatePath("/admin/blog");
+  revalidatePath("/berita");
+  revalidatePath("/");
 }

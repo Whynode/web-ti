@@ -1,9 +1,13 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowLeft, Calendar, User, Clock } from "lucide-react";
 import prisma from "@/lib/prisma";
 import { MarqueeTicker } from "@/components/ui/MarqueeTicker";
+import DOMPurify from "dompurify";
+import { JSDOM } from "jsdom";
+
+const window = new JSDOM("").window;
+const purify = DOMPurify(window);
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -50,79 +54,51 @@ export default async function ArticleDetailPage({ params }: PageProps) {
   const category = getCategoryFromContent(artikel.konten);
 
   return (
-    <main className="min-h-screen bg-[#FDFDFD] text-gray-900">
-      <section className="relative pt-32 pb-12 bg-brand-navy overflow-hidden">
-        <div className="container mx-auto px-6 max-w-[1120px] relative z-10">
+    <main className="min-h-screen bg-[#0f172a] sm:bg-slate-900 pb-12">
+      <section className="pt-8 pb-4">
+        <article className="max-w-6xl mx-auto w-full bg-white px-6 md:px-16 lg:px-24 py-12 md:py-16 rounded-none border-none min-h-screen shadow-2xl">
           <Link
             href="/berita"
-            className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors mb-6"
+            className="text-sm text-slate-500 hover:text-slate-800 flex items-center gap-2 mb-8 font-medium transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm font-medium">Kembali ke Berita</span>
+            Kembali ke Berita
           </Link>
-        </div>
-      </section>
 
-      <section className="bg-[#FDFDFD] bg-grid-light py-12">
-        <div className="container mx-auto px-6 max-w-[800px]">
-          <article>
-            <header className="mb-8">
-              <span className="inline-block px-4 py-1.5 bg-brand-pink-start/10 text-brand-pink-start text-xs font-bold uppercase tracking-widest rounded-[10px] mb-4">
-                {category}
+          <header className="mb-6">
+            <span className="inline-block px-4 py-1.5 bg-brand-pink-start/10 text-brand-pink-start text-xs font-bold uppercase tracking-widest rounded-[10px] mb-4">
+              {category}
+            </span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight mb-8">
+              {artikel.judul}
+            </h1>
+            <div className="text-sm md:text-base font-medium text-slate-500 mb-10 flex items-center gap-3 uppercase tracking-wider">
+              <span className="flex items-center gap-2">
+                <Calendar className="w-4 h-4" />
+                {formatDate(artikel.tanggalPublish)}
               </span>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-brand-navy font-serif leading-tight mb-4">
-                {artikel.judul}
-              </h1>
-              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-                <span className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-brand-pink-start" />
-                  {formatDate(artikel.tanggalPublish)}
-                </span>
-                <span className="flex items-center gap-2">
-                  <User className="w-4 h-4 text-brand-navy" />
-                  Tim redaksi SMKS Telematika
-                </span>
-              </div>
-            </header>
-
-            {artikel.thumbnailUrl && (
-              <div className="relative w-full aspect-[16/9] mb-8 rounded-[10px] overflow-hidden shadow-xl">
-                <Image
-                  src={artikel.thumbnailUrl}
-                  alt={artikel.judul}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            )}
-
-            <div className="prose prose-lg max-w-none">
-              <div className="text-gray-700 leading-relaxed whitespace-pre-wrap font-medium">
-                {artikel.konten.split("\n").map((paragraph, index) => {
-                  if (paragraph.trim() === "") {
-                    return <div key={index} className="h-4" />;
-                  }
-                  return (
-                    <p key={index} className="mb-4 text-base md:text-lg">
-                      {paragraph}
-                    </p>
-                  );
-                })}
-              </div>
+              <span className="flex items-center gap-2">
+                <User className="w-4 h-4" />
+                Tim redaksi SMKS Telematika
+              </span>
             </div>
-          </article>
+          </header>
 
-          <div className="mt-12 pt-8 border-t border-gray-200">
-            <Link
-              href="/berita"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-brand-navy hover:bg-[#243560] text-white rounded-[10px] font-medium text-sm transition-colors shadow-lg"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Kembali ke Daftar Berita
-            </Link>
-          </div>
-        </div>
+          {artikel.thumbnailUrl && (
+            <div className="w-full aspect-[16/9] mb-10 rounded-none overflow-hidden shadow-xl">
+              <img
+                src={artikel.thumbnailUrl}
+                alt={artikel.judul}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+
+          <div 
+            className="prose prose-lg prose-slate max-w-none prose-headings:font-bold prose-a:text-blue-600 mt-8 w-full"
+            dangerouslySetInnerHTML={{ __html: purify.sanitize(artikel.konten.replace(/&nbsp;/g, ' ')) }} 
+          />
+        </article>
       </section>
 
       <MarqueeTicker variant="pink" />

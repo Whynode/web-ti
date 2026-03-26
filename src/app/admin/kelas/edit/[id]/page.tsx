@@ -93,7 +93,7 @@ export default async function EditKelasPage({ params }: PageProps) {
                 id="waliKelasId"
                 name="waliKelasId"
                 required
-                defaultValue={kelas.waliKelasId}
+                defaultValue={kelas.waliKelasId || ""}
                 className="w-full px-4 py-2.5 bg-[#0a0a0a] border border-[#262626] text-[#c0c0c0] text-sm focus:outline-none focus:border-[#c0c0c0]"
               >
                 {guruList.map((guru) => (

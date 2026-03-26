@@ -89,3 +89,16 @@ export async function hapusLowongan(id: number): Promise<void> {
 
   revalidatePath("/admin/bkk");
 }
+
+export async function hapusLowonganBulk(ids: number[]): Promise<void> {
+  try {
+    await prisma.lowonganBKK.deleteMany({
+      where: { id: { in: ids } },
+    });
+  } catch (error) {
+    console.error("Error bulk deleting lowongan:", error);
+    throw new Error("Gagal menghapus lowongan secara massal");
+  }
+
+  revalidatePath("/admin/bkk");
+}

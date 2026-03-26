@@ -14,9 +14,8 @@ export default function Error({
   }, [error]);
 
   return (
-    <html lang="id">
-      <body className="min-h-screen bg-[#0B1120] text-white flex items-center justify-center">
-        <div className="container mx-auto px-6 max-w-xl text-center">
+    <main className="min-h-screen bg-[#0B1120] text-white flex items-center justify-center">
+      <div className="container mx-auto px-6 max-w-xl text-center">
           <div className="bg-[#1a1d29] border border-white/10 rounded-[16px] p-10 shadow-2xl">
             <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-brand-pink-start to-brand-blue-start flex items-center justify-center">
               <svg
@@ -64,7 +63,6 @@ export default function Error({
             </div>
           </div>
         </div>
-      </body>
-    </html>
+    </main>
   );
 }

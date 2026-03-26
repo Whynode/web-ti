@@ -1,6 +1,9 @@
 import prisma from "@/lib/prisma";
 import InformasiClient from "./InformasiClient";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 async function getGuru() {
   try {
     const guru = await prisma.guru.findMany({

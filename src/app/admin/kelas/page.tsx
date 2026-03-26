@@ -100,7 +100,7 @@ export default async function KelasManagementPage() {
                     <span className="text-[#999]">
                       Wali Kelas:{" "}
                       <span className="font-medium text-[#c0c0c0]">
-                        {kelas.waliKelas.nama}
+                        {kelas.waliKelas?.nama || "Belum ada Wali Kelas"}
                       </span>
                     </span>
                   </div>
@@ -109,7 +109,7 @@ export default async function KelasManagementPage() {
                     <span className="text-[#999]">
                       Mapel:{" "}
                       <span className="font-medium text-[#c0c0c0]">
-                        {kelas.waliKelas.mapel}
+                        {kelas.waliKelas?.mapel || "-"}
                       </span>
                     </span>
                   </div>

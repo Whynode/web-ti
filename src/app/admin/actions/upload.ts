@@ -46,14 +46,19 @@ export async function uploadImage(formData: FormData): Promise<{ success: boolea
       upsert: false,
     });
 
-  if (error) {
+  if (error || !data) {
     console.error("Upload error:", error);
-    return { success: false, error: `Gagal mengunggah: ${error.message}` };
+    return { success: false, error: `Gagal mengunggah: ${error?.message || "Unknown error"}` };
   }
 
   const { data: publicUrlData } = supabase.storage
     .from("public-images")
     .getPublicUrl(fileName);
+
+  if (!publicUrlData?.publicUrl) {
+    console.error("Failed to get public URL");
+    return { success: false, error: "Gagal mendapatkan URL foto" };
+  }
 
   return { success: true, url: publicUrlData.publicUrl };
 }

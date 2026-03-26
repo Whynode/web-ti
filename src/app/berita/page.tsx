@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import BeritaClient from "./BeritaClient";
 
+export const dynamic = 'force-dynamic';
+
 async function getArtikel() {
   try {
     return await prisma.artikelBlog.findMany({

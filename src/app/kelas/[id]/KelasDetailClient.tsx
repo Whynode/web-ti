@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { 
   ChevronLeft, 
   User, 
@@ -15,11 +16,11 @@ import {
 } from "lucide-react";
 
 type StrukturKelas = {
-  waliKelas: { nama: string; posisi: string; avatar: string; fotoUrl: string | null };
-  ketuaKelas: { nama: string; posisi: string; avatar: string; fotoUrl: string | null };
-  wakil: { nama: string; posisi: string; avatar: string; fotoUrl: string | null };
-  sekretaris: { nama: string; posisi: string; avatar: string; fotoUrl: string | null };
-  bendahara: { nama: string; posisi: string; avatar: string; fotoUrl: string | null };
+ waliKelas: { nama: string; posisi: string; avatar: string; fotoUrl: string | null };
+ ketuaKelas: { nama: string; posisi: string; avatar: string; fotoUrl: string | null };
+	wakil: { nama: string; posisi: string; avatar: string; fotoUrl: string | null };
+	sekretaris: { nama: string; posisi: string; avatar: string; fotoUrl: string | null };
+	bendahara: { nama: string; posisi: string; avatar: string; fotoUrl: string | null };
 };
 
 type Props = {
@@ -28,7 +29,7 @@ type Props = {
     namaKelas: string;
     deskripsi: string | null;
     totalSiswa: number;
-    waliKelas: { nama: string; posisi: string; avatar: string; fotoUrl: string | null };
+  waliKelas: { nama: string; posisi: string; avatar: string; fotoUrl: string | null };
     struktur: StrukturKelas;
     siswa: { id: number; nama: string; peran: string; fotoUrl: string | null }[];
   };
@@ -37,10 +38,16 @@ type Props = {
 function AvatarDisplay({ nama, avatar, fotoUrl, className = "" }: { nama: string; avatar: string; fotoUrl: string | null; className?: string }) {
   if (fotoUrl) {
     return (
-      <img 
+      <Image 
         src={fotoUrl} 
         alt={nama} 
+        width={80}
+        height={80}
         className={`w-full h-full object-cover ${className}`}
+        onError={(e) => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = "/beranda-bg.webp";
+        }}
       />
     );
   }
@@ -202,10 +209,16 @@ export default function KelasDetailClient({ data }: Props) {
                   >
                     <div className="aspect-[3/4] relative">
                       {siswa.fotoUrl ? (
-                        <img 
-                          src={siswa.fotoUrl} 
+                        <Image 
+                          src={siswa.fotoUrl || ""} 
                           alt={siswa.nama}
+                          width={160}
+                          height={213}
                           className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = "/beranda-bg.webp";
+                          }}
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-brand-navy/10 to-brand-blue-start/10 flex items-center justify-center">

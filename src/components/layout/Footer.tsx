@@ -1,9 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Mail, Phone, MapPin, Printer } from "lucide-react";
 import NewsletterForm from "@/components/ui/NewsletterForm";
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  if (pathname?.startsWith('/admin')) return null;
   return (
     <footer className="bg-brand-navy bg-grid-dark text-white pt-16 flex flex-col min-h-max relative">
       <div className="container max-w-7xl mx-auto px-4 pb-12">
@@ -70,7 +76,6 @@ export default function Footer() {
               <li><Link href="/program" className="hover:text-brand-pink-start transition-colors">Program</Link></li>
               <li><Link href="/ppdb" className="hover:text-brand-pink-start transition-colors">Penerimaan</Link></li>
               <li><Link href="/galeri" className="hover:text-brand-pink-start transition-colors">Galeri</Link></li>
-              <li><Link href="/elearning" className="hover:text-brand-pink-start transition-colors">E-Learning</Link></li>
             </ul>
           </div>
 

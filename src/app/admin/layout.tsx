@@ -7,7 +7,6 @@ import {
   LayoutDashboard,
   Users,
   Briefcase,
-  BookOpen,
   FileText,
   BarChart3,
   Menu,
@@ -30,7 +29,6 @@ const menuItems = [
   { href: "/admin/kelas", label: "Kelas", icon: GraduationCap },
   { href: "/admin/siswa", label: "Siswa", icon: UserCircle },
   { href: "/admin/bkk", label: "BKK", icon: Briefcase },
-  { href: "/admin/elearning", label: "E-Learning", icon: BookOpen },
   { href: "/admin/blog", label: "Blog", icon: FileText },
   { href: "/admin/statistik", label: "Statistik", icon: BarChart3 },
 ];
@@ -41,16 +39,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
 
   const SidebarContent = () => (
-    <div className="flex flex-col h-full bg-black border-r border-[#2a2a2a]">
-      <div className="p-4 border-b border-[#2a2a2a]">
+    <div className="flex flex-col h-full bg-black border-r border-zinc-800">
+      <div className="p-4 border-b border-zinc-800">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#c0c0c0] flex items-center justify-center">
-            <ShieldCheck className="w-6 h-6 text-black" />
+          <div className="w-10 h-10 bg-zinc-800 flex items-center justify-center">
+            <ShieldCheck className="w-6 h-6 text-zinc-400" />
           </div>
           {!isCollapsed && (
             <div className="flex flex-col">
               <span className="text-sm font-bold text-white tracking-tight">SMKS TI</span>
-              <span className="text-[10px] text-[#808080] uppercase tracking-widest">Admin Panel</span>
+              <span className="text-[10px] text-zinc-500 uppercase tracking-widest">Admin Panel</span>
             </div>
           )}
         </div>
@@ -67,10 +65,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               href={item.href}
               onClick={() => setIsMobileOpen(false)}
               className={`
-                flex items-center gap-3 px-3 py-2.5 transition-colors
+                flex items-center gap-3 px-3 py-2.5 transition-colors rounded-md
                 ${isActive 
-                  ? "bg-[#c0c0c0] text-black font-semibold" 
-                  : "text-[#c0c0c0] hover:bg-[#1a1a1a] hover:text-white"
+                  ? "bg-zinc-800 text-white font-medium" 
+                  : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
                 }
               `}
             >
@@ -83,14 +81,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         })}
       </nav>
 
-      <div className="p-3 border-t border-[#2a2a2a]">
+      <div className="p-3 border-t border-zinc-800">
         <div className="mb-2">
           <LogoutButton collapsed={isCollapsed} />
         </div>
         
         <Link
           href="/"
-          className="flex items-center gap-3 px-3 py-2.5 text-[#808080] hover:bg-[#1a1a1a] hover:text-white transition-colors"
+          className="flex items-center gap-3 px-3 py-2.5 text-zinc-500 hover:bg-zinc-900 hover:text-white transition-colors rounded-md"
         >
           <Home className="w-5 h-5 shrink-0" />
           {!isCollapsed && (
@@ -102,10 +100,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   );
 
   return (
-    <div className="flex min-h-screen bg-[#0a0a0a]">
+    <div className="flex min-h-screen bg-black">
       <aside
         className={`
-          fixed inset-y-0 left-0 z-50 bg-black border-r border-[#2a2a2a] transition-all duration-200
+          fixed inset-y-0 left-0 z-50 bg-black border-r border-zinc-800 transition-all duration-200
           ${isCollapsed ? "w-16" : "w-64"}
           hidden lg:block
         `}
@@ -116,32 +114,32 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {isMobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-black/80" onClick={() => setIsMobileOpen(false)} />
-          <aside className="absolute inset-y-0 left-0 w-64 bg-black border-r border-[#2a2a2a]">
+          <aside className="absolute inset-y-0 left-0 w-64 bg-black border-r border-zinc-800">
             <SidebarContent />
           </aside>
         </div>
       )}
 
       <div className={`flex-1 transition-all duration-200 ${isCollapsed ? "lg:ml-16" : "lg:ml-64"}`}>
-        <header className="sticky top-0 z-40 bg-[#0a0a0a] border-b border-[#2a2a2a]">
+        <header className="sticky top-0 z-40 bg-black border-b border-zinc-800">
           <div className="flex items-center justify-between px-4 py-3">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setIsMobileOpen(true)}
-                className="lg:hidden p-2 text-[#c0c0c0] hover:text-white hover:bg-[#1a1a1a]"
+                className="lg:hidden p-2 text-zinc-400 hover:text-white hover:bg-zinc-900"
               >
                 <Menu className="w-5 h-5" />
               </button>
               <button
                 onClick={() => setIsCollapsed(!isCollapsed)}
-                className="hidden lg:flex p-2 text-[#c0c0c0] hover:text-white hover:bg-[#1a1a1a]"
+                className="hidden lg:flex p-2 text-zinc-400 hover:text-white hover:bg-zinc-900"
               >
                 {isCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
               </button>
             </div>
             
             <div className="flex items-center gap-4">
-              <div className="hidden sm:flex items-center gap-2 text-[#808080]">
+              <div className="hidden sm:flex items-center gap-2 text-zinc-500">
                 <Clock className="w-4 h-4" />
                 <span className="text-xs">
                   {new Date().toLocaleDateString("id-ID", { 

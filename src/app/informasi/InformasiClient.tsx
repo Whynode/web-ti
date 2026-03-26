@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
+import Image from "next/image";
 import { 
   BookOpen, 
   Users, 
@@ -546,8 +548,11 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya }
               className="bg-white/5 border border-white/10 rounded-[10px] p-6"
             >
               <div className="flex flex-col lg:flex-row items-center gap-6">
-                <div className="w-40 h-52 rounded-[10px] overflow-hidden shrink-0 bg-brand-navy/50 flex items-center justify-center">
-                  <span className="text-4xl font-bold text-white/20">KS</span>
+                <div className="w-40 h-52 rounded-[10px] overflow-hidden shrink-0 bg-brand-navy/50 flex items-center justify-center relative">
+                  <span className="text-4xl font-bold text-white/20 absolute z-0">KS</span>
+                  {kepalaSekolah?.fotoUrl && (
+                    <Image src={kepalaSekolah?.fotoUrl || ""} alt="Kepala Sekolah" className="w-full h-full object-cover relative z-10" width={160} height={208} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                  )}
                 </div>
                 <div className="flex-1 text-center lg:text-left">
                   <span className="inline-block px-3 py-1 bg-brand-pink-start/20 text-brand-pink-start text-[10px] font-bold uppercase tracking-widest rounded-[5px] mb-3">Sambutan Kepala Sekolah</span>
@@ -592,18 +597,23 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya }
                         }`}
                       >
                         <div className="aspect-[3/4] relative bg-brand-navy/10 flex items-center justify-center overflow-hidden">
-                          <span className="text-2xl font-bold text-brand-navy/30">{initials}</span>
-                          <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+                          <span className="text-2xl font-bold text-brand-navy/30 absolute z-0">{initials}</span>
+                          {guru.fotoUrl && (
+                            <Image src={guru.fotoUrl} alt={guru.nama} className="w-full h-full object-cover relative z-10" width={160} height={208} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                          )}
+                          <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 ${
                             isTendik ? "bg-brand-blue-start/80" : "bg-brand-pink-start/80"
                           }`} />
                         </div>
                         <div className="p-3 text-center">
-                          <h4 className={`text-xs font-bold leading-tight mb-1 ${
-                            isTendik ? "text-brand-blue-start" : "text-brand-navy"
-                          }`}>{guru.nama}</h4>
-                          <p className="text-[9px] text-brand-navy/50 uppercase tracking-wider">{guru.posisi}</p>
+                          <h3 className="text-sm font-semibold text-slate-800 leading-tight">
+                            {guru.nama}
+                          </h3>
+                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1 mb-1.5">
+                            {guru.posisi}
+                          </p>
                           {guru.mapel && guru.mapel !== "-" && (
-                            <p className="text-[9px] text-brand-navy/40 mt-1">{guru.mapel}</p>
+                            <p className="text-xs text-slate-500 font-medium leading-tight line-clamp-2">{guru.mapel}</p>
                           )}
                         </div>
                       </motion.div>
@@ -611,6 +621,12 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya }
                   })}
                 </div>
               )}
+
+              <div className="flex justify-center mt-8">
+                <Link href="/guru" className="px-6 py-3 bg-brand-pink-start text-white text-[11px] font-bold uppercase tracking-widest rounded-[10px] hover:bg-brand-pink-end transition-colors shadow-md flex items-center gap-2">
+                  Lihat Semua Guru <User className="w-3.5 h-3.5" />
+                </Link>
+              </div>
             </div>
           </motion.div>
         </div>

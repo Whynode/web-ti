@@ -53,11 +53,11 @@ model Guru {
 model Kelas {
   id          Int      @id @default(autoincrement())
   namaKelas   String   @map("nama_kelas")
-  waliKelasId Int      @map("wali_kelas_id")
+  waliKelasId Int?     @map("wali_kelas_id")
   deskripsi   String?
   createdAt   DateTime @default(now())
 
-  waliKelas  Guru     @relation(fields: [waliKelasId], references: [id])
+  waliKelas  Guru?    @relation(fields: [waliKelasId], references: [id])
   siswa      Siswa[]
 
   @@map("kelas")

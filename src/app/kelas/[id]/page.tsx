@@ -38,18 +38,18 @@ async function getKelasDetail(id: string) {
       namaKelas: kelas.namaKelas,
       deskripsi: kelas.deskripsi,
       totalSiswa: kelas.siswa.length,
-      waliKelas: {
-        nama: kelas.waliKelas.nama,
+       waliKelas: {
+        nama: kelas.waliKelas?.nama || "Belum ada Wali Kelas",
         posisi: `Wali Kelas ${kelas.namaKelas}`,
-        avatar: kelas.waliKelas.nama.split(" ").map((n) => n[0]).join("").substring(0, 2).toUpperCase(),
-        fotoUrl: kelas.waliKelas.fotoUrl,
+        avatar: (kelas.waliKelas?.nama || "?").split(" ").map((n) => n[0]).join("").substring(0, 2).toUpperCase(),
+        fotoUrl: kelas.waliKelas?.fotoUrl || null,
       },
       struktur: {
-        waliKelas: {
-          nama: kelas.waliKelas.nama,
+       waliKelas: {
+          nama: kelas.waliKelas?.nama || "Belum ada Wali Kelas",
           posisi: `Wali Kelas ${kelas.namaKelas}`,
-          avatar: kelas.waliKelas.nama.split(" ").map((n) => n[0]).join("").substring(0, 2).toUpperCase(),
-          fotoUrl: kelas.waliKelas.fotoUrl,
+          avatar: (kelas.waliKelas?.nama || "?").split(" ").map((n) => n[0]).join("").substring(0, 2).toUpperCase(),
+          fotoUrl: kelas.waliKelas?.fotoUrl || null,
         },
         ketuaKelas: {
           nama: ketuaKelas?.nama || "Belum Ditentukan",

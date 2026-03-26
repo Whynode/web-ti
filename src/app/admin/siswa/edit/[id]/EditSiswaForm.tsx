@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import React, { useState, useTransition, useRef } from "react";
 import Link from "next/link";
 import { ArrowLeft, Save, Loader2, X, ImageIcon } from "lucide-react";
 import { updateSiswa } from "@/app/admin/siswa/actions";
@@ -10,7 +10,7 @@ interface Kelas {
   namaKelas: string;
   waliKelas: {
     nama: string;
-  };
+  } | null;
 }
 
 interface Siswa {
@@ -32,6 +32,7 @@ export default function EditSiswaForm({ siswa, kelasList }: EditSiswaFormProps) 
   const [preview, setPreview] = useState<string | null>(siswa.fotoUrl);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -52,19 +53,34 @@ export default function EditSiswaForm({ siswa, kelasList }: EditSiswaFormProps) 
     } else {
       setPreview(null);
     }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   }
 
   async function handleSubmit(formData: FormData) {
     setError(null);
+
+    let finalFormData = formData;
     
     if (selectedFile) {
-      formData.set("foto", selectedFile);
+      const fotoFile = formData.get("foto");
+      if (!fotoFile || !(fotoFile instanceof File)) {
+        finalFormData = new FormData();
+        finalFormData.append("nama", formData.get("nama") as string);
+        finalFormData.append("peran", formData.get("peran") as string);
+        finalFormData.append("kelasId", formData.get("kelasId") as string);
+        finalFormData.append("foto", selectedFile);
+      }
     }
-
+    
     startTransition(async () => {
-      const result = await updateSiswa(siswa.id, formData);
+      const result = await updateSiswa(siswa.id, finalFormData);
       if (result?.error) {
         setError(result.error);
+        if (result.uploadFailed) {
+          alert("Gagal mengunggah gambar: " + result.error);
+        }
       }
     });
   }
@@ -126,7 +142,7 @@ export default function EditSiswaForm({ siswa, kelasList }: EditSiswaFormProps) 
                 <option value="">Pilih Kelas</option>
                 {kelasList.map((kelas) => (
                   <option key={kelas.id} value={kelas.id}>
-                    {kelas.namaKelas} - {kelas.waliKelas.nama}
+                    {kelas.namaKelas} - {kelas.waliKelas?.nama || "Belum ada Wali Kelas"}
                   </option>
                 ))}
               </select>
@@ -188,6 +204,7 @@ export default function EditSiswaForm({ siswa, kelasList }: EditSiswaFormProps) 
                   accept="image/*"
                   onChange={handleFileChange}
                   className="hidden"
+                  ref={fileInputRef}
                 />
               </label>
             )}

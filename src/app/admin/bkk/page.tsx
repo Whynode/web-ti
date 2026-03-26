@@ -3,6 +3,7 @@ import Link from "next/link";
 import prisma from "@/lib/prisma";
 import { Plus, Briefcase, MapPin, Building2 } from "lucide-react";
 import { HapusLowonganButton, EditLowonganButton } from "@/components/admin/LowonganButtons";
+import BkkTableClient from "./BkkTableClient";
 
 async function getLowongan() {
   try {
@@ -60,84 +61,7 @@ export default async function BKKManagementPage() {
           </div>
         </div>
       ) : (
-        <div className="bg-[#141414] border border-[#262626] overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-[#1a1a1a] border-b border-[#262626]">
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#999] uppercase tracking-wider">No</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#999] uppercase tracking-wider">Posisi</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#999] uppercase tracking-wider">Perusahaan</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#999] uppercase tracking-wider">Lokasi</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#999] uppercase tracking-wider">Tipe</th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-[#999] uppercase tracking-wider">Batas</th>
-                  <th className="px-6 py-4 text-center text-xs font-semibold text-[#999] uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-4 text-right text-xs font-semibold text-[#999] uppercase tracking-wider">Aksi</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#1f1f1f]">
-                {lowonganList.map((lowongan, index) => (
-                  <tr key={lowongan.id} className="hover:bg-[#1a1a1a]">
-                    <td className="px-6 py-4 text-sm text-[#666]">{index + 1}</td>
-                    <td className="px-6 py-4">
-                      <span className="text-sm font-medium text-[#c0c0c0]">{lowongan.posisi}</span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <Building2 className="w-4 h-4 text-[#555]" />
-                        <span className="text-sm text-[#999]">{lowongan.perusahaan}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-[#555]" />
-                        <span className="text-sm text-[#666]">{lowongan.lokasi}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="inline-flex px-2.5 py-1 text-xs font-medium bg-[#1a1a1a] text-[#999] border border-[#262626]">
-                        {lowongan.tipePekerjaan}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-[#666]">
-                      {new Date(lowongan.batasLamaran).toLocaleDateString("id-ID", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span
-                        className={`inline-flex px-2.5 py-1 text-xs font-medium ${
-                          lowongan.statusAktif
-                            ? "bg-[#0a1a0a] text-[#4ade80] border border-[#1a3a1a]"
-                            : "bg-[#1a1a1a] text-[#666] border border-[#262626]"
-                        }`}
-                      >
-                        {lowongan.statusAktif ? "Aktif" : "Nonaktif"}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center justify-end gap-2">
-                        <EditLowonganButton id={lowongan.id} />
-                        <HapusLowonganButton
-                          id={lowongan.id}
-                          posisi={lowongan.posisi}
-                          perusahaan={lowongan.perusahaan}
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="px-6 py-4 border-t border-[#262626] bg-[#1a1a1a]">
-            <p className="text-sm text-[#666]">
-              Total: <span className="font-medium text-[#999]">{lowonganList.length}</span> lowongan
-            </p>
-          </div>
-        </div>
+        <BkkTableClient lowonganList={lowonganList} />
       )}
     </div>
   );

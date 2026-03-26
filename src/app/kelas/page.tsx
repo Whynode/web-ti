@@ -15,7 +15,7 @@ async function getKelasWithStats() {
       id: k.id,
       namaKelas: k.namaKelas,
       totalSiswa: k.siswa.length,
-      waliKelas: k.waliKelas.nama,
+      waliKelas: k.waliKelas?.nama || "Belum ada Wali Kelas",
       deskripsi: k.deskripsi || `Kelas ${k.namaKelas} SMKS Telematika Indramayu dengan fokus pada kompetensi jaringan komputer dan teknologi informasi.`,
     }));
   } catch {
