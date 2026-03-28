@@ -23,7 +23,6 @@ import {
   MapPin,
   Mail
 } from "lucide-react";
-import { MarqueeTicker } from "@/components/ui/MarqueeTicker";
 
 type Guru = {
   id: number;
@@ -52,8 +51,6 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya }
           </motion.div>
         </div>
       </section>
-
-      <MarqueeTicker variant="pink" />
 
       <motion.section 
         initial={{ opacity: 0 }}
@@ -731,8 +728,6 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya }
           </motion.div>
         </div>
       </motion.section>
-
-      <MarqueeTicker variant="pink" />
 
     </main>
   );

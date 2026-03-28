@@ -1,19 +1,23 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 interface MarqueeTickerProps {
   variant?: "dark" | "pink";
+  articles?: { text: string; link: string }[];
 }
 
-export function MarqueeTicker({ variant = "dark" }: MarqueeTickerProps) {
-  const announcements = [
-    { text: "Pendaftaran PPDB Gelombang 1 Dibuka!", link: "/ppdb" },
-    { text: "SMKS Telematika Raih Juara 1 Web Design Tingkat Nasional", link: "/berita" },
-    { text: "Sertifikasi Mikrotik (MTCNA) Batch 4 Segera Dimulai", link: "/agenda" },
-    { text: "Kunjungan Industri ke PT. Telkom Indonesia", link: "/berita" },
-  ];
+const defaultAnnouncements = [
+  { text: "Pendaftaran PPDB Gelombang 1 Dibuka!", link: "/ppdb" },
+  { text: "SMKS Telematika - SMK IT Terbaik di Indramayu", link: "/" },
+  { text: "Program Unggulan Teknik Komputer & Jaringan", link: "/program/mikrotik" },
+  { text: "MikroTik Academy - Sertifikasi Internasional", link: "/program/mikrotik" },
+];
 
-  const tickerItems = [...announcements, ...announcements, ...announcements, ...announcements];
+export default function MarqueeTicker({ variant = "dark", articles }: MarqueeTickerProps) {
+  const items = articles && articles.length > 0 ? articles : defaultAnnouncements;
+  const tickerItems = [...items, ...items, ...items, ...items];
 
   const wrapperClass =
     variant === "pink"

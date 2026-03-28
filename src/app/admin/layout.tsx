@@ -19,7 +19,11 @@ import {
   LogOut,
   GraduationCap,
   ShieldCheck,
-  ClipboardList
+  ClipboardList,
+  Handshake,
+  Laptop,
+  ChevronDown,
+  UsersRound
 } from "lucide-react";
 import LogoutButton from "@/components/admin/LogoutButton";
 import { ClockDisplay } from "@/components/ui/ClockDisplay";
@@ -30,7 +34,16 @@ const menuItems = [
   { href: "/admin/guru", label: "Guru", icon: Users },
   { href: "/admin/kelas", label: "Kelas", icon: GraduationCap },
   { href: "/admin/siswa", label: "Siswa", icon: UserCircle },
-  { href: "/admin/bkk", label: "BKK", icon: Briefcase },
+  { 
+    href: "/admin/bkk", 
+    label: "BKK", 
+    icon: Briefcase,
+    submenu: [
+      { href: "/admin/bkk/mitra", label: "Mitra Industri", icon: Handshake },
+      { href: "/admin/bkk/lowongan", label: "Lowongan Kerja", icon: Laptop },
+      { href: "/admin/bkk/penempatan", label: "Data Penempatan", icon: UsersRound },
+    ]
+  },
   { href: "/admin/blog", label: "Blog", icon: FileText },
   { href: "/admin/statistik", label: "Statistik", icon: BarChart3 },
 ];
@@ -38,7 +51,10 @@ const menuItems = [
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [bkkExpanded, setBkkExpanded] = useState(true);
   const pathname = usePathname();
+
+  const isBkkActive = pathname.startsWith("/admin/bkk");
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-black border-r border-zinc-800">
@@ -60,6 +76,56 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {menuItems.map((item) => {
           const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
           const Icon = item.icon;
+          
+          if (item.submenu) {
+            return (
+              <div key={item.href}>
+                <button
+                  onClick={() => setBkkExpanded(!bkkExpanded)}
+                  className={`
+                    w-full flex items-center justify-between gap-3 px-3 py-2.5 transition-colors rounded-md
+                    ${isBkkActive
+                      ? "bg-zinc-800 text-white font-medium"
+                      : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
+                    }
+                  `}
+                >
+                  <div className="flex items-center gap-3">
+                    <Icon className="w-5 h-5 shrink-0" />
+                    {!isCollapsed && <span className="text-sm">{item.label}</span>}
+                  </div>
+                  {!isCollapsed && (
+                    <ChevronDown className={`w-4 h-4 transition-transform ${bkkExpanded ? 'rotate-180' : ''}`} />
+                  )}
+                </button>
+                {bkkExpanded && !isCollapsed && (
+                  <div className="ml-6 mt-1 space-y-1 border-l border-zinc-800 pl-3">
+                    {item.submenu.map((subItem) => {
+                      const isSubActive = pathname === subItem.href;
+                      const SubIcon = subItem.icon;
+                      return (
+                        <Link
+                          key={subItem.href}
+                          href={subItem.href}
+                          onClick={() => setIsMobileOpen(false)}
+                          className={`
+                            flex items-center gap-3 px-3 py-2 transition-colors rounded-md
+                            ${isSubActive
+                              ? "bg-brand-pink-start/20 text-brand-pink-start"
+                              : "text-zinc-500 hover:bg-zinc-900 hover:text-white"
+                            }
+                          `}
+                        >
+                          <SubIcon className="w-4 h-4 shrink-0" />
+                          <span className="text-sm">{subItem.label}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          }
           
           return (
             <Link

@@ -5,8 +5,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { CheckCircle, ClipboardList, Send, FileText, UserPlus, FileCheck, CreditCard } from "lucide-react"
-import { MarqueeTicker } from "@/components/ui/MarqueeTicker"
 import { daftarPPDB, FormState } from "@/actions/ppdb"
+import MarqueeWrapper from "@/components/ui/MarqueeWrapper"
 
 const initialState: FormState = {}
 
@@ -39,7 +39,10 @@ export default function PPDB() {
         </div>
       </section>
 
-      <MarqueeTicker variant="pink" />
+      {/* Marquee Divider */}
+      <div className="w-full border-y border-white/10 bg-[#0B1120] relative z-40">
+        <MarqueeWrapper variant="dark" />
+      </div>
 
       {/* 2. Informasi Alur & Syarat (Dense Layout) */}
       <section className="py-20 bg-[#FDFDFD] bg-grid-light">

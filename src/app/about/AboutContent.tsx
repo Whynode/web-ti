@@ -13,7 +13,6 @@ import {
   BookOpen,
   GraduationCap
 } from "lucide-react";
-import { MarqueeTicker } from "@/components/ui/MarqueeTicker"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -38,8 +37,6 @@ export default function AboutContent() {
           </motion.div>
         </div>
       </section>
-
-      <MarqueeTicker variant="pink" />
 
       <section className="py-16 bg-[#FDFDFD] bg-grid-light">
         <div className="container mx-auto px-6 max-w-[1120px]">

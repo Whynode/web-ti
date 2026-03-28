@@ -16,6 +16,8 @@ export async function tambahArtikel(formData: FormData): Promise<void> {
   const judul = formData.get("judul") as string;
   const konten = formData.get("konten") as string;
   const thumbnailFile = formData.get("thumbnailUrl") as File | null;
+  const kategori = formData.get("kategori") as string || "Umum";
+  const isPinned = formData.get("isPinned") === "true";
 
   if (!judul || !konten) {
     throw new Error("Judul dan konten wajib diisi");
@@ -47,6 +49,8 @@ export async function tambahArtikel(formData: FormData): Promise<void> {
         slug,
         konten: konten.trim(),
         thumbnailUrl: finalThumbnailUrl,
+        kategori,
+        isPinned,
       },
     });
   } catch (error) {
@@ -67,6 +71,8 @@ export async function updateArtikel(
   const judul = formData.get("judul") as string;
   const konten = formData.get("konten") as string;
   const thumbnailFile = formData.get("thumbnailUrl") as File | null;
+  const kategori = formData.get("kategori") as string || "Umum";
+  const isPinned = formData.get("isPinned") === "true";
 
   if (!judul || !konten) {
     throw new Error("Judul dan konten wajib diisi");
@@ -75,6 +81,8 @@ export async function updateArtikel(
   const updateData: any = {
     judul: judul.trim(),
     konten: konten.trim(),
+    kategori,
+    isPinned,
   };
 
   if (thumbnailFile && thumbnailFile.size > 0) {

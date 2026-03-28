@@ -11,7 +11,7 @@ async function getStats() {
         prisma.guru.count(),
         prisma.siswa.count(),
         prisma.kelas.count(),
-        prisma.lowonganBKK.count({ where: { statusAktif: true } }),
+        prisma.lowonganKerja.count({ where: { status: "BUKA" } }),
         prisma.artikelBlog.count(),
       ]);
       return { guru, siswa, kelas, lowongan, artikel };

@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { 
   Briefcase, 
   Building2, 
@@ -20,18 +21,24 @@ import {
   Mail,
   Phone
 } from "lucide-react";
-import { MarqueeTicker } from "@/components/ui/MarqueeTicker";
 import PlaceholderImage from "@/components/ui/PlaceholderImage";
+
+type Mitra = {
+  id: string;
+  namaPerusahaan: string;
+  logoUrl: string | null;
+};
 
 type LowonganBKK = {
   id: number;
-  posisi: string;
-  perusahaan: string;
+  judul: string;
   lokasi: string;
   tipePekerjaan: string;
   deskripsi: string;
-  persyaratan: string;
-  batasLamaran: Date;
+  status: string;
+  posterUrl: string | null;
+  createdAt: Date;
+  mitra: Mitra;
 };
 
 type StatsBKK = {
@@ -41,23 +48,13 @@ type StatsBKK = {
   tahunBerdiri: number;
 };
 
-const mitraIndustri = [
-  { id: 1, nama: "Telkom Indonesia" },
-  { id: 2, nama: "Cisco Indonesia" },
-  { id: 3, nama: "MikroTik" },
-  { id: 4, nama: "PT Astra International" },
-  { id: 5, nama: "Digital Village" },
-  { id: 6, nama: "Indosat Ooredoo" },
-  { id: 7, nama: "XL Axiata" },
-  { id: 8, nama: "D-Link Indonesia" },
-];
-
 type Props = {
   lowongan: LowonganBKK[];
   stats: StatsBKK;
+  mitra: Mitra[];
 };
 
-export default function BKKClient({ lowongan, stats }: Props) {
+export default function BKKClient({ lowongan, stats, mitra }: Props) {
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString("id-ID", {
       day: "numeric",
@@ -94,8 +91,6 @@ export default function BKKClient({ lowongan, stats }: Props) {
           </motion.div>
         </div>
       </section>
-
-      <MarqueeTicker variant="pink" />
 
       <section className="py-20 bg-[#FDFDFD] bg-grid-light">
         <div className="container mx-auto px-6 max-w-[1120px]">
@@ -237,54 +232,61 @@ export default function BKKClient({ lowongan, stats }: Props) {
           </motion.div>
 
           {lowongan.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {lowongan.map((job, i) => (
                 <motion.div
                   key={job.id}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  className="bg-white rounded-[10px] border border-gray-100 overflow-hidden hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-navy/10 transition-all duration-300 ease-in-out group"
+                  transition={{ delay: i * 0.03 }}
                 >
-                  <Link href={`/bkk/${job.id}`} className="block p-5">
-                    <div className="flex items-start gap-3 mb-3">
-                      <div className="w-12 h-12 rounded-[10px] bg-brand-navy/5 flex items-center justify-center shrink-0">
-                        <div className="text-center">
-                          <Building2 className="w-5 h-5 text-brand-navy/30 mx-auto mb-0.5" />
-                          <span className="text-[7px] text-brand-navy/40 block">Durung Ana</span>
-                        </div>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-bold text-brand-navy font-serif group-hover:text-brand-pink-start transition-colors">{job.posisi}</h3>
-                        <p className="text-xs text-brand-navy/50 truncate">{job.perusahaan}</p>
-                      </div>
-                    </div>
-                    <p className="text-xs text-brand-navy/60 font-medium leading-relaxed mb-3 line-clamp-2">{job.deskripsi}</p>
-                    <div className="flex flex-wrap gap-1.5 mb-3">
-                      {job.persyaratan.split("\n").slice(0, 2).map((req, j) => (
-                        <span key={j} className="px-2 py-0.5 bg-brand-pink-start/5 text-brand-pink-start text-[9px] font-bold rounded-[5px]">
-                          {req}
+                  <Link href={`/bkk/${job.id}`} className="block h-full">
+                    <div className="h-full bg-white border border-gray-200 rounded-xl p-4 hover:shadow-lg hover:shadow-brand-navy/10 hover:-translate-y-1 transition-all duration-300 group">
+                      {/* Company Logo - Top */}
+                      <div className="flex items-center justify-between mb-3">
+                        {job.mitra.logoUrl ? (
+                          <Image
+                            src={job.mitra.logoUrl}
+                            alt={job.mitra.namaPerusahaan}
+                            width={36}
+                            height={36}
+                            className="rounded-lg object-contain"
+                          />
+                        ) : (
+                          <div className="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center">
+                            <Building2 className="w-4 h-4 text-gray-400" />
+                          </div>
+                        )}
+                        <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full ${
+                          job.status === "BUKA" 
+                            ? "bg-green-100 text-green-700" 
+                            : "bg-red-100 text-red-700"
+                        }`}>
+                          {job.status}
                         </span>
-                      ))}
-                    </div>
-                    <div className="space-y-1.5 text-[11px] text-brand-navy/50 mb-3">
-                      <div className="flex items-center gap-2">
-                        <MapPin className="w-3 h-3" /> {job.lokasi}
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-3 h-3" /> Deadline: {formatDate(job.batasLamaran)}
+                      
+                      {/* Job Title */}
+                      <h3 className="text-sm font-bold text-gray-900 mb-1 line-clamp-2 group-hover:text-brand-pink-start transition-colors">
+                        {job.judul}
+                      </h3>
+                      
+                      {/* Company Name */}
+                      <p className="text-xs text-gray-500 mb-3 truncate">
+                        {job.mitra.namaPerusahaan}
+                      </p>
+                      
+                      {/* Badges */}
+                      <div className="flex flex-wrap gap-1 mt-auto">
+                        <span className="px-2 py-0.5 text-[9px] font-medium bg-gray-100 text-gray-600 rounded">
+                          {job.tipePekerjaan}
+                        </span>
+                        <span className="px-2 py-0.5 text-[9px] font-medium bg-gray-100 text-gray-600 rounded flex items-center gap-0.5">
+                          <MapPin className="w-2.5 h-2.5" />
+                          {job.lokasi || "-"}
+                        </span>
                       </div>
-                    </div>
-                    <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                      <span className={`px-2 py-0.5 text-[9px] font-bold rounded-[5px] ${
-                        job.tipePekerjaan === "Full Time" ? "bg-brand-pink-start/10 text-brand-pink-start" : "bg-brand-blue-start/10 text-brand-blue-start"
-                      }`}>
-                        {job.tipePekerjaan}
-                      </span>
-                      <span className="flex items-center gap-1 text-brand-pink-start text-xs font-bold group-hover:gap-2 transition-all duration-300">
-                        Lihat Detail <ChevronRight className="w-3 h-3" />
-                      </span>
                     </div>
                   </Link>
                 </motion.div>
@@ -310,49 +312,61 @@ export default function BKKClient({ lowongan, stats }: Props) {
         </div>
       </section>
 
-      <section className="py-20 bg-brand-navy bg-grid-dark relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <PlaceholderImage className="w-full h-full object-cover" label="Mitra Industri" />
-        </div>
-        <div className="container mx-auto px-6 max-w-[1120px] relative z-10">
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-6 max-w-[1120px]">
           <motion.div 
-            initial={{ opacity: 0, y: 30 }} 
+            initial={{ opacity: 0, y: 20 }} 
             whileInView={{ opacity: 1, y: 0 }} 
             viewport={{ once: true }} 
-            className="text-center mb-16"
+            className="text-center mb-8"
           >
-            <span className="text-brand-pink-start font-bold uppercase tracking-widest text-[10px] mb-4 block">Kolaborasi</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white font-serif">Mitra <span className="text-brand-pink-start">Industri</span></h2>
+            <span className="text-gray-400 font-bold uppercase tracking-widest text-[10px] mb-2 block">Kolaborasi</span>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 font-serif">Mitra <span className="text-brand-pink-start">Industri</span></h2>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-            {mitraIndustri.map((mitra, i) => (
-              <motion.div
-                key={mitra.id}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                whileHover={{ scale: 1.1, y: -5 }}
-                className="bg-white/10 backdrop-blur-sm rounded-[10px] p-4 flex flex-col items-center justify-center aspect-square hover:bg-white/20 transition-all cursor-pointer group"
-              >
-                <Building2 className="w-8 h-8 text-white/40 group-hover:text-white/60 transition-colors mb-2" />
-                <span className="text-[8px] text-white/50 group-hover:text-white/70 transition-colors text-center leading-tight">{mitra.nama}</span>
-                <span className="text-[7px] text-white/30 mt-1">Durung Ana Gambar</span>
-              </motion.div>
-            ))}
-          </div>
+          {mitra.length > 0 ? (
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {mitra.map((m, i) => (
+                <motion.div
+                  key={m.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.03 }}
+                  whileHover={{ scale: 1.03 }}
+                  className="bg-white rounded-xl border border-gray-100 p-3 flex items-center justify-center w-full h-24 sm:h-28 shadow-sm hover:shadow-md hover:border-brand-pink-start/30 transition-all"
+                >
+                  {m.logoUrl ? (
+                    <Image
+                      src={m.logoUrl}
+                      alt={m.namaPerusahaan}
+                      width={100}
+                      height={60}
+                      className="w-full h-full object-contain"
+                    />
+                  ) : (
+                    <div className="text-center">
+                      <Building2 className="w-8 h-8 text-gray-300 mx-auto mb-1" />
+                      <span className="text-[8px] text-gray-400">{m.namaPerusahaan}</span>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <Building2 className="w-12 h-12 text-gray-200 mx-auto mb-4" />
+              <p className="text-gray-400 text-sm">Belum ada mitra industri</p>
+            </div>
+          )}
 
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mt-12"
+            className="text-center mt-8"
           >
-            <p className="text-white/60 text-sm mb-4">Bergabung dengan 28+ perusahaan mitra</p>
-            <Link href="#" className="inline-flex items-center gap-2 text-brand-pink-start font-bold hover:gap-3 transition-all">
-              Lihat Semua Mitra <ChevronRight className="w-4 h-4" />
-            </Link>
+            <p className="text-gray-500 text-sm">Bergabung dengan {stats.mitraIndustri}+ perusahaan mitra</p>
           </motion.div>
         </div>
       </section>
@@ -430,8 +444,6 @@ export default function BKKClient({ lowongan, stats }: Props) {
           </div>
         </div>
       </section>
-
-      <MarqueeTicker variant="pink" />
 
     </main>
   );

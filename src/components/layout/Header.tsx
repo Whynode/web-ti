@@ -53,7 +53,7 @@ export default function Header() {
   return (
     <>
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${getHeaderStyle()}`}>
-        <div className="container mx-auto px-6 max-w-[1120px] flex justify-between items-center">
+        <div className="w-full max-w-[1400px] px-6 lg:px-12 mx-auto flex items-center justify-between">
 
           <Link href="/" className="flex items-center gap-3 z-50">
             <div className={`relative w-10 h-10 rounded-[10px] overflow-hidden transition-colors ${isScrolled ? 'bg-brand-pink-start shadow-md' : 'bg-white'} ${isScrolled ? 'text-white' : 'text-brand-pink-start'}`}>
@@ -76,13 +76,14 @@ export default function Header() {
             </div>
           </Link>
 
-          <nav className="hidden lg:flex absolute left-1/2 -translate-x-1/2">
-            <div className="flex items-center gap-7 font-sans text-[12px] font-bold tracking-wide uppercase">
+            <nav className="hidden lg:flex">
+            <div className="flex items-center gap-10 font-sans text-[12px] font-bold tracking-wide uppercase">
               <Link href="/" className={`transition-colors ${getNavTextColor()}`}>Beranda</Link>
               <Link href="/about" className={`transition-colors ${getNavTextColor()}`}>Profil</Link>
               <Link href="/informasi" className={`transition-colors ${getNavTextColor()}`}>Informasi</Link>
 
               <Link href="/program" className={`transition-colors ${getNavTextColor()}`}>Program</Link>
+              <Link href="/program/mikrotik" className={`transition-colors text-brand-pink-start hover:text-white ${getNavTextColor()}`}>MikroTik</Link>
               <Link href="/fasilitas" className={`transition-colors ${getNavTextColor()}`}>Fasilitas</Link>
               <Link href="/bkk" className={`transition-colors ${getNavTextColor()}`}>BKK</Link>
 
@@ -150,6 +151,7 @@ export default function Header() {
               <Link href="/about" onClick={() => setMobileMenuOpen(false)}>About</Link>
               <Link href="/informasi" onClick={() => setMobileMenuOpen(false)}>Informasi</Link>
               <Link href="/program" onClick={() => setMobileMenuOpen(false)}>Program</Link>
+              <Link href="/program/mikrotik" onClick={() => setMobileMenuOpen(false)} className="text-brand-pink-start">MikroTik</Link>
               <Link href="/fasilitas" onClick={() => setMobileMenuOpen(false)}>Fasilitas</Link>
               <Link href="/bkk" onClick={() => setMobileMenuOpen(false)}>BKK</Link>
               <Link href="/kelas" onClick={() => setMobileMenuOpen(false)}>Kelas</Link>

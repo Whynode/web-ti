@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, MapPin, Clock, Building2, Briefcase, CheckCircle, ExternalLink } from "lucide-react";
+import Image from "next/image";
+import { ArrowLeft, MapPin, Clock, Building2, ExternalLink, Globe } from "lucide-react";
 import prisma from "@/lib/prisma";
-import { MarqueeTicker } from "@/components/ui/MarqueeTicker";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -10,8 +10,9 @@ type PageProps = {
 
 async function getLowongan(id: number) {
   try {
-    const lowongan = await prisma.lowonganBKK.findUnique({
+    const lowongan = await prisma.lowonganKerja.findUnique({
       where: { id },
+      include: { mitra: true },
     });
     return lowongan;
   } catch (error) {
@@ -36,120 +37,151 @@ export default async function BKKDetailPage({ params }: PageProps) {
     });
   };
 
-  const isExpired = new Date(lowongan.batasLamaran) < new Date();
-  const persyaratanList = lowongan.persyaratan.split("\n").filter((p) => p.trim() !== "");
+  const isOpen = lowongan.status === "BUKA";
+
+  const nomorWA = "6281318216205";
+  const pesan = `Halo Admin BKK SMKS Telematika Indramayu, saya tertarik untuk melamar lowongan pekerjaan ${lowongan.judul} di ${lowongan.mitra.namaPerusahaan}. Apakah lowongan ini masih tersedia? Berikut saya lampirkan CV dan berkas pendukung saya.`;
+  const encodedPesan = encodeURIComponent(pesan);
+  const waLink = `https://wa.me/${nomorWA}?text=${encodedPesan}`;
 
   return (
-    <main className="min-h-screen bg-[#FDFDFD] text-gray-900">
-      <section className="relative pt-32 pb-12 bg-brand-navy overflow-hidden">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-brand-pink-start/20 rounded-[10px] blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-brand-blue-start/20 rounded-[10px] blur-3xl" />
-        <div className="container mx-auto px-6 max-w-[1120px] relative z-10">
+    <main className="min-h-screen bg-gray-50">
+      {/* Header Section */}
+      <section className="bg-white border-b border-gray-200">
+        <div className="container mx-auto px-6 max-w-[800px] py-8">
           <Link
             href="/bkk"
-            className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors mb-6"
+            className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors text-sm font-medium mb-6"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span className="text-sm font-medium">Kembali ke Lowongan</span>
+            Kembali ke Lowongan
           </Link>
+
+          {/* Company & Job Info */}
+          <div className="flex items-start gap-4 mb-6">
+            {lowongan.mitra.logoUrl ? (
+              <Image
+                src={lowongan.mitra.logoUrl}
+                alt={lowongan.mitra.namaPerusahaan}
+                width={56}
+                height={56}
+                className="rounded-xl object-contain bg-gray-50 p-2"
+              />
+            ) : (
+              <div className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center">
+                <Building2 className="w-7 h-7 text-gray-400" />
+              </div>
+            )}
+            <div className="flex-1">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 font-serif mb-1">
+                {lowongan.judul}
+              </h1>
+              <p className="text-gray-600 font-medium">{lowongan.mitra.namaPerusahaan}</p>
+              {lowongan.mitra.websiteUrl && (
+                <a
+                  href={lowongan.mitra.websiteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-brand-pink-start hover:underline flex items-center gap-1 mt-1"
+                >
+                  <Globe className="w-3 h-3" />
+                  Kunjungi Website
+                </a>
+              )}
+            </div>
+          </div>
+
+          {/* Badges */}
+          <div className="flex flex-wrap gap-2 mb-6">
+            <span className={`px-3 py-1 text-xs font-bold rounded-full ${
+              lowongan.tipePekerjaan === "Full-Time" 
+                ? "bg-brand-pink-100 text-brand-pink-700" 
+                : "bg-blue-100 text-blue-700"
+            }`}>
+              {lowongan.tipePekerjaan}
+            </span>
+            <span className="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-600 flex items-center gap-1">
+              <MapPin className="w-3 h-3" />
+              {lowongan.lokasi || "-"}
+            </span>
+            <span className={`px-3 py-1 text-xs font-bold rounded-full ${
+              isOpen 
+                ? "bg-green-100 text-green-700" 
+                : "bg-red-100 text-red-700"
+            }`}>
+              {lowongan.status}
+            </span>
+          </div>
+
+          {/* CTA Button */}
+          {isOpen ? (
+            <a
+              href={waLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-brand-pink-start hover:bg-brand-pink-end text-white font-bold px-6 py-3 rounded-xl transition-all shadow-lg shadow-brand-pink-start/25"
+            >
+              Lamar Sekarang via WhatsApp
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          ) : (
+            <div className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 text-gray-500 font-medium rounded-xl">
+              <Clock className="w-4 h-4" />
+              Lowongan sudah ditutup
+            </div>
+          )}
+          
+          <p className="text-xs text-gray-400 mt-4 flex items-center gap-1">
+            Diposting: {formatDate(lowongan.createdAt)}
+          </p>
         </div>
       </section>
 
-      <section className="bg-[#FDFDFD] bg-grid-light py-12">
+      {/* Content Section */}
+      <section className="py-12 bg-white">
         <div className="container mx-auto px-6 max-w-[800px]">
-          <div className="bg-white rounded-[10px] border border-gray-200 shadow-xl overflow-hidden">
-            <div className="bg-gradient-to-r from-brand-pink-start to-brand-blue-start p-8 text-white">
-              <div className="flex items-center gap-2 mb-4">
-                <span className={`px-3 py-1 text-xs font-bold rounded-[10px] ${lowongan.tipePekerjaan === "Full Time" ? "bg-white/20" : "bg-amber-400/80 text-amber-900"}`}>
-                  {lowongan.tipePekerjaan}
-                </span>
-                {isExpired && (
-                  <span className="px-3 py-1 text-xs font-bold rounded-[10px] bg-red-500/80">
-                    Ditutup
-                  </span>
-                )}
-              </div>
-              <h1 className="text-3xl md:text-4xl font-bold font-serif mb-4">
-                {lowongan.posisi}
-              </h1>
-              <div className="flex flex-wrap items-center gap-4 text-sm text-white/80">
-                <span className="flex items-center gap-2">
-                  <Building2 className="w-4 h-4" />
-                  {lowongan.perusahaan}
-                </span>
-                <span className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" />
-                  {lowongan.lokasi}
-                </span>
-                <span className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  Batas: {formatDate(lowongan.batasLamaran)}
-                </span>
+          {/* Description */}
+          <div className="mb-8">
+            <h2 className="text-lg font-bold text-gray-900 font-serif mb-4">
+              Deskripsi Pekerjaan
+            </h2>
+            <div className="prose prose-gray max-w-none">
+              <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">
+                {lowongan.deskripsi || "Tidak ada deskripsi yang tersedia."}
+              </p>
+            </div>
+          </div>
+
+          {/* Poster (if available) */}
+          {lowongan.posterUrl && (
+            <div className="mb-8 pt-6 border-t border-gray-100">
+              <h2 className="text-lg font-bold text-gray-900 font-serif mb-4">
+                Poster Lowongan
+              </h2>
+              <div className="rounded-xl overflow-hidden border border-gray-200">
+                <Image
+                  src={lowongan.posterUrl}
+                  alt={`Poster ${lowongan.judul}`}
+                  width={800}
+                  height={600}
+                  className="w-full object-contain bg-gray-50"
+                />
               </div>
             </div>
+          )}
 
-            <div className="p-8">
-              <div className="mb-8">
-                <h2 className="text-xl font-bold text-brand-navy font-serif mb-4 flex items-center gap-2">
-                  <Briefcase className="w-5 h-5 text-brand-pink-start" />
-                  Deskripsi Pekerjaan
-                </h2>
-                <div className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                  {lowongan.deskripsi}
-                </div>
-              </div>
-
-              <div className="mb-8">
-                <h2 className="text-xl font-bold text-brand-navy font-serif mb-4 flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-brand-pink-start" />
-                  Persyaratan
-                </h2>
-                <ul className="space-y-3">
-                  {persyaratanList.map((req, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-[10px] bg-brand-pink-start/10 flex items-center justify-center shrink-0 mt-0.5">
-                        <CheckCircle className="w-3 h-3 text-brand-pink-start" />
-                      </div>
-                      <span className="text-gray-700">{req}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="pt-6 border-t border-gray-200">
-                {!isExpired ? (
-                  <a
-                    href={`https://wa.me/6281234567890?text=Halo,%20saya%20tertarik%20dengan%20lowongan%20${encodeURIComponent(lowongan.posisi)}%20di%20${encodeURIComponent(lowongan.perusahaan)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-brand-pink-start to-[#d94f92] hover:shadow-lg hover:shadow-brand-pink-start/30 text-white font-bold rounded-[10px] transition-all"
-                  >
-                    Lamar Sekarang via WhatsApp
-                    <ExternalLink className="w-5 h-5" />
-                  </a>
-                ) : (
-                  <div className="inline-flex items-center gap-2 px-6 py-4 bg-gray-100 text-gray-500 font-medium rounded-[10px]">
-                    <Clock className="w-5 h-5" />
-                    Masa pendaftaran sudah ditutup
-                  </div>
-                )}
-              </div>
-
-              <div className="mt-8 pt-6 border-t border-gray-100">
-                <Link
-                  href="/bkk"
-                  className="inline-flex items-center gap-2 text-brand-navy hover:text-brand-pink-start font-medium transition-colors"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Lihat lowongan lainnya
-                </Link>
-              </div>
-            </div>
+          {/* Back Link */}
+          <div className="pt-8 border-t border-gray-100">
+            <Link
+              href="/bkk"
+              className="inline-flex items-center gap-2 text-gray-500 hover:text-brand-pink-start font-medium transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Lihat lowongan lainnya
+            </Link>
           </div>
         </div>
       </section>
-
-      <MarqueeTicker variant="pink" />
     </main>
   );
 }

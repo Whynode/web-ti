@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion"
 import { Monitor, Server, ShieldCheck, Wifi, Cpu, Camera, Users, Award, Briefcase, GraduationCap, Code, HardDrive } from "lucide-react"
-import { MarqueeTicker } from "@/components/ui/MarqueeTicker"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -28,8 +27,6 @@ export default function ProgramContent() {
           </motion.div>
         </div>
       </section>
-
-      <MarqueeTicker variant="pink" />
 
       {/* 2. Kurikulum Inti (Dense 8-Grid) */}
       <section className="py-16 bg-[#FDFDFD] bg-grid-light">

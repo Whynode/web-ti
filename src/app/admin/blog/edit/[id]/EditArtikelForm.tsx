@@ -13,6 +13,8 @@ interface EditArtikelFormProps {
     judul: string;
     konten: string;
     thumbnailUrl: string | null;
+    kategori: string;
+    isPinned: boolean;
   };
 }
 
@@ -30,9 +32,13 @@ export default function EditArtikelForm({ artikel }: EditArtikelFormProps) {
     const judul = (form.elements.namedItem("judul") as HTMLInputElement).value;
     const thumbnailInput = form.elements.namedItem("thumbnailUrl") as HTMLInputElement;
     const thumbnailFile = thumbnailInput?.files?.[0];
+    const kategori = (form.elements.namedItem("kategori") as HTMLSelectElement).value;
+    const isPinned = (form.elements.namedItem("isPinned") as HTMLInputElement).checked;
 
     formData.append("judul", judul);
     formData.append("konten", konten);
+    formData.append("kategori", kategori);
+    formData.append("isPinned", isPinned ? "true" : "false");
     if (thumbnailFile) {
       formData.append("thumbnailUrl", thumbnailFile);
     }
@@ -101,6 +107,36 @@ export default function EditArtikelForm({ artikel }: EditArtikelFormProps) {
             <p className="text-xs text-[#555]">
               Biarkan kosong jika tidak ingin mengubah thumbnail.
             </p>
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="kategori" className="block text-sm font-medium text-[#999]">
+              Kategori
+            </label>
+            <select
+              id="kategori"
+              name="kategori"
+              defaultValue={artikel.kategori || "Berita"}
+              className="w-full px-4 py-2.5 bg-[#0a0a0a] border border-[#262626] text-[#c0c0c0] text-sm focus:outline-none focus:border-[#c0c0c0]"
+            >
+              <option value="Berita">Berita</option>
+              <option value="Pengumuman">Pengumuman</option>
+              <option value="Prestasi">Prestasi</option>
+              <option value="Kebijakan">Kebijakan</option>
+            </select>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              id="isPinned"
+              name="isPinned"
+              defaultChecked={artikel.isPinned || false}
+              className="w-4 h-4 accent-[#c0c0c0] bg-[#0a0a0a] border-[#262626]"
+            />
+            <label htmlFor="isPinned" className="text-sm text-[#999]">
+              Jadikan Artikel Utama (Pinned)
+            </label>
           </div>
 
           <div className="space-y-2">

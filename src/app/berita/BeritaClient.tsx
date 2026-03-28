@@ -4,7 +4,6 @@ import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { Calendar, Tag, User, Search, ArrowRight, ChevronRight, Clock } from "lucide-react"
-import { MarqueeTicker } from "@/components/ui/MarqueeTicker"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -60,8 +59,6 @@ export default function BeritaClient({ artikel }: Props) {
           </motion.div>
         </div>
       </section>
-
-      <MarqueeTicker variant="pink" />
 
       <section className="py-20 bg-[#FDFDFD] bg-grid-light">
         <div className="container mx-auto px-6 max-w-7xl">

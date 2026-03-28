@@ -4,10 +4,11 @@ import Image from "next/image"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
-import { ArrowRight, Play, Monitor, Award, Users, Server, ShieldCheck, Wifi, Cpu, Camera, ArrowUpRight } from "lucide-react"
-import { MarqueeTicker } from "@/components/ui/MarqueeTicker"
-import PlaceholderImage from "@/components/ui/PlaceholderImage"
+import { ArrowUpRight, ArrowRight, Play, Monitor, Server, ShieldCheck, Wifi, Cpu, Camera, Users, Award, Network, Cloud, HardDrive } from "lucide-react"
 import { FadeIn } from "@/components/ui/FadeIn"
+import PlaceholderImage from "@/components/ui/PlaceholderImage"
+import MarqueeTicker from "@/components/ui/MarqueeTicker"
+import HomepageBlogSection from "@/components/homepage/HomepageBlogSection"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -28,6 +29,7 @@ export default function Home() {
   const [isDesktop, setIsDesktop] = useState(true);
   const { scrollYProgress } = useScroll();
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const [artikel, setArtikel] = useState<{ pinned: unknown | null; latest: unknown[] }>({ pinned: null, latest: [] });
 
   useEffect(() => {
     const checkDesktop = () => {
@@ -36,6 +38,21 @@ export default function Home() {
     checkDesktop();
     window.addEventListener("resize", checkDesktop);
     return () => window.removeEventListener("resize", checkDesktop);
+  }, []);
+
+  useEffect(() => {
+    async function fetchArtikel() {
+      try {
+        const res = await fetch('/api/artikel?homepage=true');
+        if (res.ok) {
+          const data = await res.json();
+          setArtikel(data);
+        }
+      } catch (e) {
+        console.error('Failed to fetch articles:', e);
+      }
+    }
+    fetchArtikel();
   }, []);
 
   return (
@@ -107,23 +124,22 @@ export default function Home() {
             <div className="bg-[#243560] border-b border-white/10 relative">
               <div className="flex">
                 <div className="hidden md:flex flex-col items-center justify-center px-4 bg-gradient-to-b from-brand-pink-start to-brand-blue-start">
-                  <span className="text-white text-[9px] font-bold uppercase tracking-[0.3em] writing-mode-vertical" style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}>AGENDA</span>
+                  <span className="text-white text-[9px] font-bold uppercase tracking-[0.3em] writing-mode-vertical" style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}>FOKUS TKJ</span>
                 </div>
 
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10">
                   {[
-                    { day: '15', month: 'MAR', title: 'Ujian Kompetensi Keahlian TKJ', time: '15 MAR 2024 PUKUL 08:00', link: '/agenda/ukk-tkj' },
-                    { day: '22', month: 'MAR', title: 'Job Fair & Bursa Kerja Khusus', time: '22 MAR 2024 PUKUL 09:00', link: '/agenda/job-fair-bkk' },
-                    { day: '01', month: 'APR', title: 'Workshop Mikrotik MTCNA Batch 5', time: '01 APR 2024 PUKUL 10:00', link: '/agenda/workshop-mtcna' },
-                  ].map((event, i) => (
-                  <Link href={event.link} key={i} className="flex items-center gap-4 px-6 py-5 hover:bg-white/5 transition-colors group">
-                    <div className="shrink-0 text-center">
-                      <span className="block text-2xl font-bold text-white leading-none font-serif">{event.day}</span>
-                      <span className="block text-[9px] font-bold text-brand-pink-start uppercase tracking-widest">{event.month}</span>
+                    { num: '01', icon: <Network className="w-5 h-5" />, title: 'Administrasi Jaringan', desc: 'Routing & Switching (Mikrotik/Cisco)', link: '/program/mikrotik' },
+                    { num: '02', icon: <Cloud className="w-5 h-5" />, title: 'Cloud & Server Admin', desc: 'Sistem Operasi Server & Komputasi Awan', link: '/program' },
+                    { num: '03', icon: <HardDrive className="w-5 h-5" />, title: 'Teknisi Komputer', desc: 'Perakitan, Troubleshooting & Keamanan Siber', link: '/program' },
+                  ].map((program, i) => (
+                  <Link href={program.link} key={i} className="flex items-center gap-4 px-6 py-5 hover:bg-white/5 transition-colors group hover:scale-[1.02] cursor-pointer">
+                    <div className="shrink-0 w-10 h-10 rounded-[10px] bg-brand-pink-start/20 border border-brand-pink-start/30 flex items-center justify-center text-brand-pink-start group-hover:scale-110 transition-transform">
+                      {program.icon}
                     </div>
                     <div className="min-w-0">
-                      <h4 className="text-white text-xs font-bold font-serif leading-snug mb-1 group-hover:text-brand-pink-start transition-colors truncate">{event.title}</h4>
-                      <p className="text-[9px] text-white/50 font-bold uppercase tracking-widest">{event.time}</p>
+                      <h4 className="text-white text-xs font-bold font-serif leading-snug mb-1 group-hover:text-brand-pink-start transition-colors truncate">{program.title}</h4>
+                      <p className="text-[9px] text-white/50 font-medium leading-snug truncate">{program.desc}</p>
                     </div>
                   </Link>
                 ))}
@@ -216,7 +232,12 @@ export default function Home() {
         </FadeIn>
       </section>
 
-      <MarqueeTicker />
+      {/* Marquee Divider */}
+      <div className="border-y border-white/10 bg-[#0B1120]">
+        <MarqueeTicker variant="dark" articles={(artikel.latest as { id: number; judul: string; slug: string }[]).map(a => ({ text: a.judul, link: `/berita/${a.slug}` }))} />
+      </div>
+
+      <HomepageBlogSection pinned={artikel.pinned as { id: number; judul: string; slug: string; konten: string; thumbnailUrl: string | null; tanggalPublish: Date; kategori: string; isPinned: boolean } | null} latest={artikel.latest as { id: number; judul: string; slug: string; konten: string; thumbnailUrl: string | null; tanggalPublish: Date; kategori: string; isPinned: boolean }[]} />
 
       {/* 4. Fasilitas */}
       <section className="py-16 bg-brand-navy relative overflow-hidden bg-grid-dark">

@@ -95,6 +95,8 @@ model ArtikelBlog {
   thumbnailUrl   String?   @map("thumbnail_url")
   tanggalPublish DateTime  @default(now()) @map("tanggal_publish")
   createdAt      DateTime  @default(now())
+  kategori       String    @default("Umum")
+  isPinned       Boolean   @default(false) @map("is_pinned")
 
   @@map("artikel_blog")
 }
@@ -110,20 +112,45 @@ model StatistikSekolah {
   @@map("statistik_sekolah")
 }
 
-model LowonganBKK {
-  id              Int       @id @default(autoincrement())
-  posisi          String
-  perusahaan      String
-  lokasi          String
-  tipePekerjaan  String    @map("tipe_pekerjaan")
-  deskripsi       String    @db.Text
-  persyaratan     String    @db.Text
-  batasLamaran   DateTime  @map("batas_lamaran")
-  statusAktif    Boolean   @default(true) @map("status_aktif")
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+model MitraIndustri {
+  id              String   @id @default(cuid())
+  namaPerusahaan  String   @map("nama_perusahaan")
+  logoUrl         String?  @map("logo_url")
+  websiteUrl      String?  @map("website_url")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  @@map("lowongan_bkk")
+  lowongan        LowonganKerja[]
+
+  @@map("mitra_industri")
+}
+
+model LowonganKerja {
+  id              Int       @id @default(autoincrement())
+  judul           String
+  tipePekerjaan   String    @map("tipe_pekerjaan")
+  lokasi          String
+  deskripsi       String    @db.Text
+  posterUrl       String?   @map("poster_url")
+  status          String    @default("BUKA")
+  mitraId         String    @map("mitra_id")
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  mitra           MitraIndustri @relation(fields: [mitraId], references: [id])
+
+  @@map("lowongan_kerja")
+}
+
+model PenempatanAlumni {
+  id                  Int      @id @default(autoincrement())
+  namaAlumni          String   @map("nama_alumni")
+  tahunLulus           Int      @map("tahun_lulus")
+  perusahaanTempatKerja String @map("perusahaan_tempat_kerja")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@map("penempatan_alumni")
 }
 
 enum StatusPPDB {

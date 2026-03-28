@@ -43,20 +43,14 @@ export default async function TambahKelasPage() {
               <label htmlFor="namaKelas" className="block text-sm font-medium text-[#999]">
                 Nama Kelas <span className="text-[#ff6b6b]">*</span>
               </label>
-              <select
+              <input
+                type="text"
                 id="namaKelas"
                 name="namaKelas"
+                placeholder="Contoh: X D, XI TKJ 1, XII RPL"
                 required
-                className="w-full px-4 py-2.5 bg-[#0a0a0a] border border-[#262626] text-[#c0c0c0] text-sm focus:outline-none focus:border-[#c0c0c0]"
-              >
-                <option value="">Pilih Kelas</option>
-                <option value="X A">X A</option>
-                <option value="X B">X B</option>
-                <option value="XI A">XI A</option>
-                <option value="XI B">XI B</option>
-                <option value="XII A">XII A</option>
-                <option value="XII B">XII B</option>
-              </select>
+                className="w-full px-4 py-2.5 bg-[#0a0a0a] border border-[#262626] text-[#c0c0c0] text-sm focus:outline-none focus:border-[#c0c0c0] placeholder:text-[#555]"
+              />
             </div>
 
             <div className="space-y-2">

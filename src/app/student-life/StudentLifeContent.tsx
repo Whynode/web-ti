@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion"
 import { Users, Code, PenTool, MonitorPlay, Heart, Trophy, MapPin, Target } from "lucide-react"
-import { MarqueeTicker } from "@/components/ui/MarqueeTicker"
 import PlaceholderImage from "@/components/ui/PlaceholderImage"
 
 const containerVariants = {
@@ -28,8 +27,6 @@ export default function StudentLifeContent() {
           </motion.div>
         </div>
       </section>
-
-      <MarqueeTicker variant="pink" />
 
       <section className="py-20 bg-[#FDFDFD] bg-grid-light">
         <div className="container mx-auto px-6 max-w-[1120px]">

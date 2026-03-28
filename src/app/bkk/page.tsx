@@ -3,8 +3,9 @@ import BKKClient from "./BKKClient";
 
 async function getLowongan() {
   try {
-    return await prisma.lowonganBKK.findMany({
-      where: { statusAktif: true },
+    return await prisma.lowonganKerja.findMany({
+      where: { status: "BUKA" },
+      include: { mitra: true },
       orderBy: { createdAt: "desc" },
     });
   } catch {
@@ -14,27 +15,39 @@ async function getLowongan() {
 
 async function getStats() {
   try {
-    const stats = await prisma.statistikSekolah.findFirst();
-    const totalPenempatan = 156;
-    const mitraIndustri = 28;
+    const totalMitra = await prisma.mitraIndustri.count();
+    const lowonganAktif = await prisma.lowonganKerja.count({ where: { status: "BUKA" } });
+    const totalPenempatan = await prisma.penempatanAlumni.count();
+    
     return {
       totalPenempatan,
-      mitraIndustri,
-      lowonganAktif: stats?.totalSiswa || 12,
+      mitraIndustri: totalMitra,
+      lowonganAktif,
       tahunBerdiri: 2018,
     };
   } catch {
     return {
-      totalPenempatan: 156,
-      mitraIndustri: 28,
-      lowonganAktif: 12,
+      totalPenempatan: 0,
+      mitraIndustri: 0,
+      lowonganAktif: 0,
       tahunBerdiri: 2018,
     };
   }
 }
 
-export default async function BKKPage() {
-  const [lowongan, stats] = await Promise.all([getLowongan(), getStats()]);
+async function getMitra() {
+  try {
+    return await prisma.mitraIndustri.findMany({
+      take: 8,
+      orderBy: { namaPerusahaan: "asc" },
+    });
+  } catch {
+    return [];
+  }
+}
 
-  return <BKKClient lowongan={lowongan} stats={stats} />;
+export default async function BKKPage() {
+  const [lowongan, stats, mitra] = await Promise.all([getLowongan(), getStats(), getMitra()]);
+
+  return <BKKClient lowongan={lowongan} stats={stats} mitra={mitra} />;
 }

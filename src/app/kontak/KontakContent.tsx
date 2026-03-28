@@ -3,7 +3,6 @@
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { MapPin, Phone, Mail, Clock, Send, Globe, MessageSquare } from "lucide-react"
-import { MarqueeTicker } from "@/components/ui/MarqueeTicker"
 import PlaceholderImage from "@/components/ui/PlaceholderImage"
 
 const containerVariants = {
@@ -29,8 +28,6 @@ export default function KontakContent() {
           </motion.div>
         </div>
       </section>
-
-      <MarqueeTicker variant="pink" />
 
       <section className="py-20 bg-[#FDFDFD] bg-grid-light">
         <div className="container mx-auto px-6 max-w-[1120px]">
