@@ -1,29 +1,32 @@
 import React from "react";
-import { Save, Users, BookOpen, GraduationCap, Award } from "lucide-react";
+import { Users, BookOpen, GraduationCap, Award } from "lucide-react";
 import prisma from "@/lib/prisma";
-import { updateStatistik } from "@/app/admin/statistik/actions";
 
-async function getStatistik() {
+async function getStats() {
   try {
-    const statistik = await prisma.statistikSekolah.findUnique({
-      where: { id: 1 },
-    });
-    return statistik;
+    const [totalSiswa, totalGuru, totalKelas, totalAlumni] = await Promise.all([
+      prisma.siswa.count(),
+      prisma.guru.count(),
+      prisma.kelas.count(),
+      prisma.penempatanAlumni.count(),
+    ]);
+
+    return { totalSiswa, totalGuru, totalKelas, totalAlumni };
   } catch (error) {
-    console.error("Error fetching statistik:", error);
-    return null;
+    console.error("Error fetching stats:", error);
+    return { totalSiswa: 0, totalGuru: 0, totalKelas: 0, totalAlumni: 0 };
   }
 }
 
 export default async function StatistikPage() {
-  const statistik = await getStatistik();
+  const stats = await getStats();
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-[#c0c0c0]">Statistik Sekolah</h1>
         <p className="text-sm text-[#666] mt-1">
-          Update data statistik sekolah yang ditampilkan di homepage
+          Data statistik realtime dari database
         </p>
       </div>
 
@@ -37,7 +40,7 @@ export default async function StatistikPage() {
               <div>
                 <p className="text-[#666] text-sm font-medium">Total Siswa</p>
                 <p className="text-[#c0c0c0] text-3xl font-bold">
-                  {statistik?.totalSiswa ?? 0}
+                  {stats.totalSiswa}
                 </p>
               </div>
             </div>
@@ -53,7 +56,7 @@ export default async function StatistikPage() {
               <div>
                 <p className="text-[#666] text-sm font-medium">Total Guru</p>
                 <p className="text-[#c0c0c0] text-3xl font-bold">
-                  {statistik?.totalGuru ?? 0}
+                  {stats.totalGuru}
                 </p>
               </div>
             </div>
@@ -69,7 +72,7 @@ export default async function StatistikPage() {
               <div>
                 <p className="text-[#666] text-sm font-medium">Total Kelas</p>
                 <p className="text-[#c0c0c0] text-3xl font-bold">
-                  {statistik?.totalKelas ?? 0}
+                  {stats.totalKelas}
                 </p>
               </div>
             </div>
@@ -83,9 +86,9 @@ export default async function StatistikPage() {
                 <Award className="w-7 h-7 text-[#fb923c]" />
               </div>
               <div>
-                <p className="text-[#666] text-sm font-medium">Total Alumni</p>
+                <p className="text-[#666] text-sm font-medium">Alumni Terlacak</p>
                 <p className="text-[#c0c0c0] text-3xl font-bold">
-                  {statistik?.totalAlumni ?? 0}
+                  {stats.totalAlumni}
                 </p>
               </div>
             </div>
@@ -94,80 +97,16 @@ export default async function StatistikPage() {
       </div>
 
       <div className="bg-[#141414] border border-[#262626] p-6 lg:p-8">
-        <h2 className="text-lg font-semibold text-[#c0c0c0] mb-6">Form Update Data</h2>
-        <form action={updateStatistik} className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label htmlFor="totalSiswa" className="block text-sm font-medium text-[#999]">
-                Total Siswa
-              </label>
-              <input
-                type="number"
-                id="totalSiswa"
-                name="totalSiswa"
-                required
-                min="0"
-                defaultValue={statistik?.totalSiswa ?? 0}
-                className="w-full px-4 py-2.5 bg-[#0a0a0a] border border-[#262626] text-[#c0c0c0] text-sm focus:outline-none focus:border-[#c0c0c0]"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="totalGuru" className="block text-sm font-medium text-[#999]">
-                Total Guru
-              </label>
-              <input
-                type="number"
-                id="totalGuru"
-                name="totalGuru"
-                required
-                min="0"
-                defaultValue={statistik?.totalGuru ?? 0}
-                className="w-full px-4 py-2.5 bg-[#0a0a0a] border border-[#262626] text-[#c0c0c0] text-sm focus:outline-none focus:border-[#c0c0c0]"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="totalKelas" className="block text-sm font-medium text-[#999]">
-                Total Kelas
-              </label>
-              <input
-                type="number"
-                id="totalKelas"
-                name="totalKelas"
-                required
-                min="0"
-                defaultValue={statistik?.totalKelas ?? 0}
-                className="w-full px-4 py-2.5 bg-[#0a0a0a] border border-[#262626] text-[#c0c0c0] text-sm focus:outline-none focus:border-[#c0c0c0]"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="totalAlumni" className="block text-sm font-medium text-[#999]">
-                Total Alumni
-              </label>
-              <input
-                type="number"
-                id="totalAlumni"
-                name="totalAlumni"
-                required
-                min="0"
-                defaultValue={statistik?.totalAlumni ?? 0}
-                className="w-full px-4 py-2.5 bg-[#0a0a0a] border border-[#262626] text-[#c0c0c0] text-sm focus:outline-none focus:border-[#c0c0c0]"
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 pt-4 border-t border-[#262626]">
-            <button
-              type="submit"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#c0c0c0] text-[#0a0a0a] font-medium text-sm"
-            >
-              <Save className="w-4 h-4" />
-              Simpan Perubahan
-            </button>
-          </div>
-        </form>
+        <h2 className="text-lg font-semibold text-[#c0c0c0] mb-4">Catatan</h2>
+        <p className="text-sm text-[#666]">
+          Data di atas diambil secara dinamis dari database:
+        </p>
+        <ul className="text-sm text-[#666] mt-2 space-y-1">
+          <li>• Total Siswa: Menghitung semua siswa di tabel <code>siswa</code></li>
+          <li>• Total Guru: Menghitung semua guru di tabel <code>guru</code></li>
+          <li>• Total Kelas: Menghitung semua kelas di tabel <code>kelas</code></li>
+          <li>• Alumni Terlacak: Menghitung alumni yang sudah ditempatkan di tabel <code>penempatanAlumni</code></li>
+        </ul>
       </div>
     </div>
   );

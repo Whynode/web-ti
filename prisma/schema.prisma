@@ -64,14 +64,16 @@ model Kelas {
 }
 
 model Siswa {
-  id        Int         @id @default(autoincrement())
-  nama      String
-  peran     PeranSiswa  @default(SISWA)
-  fotoUrl   String?     @map("foto_url")
-  kelasId   Int         @map("kelas_id")
-  createdAt DateTime     @default(now())
+  id            Int          @id @default(autoincrement())
+  nama          String
+  peran         PeranSiswa   @default(SISWA)
+  fotoUrl       String?      @map("foto_url")
+  kelasId       Int          @map("kelas_id")
+  jenisKelamin  String       @default("L") @map("jenis_kelamin")
+  tanggalLahir  DateTime?    @map("tanggal_lahir")
+  createdAt     DateTime     @default(now())
 
-  kelas     Kelas       @relation(fields: [kelasId], references: [id])
+  kelas         Kelas        @relation(fields: [kelasId], references: [id])
 
   @@map("siswa")
 }

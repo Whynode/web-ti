@@ -11,12 +11,9 @@ export async function tambahSiswa(
   const nama = formData.get("nama") as string;
   const peran = formData.get("peran") as string;
   const kelasId = formData.get("kelasId") as string;
+  const jenisKelamin = formData.get("jenisKelamin") as string;
+  const tanggalLahir = formData.get("tanggalLahir") as string;
   const foto = formData.get("foto") as File | null;
-
-  console.log("[DEBUG] formData received:");
-  console.log("[DEBUG] - nama:", nama);
-  console.log("[DEBUG] - kelasId:", kelasId);
-  console.log("[DEBUG] - foto:", foto ? { name: foto.name, size: foto.size, type: foto.type } : "null");
 
   if (!nama || nama.trim() === "") {
     return { error: "Nama wajib diisi" };
@@ -28,6 +25,7 @@ export async function tambahSiswa(
 
   const validPeran = ["SISWA", "KETUA_KELAS", "WAKIL_KETUA", "SEKRETARIS", "BENDAHARA"];
   const peranValue = validPeran.includes(peran) ? peran : "SISWA";
+  const jenisKelaminValue = jenisKelamin === "P" ? "P" : "L";
 
   let fotoUrl: string | null = null;
   if (foto && foto.size > 0) {
@@ -65,8 +63,6 @@ export async function tambahSiswa(
     }
   }
 
-  console.log("[DEBUG] Creating siswa with fotoUrl:", fotoUrl);
-  console.log("[FIX-3] PAYLOAD KE PRISMA (tambahSiswa):", { nama: nama.trim(), peran: peranValue, kelasId: parseInt(kelasId), fotoUrl });
   try {
     const created = await prisma.siswa.create({
       data: {
@@ -74,10 +70,10 @@ export async function tambahSiswa(
         peran: peranValue as any,
         kelasId: parseInt(kelasId),
         fotoUrl,
+        jenisKelamin: jenisKelaminValue,
+        tanggalLahir: tanggalLahir ? new Date(tanggalLahir) : null,
       },
     });
-    console.log("[FIX-3] DATA YANG TERSIMPAN DI DB (create):", created);
-    console.log("[DEBUG] Siswa created successfully with fotoUrl:", fotoUrl);
 
     revalidatePath("/admin/siswa");
     redirect("/admin/siswa");
@@ -97,12 +93,9 @@ export async function updateSiswa(
   const nama = formData.get("nama") as string;
   const peran = formData.get("peran") as string;
   const kelasId = formData.get("kelasId") as string;
+  const jenisKelamin = formData.get("jenisKelamin") as string;
+  const tanggalLahir = formData.get("tanggalLahir") as string;
   const foto = formData.get("foto") as File | null;
-
-  console.log("[DEBUG] updateSiswa formData received:");
-  console.log("[DEBUG] - id:", id);
-  console.log("[DEBUG] - nama:", nama);
-  console.log("[DEBUG] - foto:", foto ? { name: foto.name, size: foto.size, type: foto.type } : "null");
 
   if (!nama || nama.trim() === "") {
     return { error: "Nama wajib diisi" };
@@ -114,11 +107,10 @@ export async function updateSiswa(
 
   const validPeran = ["SISWA", "KETUA_KELAS", "WAKIL_KETUA", "SEKRETARIS", "BENDAHARA"];
   const peranValue = validPeran.includes(peran) ? peran : "SISWA";
+  const jenisKelaminValue = jenisKelamin === "P" ? "P" : "L";
 
-  console.log("[FIX-1] Fetching existing siswa data for id:", id);
   const existingSiswa = await prisma.siswa.findUnique({ where: { id } });
   const existingFotoUrl = existingSiswa?.fotoUrl;
-  console.log("[FIX-1] Existing fotoUrl:", existingFotoUrl);
 
   try {
     const updateData: {
@@ -126,10 +118,14 @@ export async function updateSiswa(
       peran: any;
       kelasId: number;
       fotoUrl?: string | null;
+      jenisKelamin: string;
+      tanggalLahir?: Date | null;
     } = {
       nama: nama.trim(),
       peran: peranValue as any,
       kelasId: parseInt(kelasId),
+      jenisKelamin: jenisKelaminValue,
+      tanggalLahir: tanggalLahir ? new Date(tanggalLahir) : null,
     };
 
     let newFotoUrl: string | null = null;

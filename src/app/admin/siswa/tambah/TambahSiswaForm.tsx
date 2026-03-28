@@ -56,6 +56,8 @@ export default function TambahSiswaForm({ kelasList }: TambahSiswaFormProps) {
         finalFormData.append("nama", formData.get("nama") as string);
         finalFormData.append("peran", formData.get("peran") as string);
         finalFormData.append("kelasId", formData.get("kelasId") as string);
+        finalFormData.append("jenisKelamin", formData.get("jenisKelamin") as string);
+        finalFormData.append("tanggalLahir", formData.get("tanggalLahir") as string);
         finalFormData.append("foto", selectedFile);
       }
     }
@@ -146,6 +148,33 @@ export default function TambahSiswaForm({ kelasList }: TambahSiswaFormProps) {
                 <option value="SEKRETARIS">Sekretaris</option>
                 <option value="BENDAHARA">Bendahara</option>
               </select>
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="jenisKelamin" className="block text-sm font-medium text-[#c0c0c0]">
+                Jenis Kelamin
+              </label>
+              <select
+                id="jenisKelamin"
+                name="jenisKelamin"
+                defaultValue="L"
+                className="w-full px-4 py-2.5 bg-[#0a0a0a] border border-[#2a2a2a] text-white text-sm focus:outline-none focus:border-[#c0c0c0] transition-colors rounded-[10px]"
+              >
+                <option value="L">Laki-laki</option>
+                <option value="P">Perempuan</option>
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="tanggalLahir" className="block text-sm font-medium text-[#c0c0c0]">
+                Tanggal Lahir
+              </label>
+              <input
+                type="date"
+                id="tanggalLahir"
+                name="tanggalLahir"
+                className="w-full px-4 py-2.5 bg-[#0a0a0a] border border-[#2a2a2a] text-white text-sm focus:outline-none focus:border-[#c0c0c0] transition-colors rounded-[10px]"
+              />
             </div>
           </div>
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -32,13 +33,27 @@ type Guru = {
   fotoUrl: string | null;
 };
 
+type AkademikData = {
+  totalSiswa: number;
+  totalKelas: number;
+  daftarKelas: { id: number; namaKelas: string }[];
+  rasioSiswaRombel: number;
+  distribusiKelas: { X: number; XI: number; XII: number };
+  distribusiJenisKelamin: { lakiLaki: number; perempuan: number };
+  distribusiUsia: { usia: number; count: number }[];
+};
+
 type Props = {
   guruList: Guru[];
   kepalaSekolah: Guru | undefined;
   guruLainnya: Guru[];
+  akademikData: AkademikData;
 };
 
-export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya }: Props) {
+export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya, akademikData }: Props) {
+  const [showAllGuru, setShowAllGuru] = useState(false);
+  const displayedGuru = showAllGuru ? guruLainnya : guruLainnya.slice(0, 5);
+
   return (
     <main className="min-h-screen bg-brand-navy/5 text-brand-navy">
 
@@ -79,10 +94,10 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya }
             className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
           >
             {[
-              { label: "Total Siswa", value: guruList.length > 0 ? guruList.length * 4 : "60", icon: <Users className="w-5 h-5" /> },
-              { label: "Rombongan Belajar", value: "3", icon: <BookOpen className="w-5 h-5" /> },
-              { label: "Rasio Siswa/Rombel", value: "20", icon: <TrendingUp className="w-5 h-5" /> },
-              { label: "Daya Tampung", value: "20", icon: <GraduationCap className="w-5 h-5" /> },
+              { label: "Total Siswa", value: akademikData.totalSiswa, icon: <Users className="w-5 h-5" /> },
+              { label: "Rombongan Belajar", value: akademikData.totalKelas, icon: <BookOpen className="w-5 h-5" /> },
+              { label: "Rasio Siswa/Rombel", value: akademikData.rasioSiswaRombel, icon: <TrendingUp className="w-5 h-5" /> },
+              { label: "Daya Tampung", value: akademikData.totalKelas * 20, icon: <GraduationCap className="w-5 h-5" /> },
             ].map((stat, i) => (
               <motion.div
                 key={i}
@@ -120,7 +135,7 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya }
                 <div>
                   <div className="flex justify-between text-xs mb-2">
                     <span className="font-medium text-brand-navy/70">Total Siswa</span>
-                    <span className="font-bold text-brand-navy">{guruList.length > 0 ? guruList.length * 4 : 60} siswa</span>
+                    <span className="font-bold text-brand-navy">{akademikData.totalSiswa} siswa</span>
                   </div>
                   <div className="h-2 bg-brand-navy/10 rounded-[5px] overflow-hidden">
                     <motion.div 
@@ -140,7 +155,7 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya }
                     transition={{ delay: 0.3 }}
                     className="bg-brand-navy/5 rounded-[10px] p-4 text-center"
                   >
-                    <p className="text-2xl font-bold font-serif text-brand-navy mb-0.5">30</p>
+                    <p className="text-2xl font-bold font-serif text-brand-navy mb-0.5">{akademikData.distribusiJenisKelamin.lakiLaki}</p>
                     <p className="text-[10px] text-brand-navy/50 uppercase tracking-wider">Laki-laki</p>
                   </motion.div>
                   <motion.div 
@@ -150,7 +165,7 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya }
                     transition={{ delay: 0.4 }}
                     className="bg-brand-pink-start/5 rounded-[10px] p-4 text-center"
                   >
-                    <p className="text-2xl font-bold font-serif text-brand-pink-start mb-0.5">30</p>
+                    <p className="text-2xl font-bold font-serif text-brand-pink-start mb-0.5">{akademikData.distribusiJenisKelamin.perempuan}</p>
                     <p className="text-[10px] text-brand-navy/50 uppercase tracking-wider">Perempuan</p>
                   </motion.div>
                 </div>
@@ -159,9 +174,9 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya }
               <h4 className="text-sm font-bold text-brand-navy mt-5 mb-3">Per Tingkat</h4>
               <div className="space-y-2">
                 {[
-                  { tingkat: "Kelas X", laki: 10, perempuan: 10, total: 20 },
-                  { tingkat: "Kelas XI", laki: 10, perempuan: 10, total: 20 },
-                  { tingkat: "Kelas XII", laki: 10, perempuan: 10, total: 20 },
+                  { tingkat: "Kelas X", count: akademikData.distribusiKelas.X },
+                  { tingkat: "Kelas XI", count: akademikData.distribusiKelas.XI },
+                  { tingkat: "Kelas XII", count: akademikData.distribusiKelas.XII },
                 ].map((item, i) => (
                   <motion.div 
                     key={i} 
@@ -173,24 +188,17 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya }
                   >
                     <div className="w-20 text-xs font-bold text-brand-navy/70">{item.tingkat}</div>
                     <div className="flex-1">
-                      <div className="h-1.5 bg-brand-navy/10 rounded-[5px] overflow-hidden flex">
+                      <div className="h-1.5 bg-brand-navy/10 rounded-[5px] overflow-hidden">
                         <motion.div 
                           initial={{ width: 0 }}
-                          whileInView={{ width: `${(item.laki / item.total) * 50}%` }}
+                          whileInView={{ width: `${Math.max((item.count / akademikData.totalSiswa) * 100, 0)}%` }}
                           viewport={{ once: true }}
                           transition={{ duration: 0.6, delay: 0.1 }}
-                          className="h-full bg-brand-blue-start" 
-                        />
-                        <motion.div 
-                          initial={{ width: 0 }}
-                          whileInView={{ width: `${(item.perempuan / item.total) * 50}%` }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.6, delay: 0.2 }}
-                          className="h-full bg-brand-pink-start" 
+                          className="h-full bg-gradient-to-r from-brand-pink-start to-brand-blue-start" 
                         />
                       </div>
                     </div>
-                    <span className="text-xs font-bold text-brand-navy/70 w-12 text-right">{item.total}</span>
+                    <span className="text-xs font-bold text-brand-navy/70 w-12 text-right">{item.count}</span>
                   </motion.div>
                 ))}
               </div>
@@ -203,31 +211,33 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya }
               transition={{ duration: 0.5 }}
               className="space-y-4"
             >
-              <div className="bg-white rounded-[10px] border border-brand-navy/10 p-5">
+                <div className="bg-white rounded-[10px] border border-brand-navy/10 p-5">
                 <h3 className="text-sm font-bold text-brand-navy font-serif mb-4 flex items-center gap-2">
                   <div className="w-8 h-8 rounded-[10px] bg-brand-blue-start/10 flex items-center justify-center">
                     <BookOpen className="w-4 h-4 text-brand-blue-start" />
                   </div>
                   Rombongan Belajar
                 </h3>
-                <div className="space-y-2">
-                  {[
-                    { tingkat: "Kelas X", rombel: "X A" },
-                    { tingkat: "Kelas XI", rombel: "XI A" },
-                    { tingkat: "Kelas XII", rombel: "XII A" },
-                  ].map((item, i) => (
-                    <motion.div 
-                      key={i} 
-                      initial={{ opacity: 0, x: 10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.05 }}
-                      className="flex items-center justify-between p-3 bg-brand-navy/5 rounded-[10px] hover:bg-brand-pink-start/5 transition-colors"
-                    >
-                      <span className="text-xs font-medium text-brand-navy/70">{item.tingkat}</span>
-                      <span className="text-xl font-bold font-serif text-brand-pink-start">{item.rombel}</span>
-                    </motion.div>
-                  ))}
+                <div className="space-y-2 max-h-64 overflow-y-auto">
+                  {akademikData.daftarKelas.length > 0 ? (
+                    akademikData.daftarKelas.map((kelas, i) => (
+                      <motion.div 
+                        key={kelas.id} 
+                        initial={{ opacity: 0, x: 10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.03 }}
+                        className="flex items-center justify-between p-3 bg-brand-navy/5 rounded-[10px] hover:bg-brand-pink-start/5 transition-colors"
+                      >
+                        <span className="text-xs font-medium text-brand-navy/70">{kelas.namaKelas}</span>
+                        <span className="text-xs font-bold text-brand-pink-start">
+                          {akademikData.distribusiKelas[kelas.namaKelas.split(' ')[0] as 'X' | 'XI' | 'XII'] || 0} siswa
+                        </span>
+                      </motion.div>
+                    ))
+                  ) : (
+                    <p className="text-sm text-gray-400 text-center py-4">Belum ada kelas</p>
+                  )}
                 </div>
               </div>
 
@@ -276,25 +286,25 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya }
               Distribusi Siswa per Usia
             </h3>
             <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
-              {[
-                { usia: "15 tahun", total: 20 },
-                { usia: "16 tahun", total: 20 },
-                { usia: "17 tahun", total: 20 },
-                { usia: "18 tahun", total: 0 },
-                { usia: "> 18 tahun", total: 0 },
-              ].map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  className="bg-brand-navy/5 rounded-[10px] p-4 text-center hover:border-brand-pink-start/30 border border-transparent transition-all duration-300 cursor-pointer"
-                >
-                  <p className="text-2xl font-bold font-serif text-brand-pink-start mb-0.5">{item.total}</p>
-                  <p className="text-[10px] text-brand-navy/50">{item.usia}</p>
-                </motion.div>
-              ))}
+              {akademikData.distribusiUsia.length > 0 ? (
+                akademikData.distribusiUsia.map((item, i) => (
+                  <motion.div
+                    key={item.usia}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.05 }}
+                    className="bg-brand-navy/5 rounded-[10px] p-4 text-center hover:border-brand-pink-start/30 border border-transparent transition-all duration-300 cursor-pointer"
+                  >
+                    <p className="text-2xl font-bold font-serif text-brand-pink-start mb-0.5">{item.count}</p>
+                    <p className="text-[10px] text-brand-navy/50">{item.usia} tahun</p>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="col-span-3 md:col-span-5 text-center py-4">
+                  <p className="text-sm text-gray-400">Data usia belum tersedia</p>
+                </div>
+              )}
             </div>
           </motion.div>
         </div>
@@ -576,7 +586,7 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya }
                 </div>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                  {guruLainnya.map((guru, index) => {
+                  {displayedGuru.map((guru, index) => {
                     const isTendik = guru.posisi.toLowerCase().includes("operator") || guru.posisi.toLowerCase().includes("tendik");
                     const initials = guru.nama.split(" ").map((n) => n[0]).slice(0, 2).join("");
                     
@@ -619,11 +629,19 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya }
                 </div>
               )}
 
-              <div className="flex justify-center mt-8">
-                <Link href="/guru" className="px-6 py-3 bg-brand-pink-start text-white text-[11px] font-bold uppercase tracking-widest rounded-[10px] hover:bg-brand-pink-end transition-colors shadow-md flex items-center gap-2">
-                  Lihat Semua Guru <User className="w-3.5 h-3.5" />
-                </Link>
-              </div>
+              {guruLainnya.length > 5 && (
+                <div className="flex justify-center mt-8 gap-3">
+                  <button 
+                    onClick={() => setShowAllGuru(!showAllGuru)} 
+                    className="px-6 py-2.5 bg-brand-pink-start text-white text-sm font-bold rounded-full hover:bg-brand-pink-end transition-all shadow-md"
+                  >
+                    {showAllGuru ? "Sembunyikan" : `Lihat ${guruLainnya.length - 5} Guru Lainnya`}
+                  </button>
+                  <Link href="/guru" className="px-6 py-2.5 bg-white border border-brand-navy/20 text-brand-navy text-sm font-bold rounded-full hover:bg-brand-navy/5 transition-all">
+                    Lihat Semua
+                  </Link>
+                </div>
+              )}
             </div>
           </motion.div>
         </div>
