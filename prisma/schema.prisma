@@ -99,8 +99,25 @@ model ArtikelBlog {
   createdAt      DateTime  @default(now())
   kategori       String    @default("Umum")
   isPinned       Boolean   @default(false) @map("is_pinned")
+  likesCount     Int       @default(0) @map("likes_count")
+
+  komentar       Komentar[]
 
   @@map("artikel_blog")
+}
+
+model Komentar {
+  id        String       @id @default(cuid())
+  nama      String
+  isi       String
+  blogId    Int          @map("blog_id")
+  blog      ArtikelBlog  @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  parentId  String?      @map("parent_id")
+  parent    Komentar?    @relation("BalasanKomentar", fields: [parentId], references: [id], onDelete: Cascade)
+  balasan   Komentar[]   @relation("BalasanKomentar")
+  createdAt DateTime     @default(now())
+
+  @@map("komentar")
 }
 
 model StatistikSekolah {
@@ -179,4 +196,15 @@ model PPDB {
   updatedAt       DateTime    @updatedAt
 
   @@map("ppdb")
+}
+
+model Galeri {
+  id        String   @id @default(cuid())
+  judul     String
+  kategori  String
+  imageUrl  String   @map("image_url")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("galeri")
 }

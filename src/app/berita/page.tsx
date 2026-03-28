@@ -8,6 +8,21 @@ async function getArtikel() {
     return await prisma.artikelBlog.findMany({
       orderBy: { tanggalPublish: "desc" },
       take: 20,
+      select: {
+        id: true,
+        judul: true,
+        slug: true,
+        konten: true,
+        thumbnailUrl: true,
+        tanggalPublish: true,
+        createdAt: true,
+        kategori: true,
+        isPinned: true,
+        likesCount: true,
+        _count: {
+          select: { komentar: true },
+        },
+      },
     });
   } catch {
     return [];

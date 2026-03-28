@@ -41,7 +41,7 @@ export default function RootLayout({
       >
         <Header />
         {children}
-        <Footer />
+        <Footer schoolInfo={null} />
       </body>
     </html>
   );

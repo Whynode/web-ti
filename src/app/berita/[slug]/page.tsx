@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Calendar, User } from "lucide-react";
 import prisma from "@/lib/prisma";
+import InteraksiBlog from "@/components/blog/InteraksiBlog";
 
 const sanitizeHtml = (html: string): string => {
   const allowedTags = ['p', 'br', 'strong', 'b', 'em', 'i', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'img', 'blockquote', 'pre', 'code', 'span', 'div', 'table', 'tr', 'td', 'th', 'thead', 'tbody'];
@@ -111,6 +112,8 @@ export default async function ArticleDetailPage({ params }: PageProps) {
             className="prose prose-lg prose-slate max-w-none prose-headings:font-bold prose-a:text-blue-600 mt-8 w-full"
             dangerouslySetInnerHTML={{ __html: sanitizeHtml(artikel.konten) }} 
           />
+
+          <InteraksiBlog blogId={artikel.id} initialLikes={artikel.likesCount} />
         </article>
       </section>
     </main>

@@ -1,15 +1,15 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { Mail, Phone, MapPin, Printer } from "lucide-react";
 import NewsletterForm from "@/components/ui/NewsletterForm";
+import FooterGallery from "./FooterGallery";
 
-export default function Footer() {
-  const pathname = usePathname();
-
-  if (pathname?.startsWith('/admin')) return null;
+export default function Footer({ schoolInfo }: { schoolInfo?: { name?: string; address?: string; phone?: string; fax?: string; email?: string } | null }) {
+  const schoolName = schoolInfo?.name || "SMKS TELEMATIKA";
+  const schoolAddress = schoolInfo?.address || "Jalan Pahlawan No. 123 Margadadi, Indramayu, Jawa Barat 45212";
+  const schoolPhone = schoolInfo?.phone || "(0234) 123456";
+  const schoolFax = schoolInfo?.fax || "(0234) 123457";
+  const schoolEmail = schoolInfo?.email || "info@smkstelematika.sch.id";
   
   return (
     <footer className="bg-brand-navy bg-grid-dark text-white pt-16 flex flex-col min-h-max relative">
@@ -33,26 +33,26 @@ export default function Footer() {
               </div>
               <div className="flex flex-col">
                 <h1 className="font-primary font-bold text-lg md:text-xl leading-tight tracking-tight text-white uppercase group-hover:text-brand-pink-start transition-colors">
-                  SMKS TELEMATIKA
+                  {schoolName}
                 </h1>
               </div>
             </Link>
 
             <div className="text-sm text-white/60 space-y-2">
-              <p>Jalan Pahlawan No. 123 Margadadi, Indramayu, Jawa Barat 45212</p>
+              <p>{schoolAddress}</p>
 
               <div className="pt-3 space-y-1.5">
                 <p className="flex items-center gap-2">
                   <Phone className="w-3.5 h-3.5" />
-                  <span>Phone : (0234) 123456</span>
+                  <span>Phone : {schoolPhone}</span>
                 </p>
                 <p className="flex items-center gap-2">
                   <Printer className="w-3.5 h-3.5" />
-                  <span>Fax : (0234) 123457</span>
+                  <span>Fax : {schoolFax}</span>
                 </p>
                 <p className="flex items-center gap-2">
                   <Mail className="w-3.5 h-3.5" />
-                  <span>Email : info@smkstelematika.sch.id</span>
+                  <span>Email : {schoolEmail}</span>
                 </p>
               </div>
             </div>
@@ -83,31 +83,20 @@ export default function Footer() {
           {/* Column 4: Gallery Snapshot */}
           <div>
             <h3 className="text-base font-bold mb-4 font-primary text-brand-pink-start">Galeri</h3>
-            <div className="grid grid-cols-3 gap-2">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="aspect-square rounded-[10px] overflow-hidden bg-white/5 relative hover:opacity-80 transition-opacity">
-                  <Image
-                    src={`https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=200&auto=format&fit=crop&sig=${i}`}
-                    alt="Galeri"
-                    fill
-                    className="object-cover hover:scale-110 transition-transform duration-300 cursor-pointer"
-                  />
-                </div>
-              ))}
-            </div>
+            <FooterGallery />
           </div>
 
         </div>
       </div>
 
-      {/* Bottom Bar (Updated: Posisi Rata Tengah Sempurna) */}
+      {/* Bottom Bar */}
       <div className="bg-gradient-to-r from-brand-pink-start to-brand-blue-start py-5 w-full mt-auto">
         <div className="container max-w-7xl mx-auto px-4 flex flex-col justify-center items-center text-center text-white/90 text-[11px] md:text-xs font-medium space-y-1.5">
           <p>
-            Hak Cipta © 2026 SMKS Telematika Indramayu. Semua Hak Dilindungi.
+            Hak Cipta © {new Date().getFullYear()} {schoolName}. Semua Hak Dilindungi.
           </p>
           <p>
-            Dirancang & Dikembangkan oleh{" "}
+            Designed & Developed by{" "}
             <a
               href="https://arya-portfolio-web3.vercel.app"
               target="_blank"

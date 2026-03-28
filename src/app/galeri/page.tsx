@@ -1,10 +1,23 @@
+import prisma from "@/lib/prisma";
 import GaleriContent from "./GaleriContent";
 
-export const metadata = {
-  title: "Galeri Sekolah - SMKS Telematika Indramayu",
-  description: "Kumpulan foto kegiatan, fasilitas, dan momen berharga di SMKS Telematika Indramayu",
-};
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
-export default function GaleriPage() {
-  return <GaleriContent />;
+async function getGaleri() {
+  try {
+    const galeri = await prisma.galeri.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    return galeri;
+  } catch (error) {
+    console.error("Error fetching galeri:", error);
+    return [];
+  }
+}
+
+export default async function GaleriPage() {
+  const galeriList = await getGaleri();
+
+  return <GaleriContent galeriList={galeriList} />;
 }

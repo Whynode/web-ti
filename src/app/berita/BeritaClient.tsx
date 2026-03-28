@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { Calendar, Tag, User, Search, ArrowRight, ChevronRight, Clock } from "lucide-react"
+import { Calendar, Tag, User, Search, ArrowRight, ChevronRight, Clock, Heart, MessageCircle } from "lucide-react"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -23,6 +23,10 @@ type Props = {
     konten: string;
     thumbnailUrl: string | null;
     tanggalPublish: Date;
+    likesCount: number;
+    _count: {
+      komentar: number;
+    };
   }[];
 };
 
@@ -123,12 +127,24 @@ export default function BeritaClient({ artikel }: Props) {
                             )}
                           </div>
                           <div className="p-5 flex flex-col flex-1">
-                            <div className="flex items-center gap-3 text-[10px] text-gray-500 font-medium mb-3">
-                              <span className="flex items-center gap-1">
-                                <Calendar className="w-3 h-3 text-brand-pink-start" /> 
-                                {formatDate(berita.tanggalPublish)}
-                              </span>
-                              <span className="flex items-center gap-1"><User className="w-3 h-3 text-brand-navy" /> HUMAS</span>
+                            <div className="flex items-center justify-between text-[10px] text-gray-500 font-medium mb-3">
+                              <div className="flex items-center gap-3">
+                                <span className="flex items-center gap-1">
+                                  <Calendar className="w-3 h-3 text-brand-pink-start" /> 
+                                  {formatDate(berita.tanggalPublish)}
+                                </span>
+                                <span className="flex items-center gap-1"><User className="w-3 h-3 text-brand-navy" /> HUMAS</span>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                <span className="flex items-center gap-1">
+                                  <Heart className="w-3 h-3 text-brand-pink-start" />
+                                  <span>{berita.likesCount || 0}</span>
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <MessageCircle className="w-3 h-3 text-brand-blue-start" />
+                                  <span>{berita._count.komentar || 0}</span>
+                                </span>
+                              </div>
                             </div>
                             <h3 className="font-bold text-brand-navy text-sm font-serif mb-3 leading-snug group-hover:text-brand-pink-start transition-colors line-clamp-2">
                               {berita.judul}

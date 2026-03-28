@@ -23,7 +23,8 @@ import {
   Handshake,
   Laptop,
   ChevronDown,
-  UsersRound
+  UsersRound,
+  Image
 } from "lucide-react";
 import LogoutButton from "@/components/admin/LogoutButton";
 import { ClockDisplay } from "@/components/ui/ClockDisplay";
@@ -45,6 +46,7 @@ const menuItems = [
     ]
   },
   { href: "/admin/blog", label: "Blog", icon: FileText },
+  { href: "/admin/galeri", label: "Galeri", icon: Image },
   { href: "/admin/statistik", label: "Statistik", icon: BarChart3 },
 ];
 
