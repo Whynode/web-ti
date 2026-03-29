@@ -100,7 +100,7 @@ export default function Footer() {
           <p>
             Designed & Developed by{" "}
             <a
-              href="https://arya-portfolio-web3.vercel.app"
+              href="https://web-portofolio-jade.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white font-bold hover:text-brand-navy hover:underline underline-offset-2 transition-all duration-300"
