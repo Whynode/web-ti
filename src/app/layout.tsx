@@ -25,6 +25,11 @@ export const metadata: Metadata = {
     "mikrotik academy indramayu",
     "bursa kerja khusus indramayu",
   ],
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
   openGraph: {
     title: "SMKS Telematika Indramayu | Sekolah IT & TKJ Terbaik",
     description: "Mencari SMK IT terbaik di Indramayu? SMKS Telematika Indramayu mencetak lulusan TKJ dan profesional teknologi yang siap kerja.",
