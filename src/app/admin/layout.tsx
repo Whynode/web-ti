@@ -10,13 +10,10 @@ import {
   FileText,
   BarChart3,
   Menu,
-  X,
   Home,
-  LayoutGrid,
   UserCircle,
   ChevronLeft,
   ChevronRight,
-  LogOut,
   GraduationCap,
   ShieldCheck,
   ClipboardList,
@@ -50,15 +47,17 @@ const menuItems = [
   { href: "/admin/statistik", label: "Statistik", icon: BarChart3 },
 ];
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [bkkExpanded, setBkkExpanded] = useState(true);
-  const pathname = usePathname();
+interface SidebarContentProps {
+  isCollapsed: boolean;
+  pathname: string;
+  bkkExpanded: boolean;
+  setBkkExpanded: (v: boolean) => void;
+  isBkkActive: boolean;
+  setIsMobileOpen: (v: boolean) => void;
+}
 
-  const isBkkActive = pathname.startsWith("/admin/bkk");
-
-  const SidebarContent = () => (
+function SidebarContent({ isCollapsed, pathname, bkkExpanded, setBkkExpanded, isBkkActive, setIsMobileOpen }: SidebarContentProps) {
+  return (
     <div className="flex flex-col h-full bg-black border-r border-zinc-800">
       <div className="p-4 border-b border-zinc-800">
         <div className="flex items-center gap-3">
@@ -168,6 +167,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </div>
     </div>
   );
+}
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [bkkExpanded, setBkkExpanded] = useState(true);
+  const pathname = usePathname();
+  const isBkkActive = pathname.startsWith("/admin/bkk");
 
   return (
     <div className="flex min-h-screen bg-black">
@@ -178,14 +185,28 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           hidden lg:block
         `}
       >
-        <SidebarContent />
+        <SidebarContent 
+          isCollapsed={isCollapsed}
+          pathname={pathname}
+          bkkExpanded={bkkExpanded}
+          setBkkExpanded={setBkkExpanded}
+          isBkkActive={isBkkActive}
+          setIsMobileOpen={setIsMobileOpen}
+        />
       </aside>
 
       {isMobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-black/80" onClick={() => setIsMobileOpen(false)} />
           <aside className="absolute inset-y-0 left-0 w-64 bg-black border-r border-zinc-800">
-            <SidebarContent />
+            <SidebarContent 
+              isCollapsed={false}
+              pathname={pathname}
+              bkkExpanded={bkkExpanded}
+              setBkkExpanded={setBkkExpanded}
+              isBkkActive={isBkkActive}
+              setIsMobileOpen={setIsMobileOpen}
+            />
           </aside>
         </div>
       )}

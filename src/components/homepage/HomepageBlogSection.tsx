@@ -41,7 +41,7 @@ export default function HomepageBlogSection({ pinned, latest }: Props) {
   };
 
   return (
-    <section className="bg-[#FDFDFD]">
+    <section className="bg-[#FDFDFD] bg-grid-light">
       <div className="container mx-auto px-6 max-w-280 py-16">
         {pinned && (
           <motion.div

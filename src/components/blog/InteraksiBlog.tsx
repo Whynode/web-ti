@@ -28,12 +28,6 @@ export default function InteraksiBlog({ blogId, initialLikes }: InteraksiBlogPro
   const [replyNama, setReplyNama] = useState("");
   const [replyIsi, setReplyIsi] = useState("");
 
-  useEffect(() => {
-    const liked = localStorage.getItem(`liked_${blogId}`);
-    if (liked) setHasLiked(true);
-    fetchKomentar();
-  }, [blogId]);
-
   const fetchKomentar = async () => {
     try {
       const res = await fetch(`/api/blog/komentar?blogId=${blogId}`);
@@ -45,6 +39,12 @@ export default function InteraksiBlog({ blogId, initialLikes }: InteraksiBlogPro
       console.error("Error fetching komentar:", error);
     }
   };
+
+  useEffect(() => {
+    const liked = localStorage.getItem(`liked_${blogId}`);
+    if (liked) setHasLiked(true);
+    fetchKomentar();
+  }, [blogId, fetchKomentar]);
 
   const handleLike = async () => {
     if (hasLiked) return;

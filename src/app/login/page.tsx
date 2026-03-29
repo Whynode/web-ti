@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { handleLogin } from "./actions";
 import { Eye, EyeOff, Loader2, ShieldCheck } from "lucide-react";
 
@@ -157,12 +158,12 @@ export default function LoginPage() {
         </div>
 
         <div className="text-center mt-6">
-          <a
+          <Link
             href="/"
             className="text-xs text-[#666] hover:text-[#c0c0c0]"
           >
             &larr; Kembali ke Website
-          </a>
+          </Link>
         </div>
       </div>
     </main>

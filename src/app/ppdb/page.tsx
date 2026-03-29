@@ -6,7 +6,6 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { CheckCircle, ClipboardList, Send, FileText, UserPlus, FileCheck, CreditCard } from "lucide-react"
 import { daftarPPDB, FormState } from "@/actions/ppdb"
-import MarqueeWrapper from "@/components/ui/MarqueeWrapper"
 
 const initialState: FormState = {}
 
@@ -17,6 +16,7 @@ export default function PPDB() {
 
   useEffect(() => {
     if (state.success) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowSuccess(true)
       setTimeout(() => {
         setShowSuccess(false)
@@ -39,10 +39,8 @@ export default function PPDB() {
         </div>
       </section>
 
-      {/* Marquee Divider */}
-      <div className="w-full border-y border-white/10 bg-[#0B1120] relative z-40">
-        <MarqueeWrapper variant="dark" />
-      </div>
+      {/* Divider */}
+      <div className="w-full border-y border-white/10 bg-[#0B1120] relative z-40" />
 
       {/* 2. Informasi Alur & Syarat (Dense Layout) */}
       <section className="py-20 bg-[#FDFDFD] bg-grid-light">

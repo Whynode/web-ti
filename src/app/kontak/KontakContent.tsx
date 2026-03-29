@@ -2,8 +2,7 @@
 
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { MapPin, Phone, Mail, Clock, Send, Globe, MessageSquare } from "lucide-react"
-import PlaceholderImage from "@/components/ui/PlaceholderImage"
+import { MapPin, Phone, Mail, Clock, Send, MessageSquare } from "lucide-react"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -56,12 +55,21 @@ export default function KontakContent() {
                 ))}
               </div>
 
-              <motion.div variants={itemVariants} className="bg-gray-100 rounded-[1.5rem] border border-gray-200 overflow-hidden h-[300px] relative shadow-inner group">
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 gap-2 z-10 bg-[#FDFDFD]/80 backdrop-blur-sm group-hover:bg-transparent transition-all duration-500">
-                  <Globe className="w-8 h-8 text-brand-pink-start opacity-50" />
-                  <span className="text-xs font-bold font-serif text-brand-navy">Google Maps Placeholder</span>
+              <motion.div variants={itemVariants} className="bg-gray-100 rounded-[1.5rem] border border-gray-200 overflow-hidden h-[300px] relative shadow-inner">
+                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?w=800&h=600&fit=crop')" }} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <p className="text-white font-bold text-sm">SMK Telematika Indramayu</p>
+                  <p className="text-white/80 text-xs">Jl. Raya Sindangkerta Lohbener, Indramayu</p>
                 </div>
-                <PlaceholderImage className="w-full h-full object-cover grayscale" label="Peta Lokasi" />
+                <a 
+                  href="https://www.google.com/maps/search/SMK+Telematika+Indramayu+Lohbener"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white hover:bg-brand-pink-start hover:text-white text-brand-navy font-bold px-6 py-3 rounded-xl shadow-xl transition-colors"
+                >
+                  Lihat Lokasi di Maps
+                </a>
               </motion.div>
             </motion.div>
 
@@ -78,16 +86,16 @@ export default function KontakContent() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Nama Lengkap *</label>
-                      <input type="text" className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-xs focus:outline-none focus:border-brand-pink-start transition-colors" required placeholder="Cth: Budi Santoso" />
+                      <input type="text" className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-xs focus:outline-none focus:border-brand-pink-start transition-colors" required placeholder="Cth: Budi Santoso" suppressHydrationWarning />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Email Aktif *</label>
-                      <input type="email" className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-xs focus:outline-none focus:border-brand-pink-start transition-colors" required placeholder="budi@example.com" />
+                      <input type="email" className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-xs focus:outline-none focus:border-brand-pink-start transition-colors" required placeholder="budi@example.com" suppressHydrationWarning />
                     </div>
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Subjek Pertanyaan</label>
-                    <select className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-xs focus:outline-none focus:border-brand-pink-start transition-colors text-gray-600 appearance-none">
+                    <select className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-xs focus:outline-none focus:border-brand-pink-start transition-colors text-gray-600 appearance-none" suppressHydrationWarning>
                       <option value="">Pilih Kategori...</option>
                       <option value="ppdb">Pendaftaran / PPDB</option>
                       <option value="akademik">Info Akademik & Kurikulum</option>
@@ -97,7 +105,7 @@ export default function KontakContent() {
                   </div>
                   <div className="flex-1">
                     <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Pesan Anda *</label>
-                    <textarea rows={5} className="w-full h-full min-h-[120px] bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-xs focus:outline-none focus:border-brand-pink-start transition-colors resize-none" required placeholder="Tuliskan pertanyaan detail Anda di sini..."></textarea>
+                    <textarea rows={5} className="w-full h-full min-h-[120px] bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-xs focus:outline-none focus:border-brand-pink-start transition-colors resize-none" required placeholder="Tuliskan pertanyaan detail Anda di sini..." suppressHydrationWarning></textarea>
                   </div>
 
                   <button type="submit" className="w-full bg-brand-navy hover:bg-brand-pink-start text-white px-6 py-4 rounded-[10px] font-bold transition-all flex items-center justify-center gap-2 text-sm shadow-md mt-6 group">

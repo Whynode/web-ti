@@ -151,8 +151,8 @@ export default function LowonganTable({
       }
 
       closeModal();
-      const updatedData = await fetch("/api/bkk/lowongan").then((r) => r.json());
-      setData(updatedData);
+      const json = await fetch("/api/bkk/lowongan").then((r) => r.json());
+      setData(json.vacancies || []);
     } catch (error) {
       console.error("Error:", error);
       alert("Terjadi kesalahan");

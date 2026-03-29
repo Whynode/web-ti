@@ -1,15 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, Phone, MapPin, Printer } from "lucide-react";
 import NewsletterForm from "@/components/ui/NewsletterForm";
 import FooterGallery from "./FooterGallery";
 
-export default function Footer({ schoolInfo }: { schoolInfo?: { name?: string; address?: string; phone?: string; fax?: string; email?: string } | null }) {
-  const schoolName = schoolInfo?.name || "SMKS TELEMATIKA";
-  const schoolAddress = schoolInfo?.address || "Jalan Pahlawan No. 123 Margadadi, Indramayu, Jawa Barat 45212";
-  const schoolPhone = schoolInfo?.phone || "(0234) 123456";
-  const schoolFax = schoolInfo?.fax || "(0234) 123457";
-  const schoolEmail = schoolInfo?.email || "info@smkstelematika.sch.id";
+export default function Footer() {
+  const schoolName = "SMKS TELEMATIKA";
+  const schoolAddress = "Jalan Raya Sindangkerta Lohbener, Indramayu, Jawa Barat 45252";
+  const schoolPhone = "(0234) 123456";
+  const schoolFax = "(0234) 123457";
+  const schoolEmail = "info@smkstelematika.sch.id";
   
   return (
     <footer className="bg-brand-navy bg-grid-dark text-white pt-16 flex flex-col min-h-max relative">
@@ -80,7 +82,7 @@ export default function Footer({ schoolInfo }: { schoolInfo?: { name?: string; a
             </ul>
           </div>
 
-          {/* Column 4: Gallery Snapshot */}
+          {/* Column 4: Gallery Snapshot - Server Component */}
           <div>
             <h3 className="text-base font-bold mb-4 font-primary text-brand-pink-start">Galeri</h3>
             <FooterGallery />

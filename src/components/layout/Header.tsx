@@ -4,14 +4,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Search, Menu, X, ChevronDown } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,6 +53,20 @@ export default function Header() {
 
   const handleDropdownLeave = () => {
     setActiveDropdown(null);
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+      setIsSearchOpen(false);
+    }
+  };
+
+  const toggleSearch = () => {
+    setIsSearchOpen(!isSearchOpen);
+    setTimeout(() => searchInputRef.current?.focus(), 100);
   };
 
   return (
@@ -119,9 +138,27 @@ export default function Header() {
           </nav>
 
           <div className="hidden lg:flex items-center gap-5 z-50">
-            <button className={`transition-colors hover:text-brand-pink-start ${getTextColor()}`}>
-              <Search className="w-4 h-4" />
-            </button>
+            <div className="relative">
+              {isSearchOpen && (
+                <form onSubmit={handleSearch} className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center">
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onBlur={() => !searchQuery && setIsSearchOpen(false)}
+                    placeholder="Cari..."
+                    className="w-48 px-3 py-1.5 text-sm rounded-lg border border-gray-300 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-pink-start/50"
+                  />
+                </form>
+              )}
+              <button 
+                onClick={toggleSearch}
+                className={`transition-colors hover:text-brand-pink-start ${getTextColor()}`}
+              >
+                <Search className="w-4 h-4" />
+              </button>
+            </div>
             <Link href="/ppdb" className="bg-brand-pink-start hover:bg-[#d94f92] text-white text-[12px] font-bold px-6 py-2.5 rounded-[10px] transition-all shadow-md shadow-brand-pink-start/20 uppercase tracking-wide">
               Daftar PPDB
             </Link>

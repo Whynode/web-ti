@@ -3,42 +3,15 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
-import { ArrowUpRight, ArrowRight, Play, Monitor, Server, ShieldCheck, Wifi, Cpu, Camera, Users, Award, Network, Cloud, HardDrive } from "lucide-react"
+import { motion } from "framer-motion"
+import { ArrowRight, ArrowUpRight, Monitor, Wifi, Cpu, Camera, Users, Award, Network, Cloud, HardDrive, Play, Server, ShieldCheck } from "lucide-react"
 import { FadeIn } from "@/components/ui/FadeIn"
 import PlaceholderImage from "@/components/ui/PlaceholderImage"
 import MarqueeTicker from "@/components/ui/MarqueeTicker"
 import HomepageBlogSection from "@/components/homepage/HomepageBlogSection"
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 100 } }
-};
-
 export default function Home() {
-  const [isDesktop, setIsDesktop] = useState(true);
-  const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const [artikel, setArtikel] = useState<{ pinned: unknown | null; latest: unknown[] }>({ pinned: null, latest: [] });
-
-  useEffect(() => {
-    const checkDesktop = () => {
-      setIsDesktop(window.innerWidth >= 1024);
-    };
-    checkDesktop();
-    window.addEventListener("resize", checkDesktop);
-    return () => window.removeEventListener("resize", checkDesktop);
-  }, []);
 
   useEffect(() => {
     async function fetchArtikel() {
@@ -196,26 +169,19 @@ export default function Home() {
               </p>
             </motion.div>
 
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: "-50px" }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-4"
-            >
-               {[
-                 { icon: <Monitor className="w-4 h-4" />, title: 'Jaringan Dasar', desc: 'Topologi & Switching', link: '/program/jaringan-dasar' },
-                 { icon: <Server className="w-4 h-4" />, title: 'SysAdmin', desc: 'Linux & Windows Server', link: '/program/sysadmin' },
-                 { icon: <ShieldCheck className="w-4 h-4" />, title: 'Pemrograman Dasar', desc: 'Logika & Algoritma', link: '/program/cyber-security' },
-                 { icon: <Wifi className="w-4 h-4" />, title: 'Mikrotik', desc: 'MTCNA Prep', link: '/program/mikrotik' },
-                 { icon: <Cpu className="w-4 h-4" />, title: 'Hardware', desc: 'Troubleshooting PC', link: '/program/hardware' },
-                 { icon: <Camera className="w-4 h-4" />, title: 'Multimedia', desc: 'Dasar Desain & Video', link: '/program/multimedia' },
-                 { icon: <Users className="w-4 h-4" />, title: 'Soft Skills', desc: 'Etika Profesional', link: '/program/soft-skills' },
-                 { icon: <Award className="w-4 h-4" />, title: 'Sertifikasi', desc: 'Standar Industri', link: '/program/sertifikasi' },
-                ].map((item, i) => (
-                 <motion.div
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                 {[
+                  { icon: <Monitor className="w-4 h-4" />, title: 'Jaringan Dasar', desc: 'Topologi & Switching', link: '/program/jaringan-dasar' },
+                  { icon: <Network className="w-4 h-4" />, title: 'Cloud & Server', desc: 'Sistem Operasi & Cloud', link: '/program' },
+                  { icon: <ShieldCheck className="w-4 h-4" />, title: 'Pemrograman Dasar', desc: 'Logika & Algoritma', link: '/program' },
+                  { icon: <Wifi className="w-4 h-4" />, title: 'Mikrotik', desc: 'MTCNA Prep', link: '/program/mikrotik' },
+                  { icon: <Cpu className="w-4 h-4" />, title: 'Hardware', desc: 'Troubleshooting PC', link: '/program/hardware' },
+                  { icon: <Camera className="w-4 h-4" />, title: 'Multimedia', desc: 'Desain & Video', link: '/program/multimedia' },
+                  { icon: <Users className="w-4 h-4" />, title: 'Soft Skills', desc: 'Etika Profesional', link: '/program/soft-skills' },
+                  { icon: <Award className="w-4 h-4" />, title: 'Sertifikasi', desc: 'Standar Industri', link: '/program/sertifikasi' },
+                 ].map((item, i) => (
+                  <div
                     key={i}
-                    variants={itemVariants}
                      className="bg-white p-4 rounded-[10px] border border-gray-100 hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-navy/10 transition-all duration-300 ease-in-out group flex flex-col justify-between h-full"
                    >
                      <div className="w-8 h-8 rounded-[10px] bg-brand-pink-start/10 border border-brand-pink-start/20 flex items-center justify-center text-brand-pink-start mb-3">
@@ -225,9 +191,9 @@ export default function Home() {
                        <h3 className="text-xs font-bold text-brand-navy mb-1 font-serif group-hover:text-brand-pink-start transition-colors">{item.title}</h3>
                        <p className="text-[10px] text-brand-navy/60 font-medium">{item.desc}</p>
                      </div>
-                  </motion.div>
+                  </div>
                 ))}
-            </motion.div>
+            </div>
           </div>
         </FadeIn>
       </section>
@@ -296,7 +262,7 @@ export default function Home() {
       </section>
 
       {/* 5. Prestasi */}
-      <section className="py-16 bg-[#F5F5F5] border-y border-gray-200">
+      <section className="py-16 bg-[#FDFDFD] bg-grid-light border-y border-gray-200">
         <FadeIn>
           <div className="container mx-auto px-6 max-w-280">
             <div className="mb-8">

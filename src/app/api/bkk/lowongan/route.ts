@@ -6,8 +6,10 @@ export async function GET() {
     const lowongan = await prisma.lowonganKerja.findMany({
       include: { mitra: true },
       orderBy: { createdAt: "desc" },
+      take: 50,
     });
-    return NextResponse.json(lowongan);
+
+    return NextResponse.json({ vacancies: lowongan });
   } catch (error) {
     console.error("Error fetching lowongan:", error);
     return NextResponse.json({ error: "Failed to fetch lowongan" }, { status: 500 });

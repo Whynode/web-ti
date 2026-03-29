@@ -71,7 +71,7 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya, 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="py-12 bg-white"
+        className="py-12"
       >
         <div className="container mx-auto px-6 max-w-[1120px]">
 
@@ -315,7 +315,7 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya, 
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="py-12 bg-white"
+        className="py-12"
       >
         <div className="container mx-auto px-6 max-w-[1120px]">
 
@@ -564,7 +564,7 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya, 
                 <div className="flex-1 text-center lg:text-left">
                   <span className="inline-block px-3 py-1 bg-brand-pink-start/20 text-brand-pink-start text-[10px] font-bold uppercase tracking-widest rounded-[5px] mb-3">Sambutan Kepala Sekolah</span>
                   <h3 className="text-xl md:text-2xl font-bold text-white font-serif mb-3">{kepalaSekolah?.nama || "Denny Umar Setiana, S.E., M.M."}</h3>
-                  <p className="text-sm text-white/60 leading-relaxed mb-4 max-w-xl">"Di era Revolusi Industri 4.0 dan Society 5.0, penguasaan teknologi informasi bukan lagi sebuah pilihan, melainkan keharusan. SMKS Telematika Indramayu hadir untuk mencetak generasi emas IT yang kompeten dan berakhlak mulia."</p>
+                  <p className="text-sm text-white/60 leading-relaxed mb-4 max-w-xl">&quot;Di era Revolusi Industri 4.0 dan Society 5.0, penguasaan teknologi informasi bukan lagi sebuah pilihan, melainkan keharusan. SMKS Telematika Indramayu hadir untuk mencetak generasi emas IT yang kompeten dan berakhlak mulia.&quot;</p>
                   <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
                     <span className="px-3 py-1 bg-white/10 text-white/80 text-xs font-bold rounded-[5px]">S2</span>
                     <span className="px-3 py-1 bg-brand-pink-start/20 text-brand-pink-start text-xs font-bold rounded-[5px]">Tersertifikasi</span>
@@ -652,7 +652,7 @@ export default function InformasiClient({ guruList, kepalaSekolah, guruLainnya, 
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="py-12 bg-white"
+        className="py-12"
       >
         <div className="container mx-auto px-6 max-w-[1120px]">
 

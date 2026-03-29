@@ -49,7 +49,7 @@ export default function ProfilPage() {
         </div>
       </div>
 
-      <section className="py-20">
+      <section className="py-20 bg-grid-light">
         <div className="container mx-auto px-6 max-w-[1120px]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 

@@ -18,58 +18,62 @@ async function getGuru() {
 
 async function getSiswaData() {
   try {
-    const [totalSiswa, totalKelas, daftarKelas] = await Promise.all([
+    // PARALEL: Query semua data statistik sekaligus di DATABASE level
+    const [
+      totalSiswa,
+      totalKelas,
+      daftarKelas,
+      lakiLaki,
+      perempuan,
+      distribusiTingkat,
+      siswaForAge,
+    ] = await Promise.all([
       prisma.siswa.count(),
       prisma.kelas.count(),
-      prisma.kelas.findMany({ orderBy: { namaKelas: 'asc' } }),
+      prisma.kelas.findMany({ 
+        select: { id: true, namaKelas: true },
+        orderBy: { namaKelas: 'asc' } 
+      }),
+      prisma.siswa.count({ where: { jenisKelamin: "L" } }),
+      prisma.siswa.count({ where: { jenisKelamin: "P" } }),
+      // Hitung distribusi per tingkat via kelas + siswa count
+      prisma.kelas.findMany({
+        select: { 
+          id: true, 
+          namaKelas: true,
+          _count: { select: { siswa: true } }
+        }
+      }),
+      // Ambil hanya tanggalLahir untuk hitung umur (data kecil)
+      prisma.siswa.findMany({
+        select: { tanggalLahir: true },
+        where: { tanggalLahir: { not: null } },
+      }),
     ]);
-    
-    const siswaList = await prisma.siswa.findMany({
-      include: { kelas: true },
+
+    // Hitung distribusi kelas per tingkat dari kelas data
+    const distribusiKelas: Record<string, number> = { X: 0, XI: 0, XII: 0 };
+    distribusiTingkat.forEach((kelas) => {
+      const tingkat = kelas.namaKelas.split(" ")[0];
+      if (tingkat === "X" || tingkat === "XI" || tingkat === "XII") {
+        distribusiKelas[tingkat] += kelas._count.siswa;
+      }
     });
 
-    const currentYear = 2026;
+    // Hitung distribusi usia (hanya dari tanggalLahir, bukan semua data siswa)
+    const currentYear = new Date().getFullYear();
     const usiaCounts: Record<number, number> = {};
     
-    let lakiLaki = 0;
-    let perempuan = 0;
-
-    // Count by tingkat
-    const distribusiKelas: Record<string, number> = {};
-    daftarKelas.forEach((kelas) => {
-      const namaKelas = kelas.namaKelas;
-      const tingkat = namaKelas.split(" ")[0];
-      if (tingkat === "X" || tingkat === "XI" || tingkat === "XII") {
-        distribusiKelas[tingkat] = (distribusiKelas[tingkat] || 0);
-      }
-    });
-
-    siswaList.forEach((siswa) => {
-      // Count by class level
-      const namaKelas = siswa.kelas.namaKelas;
-      const tingkat = namaKelas.split(" ")[0];
-      if (tingkat === "X" || tingkat === "XI" || tingkat === "XII") {
-        distribusiKelas[tingkat] = (distribusiKelas[tingkat] || 0) + 1;
-      }
-
-      // Count by gender
-      if (siswa.jenisKelamin === "L") {
-        lakiLaki++;
-      } else {
-        perempuan++;
-      }
-
-      // Count by age
+    siswaForAge.forEach((siswa) => {
       if (siswa.tanggalLahir) {
         const tahunLahir = new Date(siswa.tanggalLahir).getFullYear();
         const usia = currentYear - tahunLahir;
-        if (usia >= 15 && usia <= 20) {
+        if (usia >= 14 && usia <= 21) {
           usiaCounts[usia] = (usiaCounts[usia] || 0) + 1;
         }
       }
     });
 
-    // Convert usiaCounts to sorted array
     const distribusiUsia = Object.entries(usiaCounts)
       .map(([usia, count]) => ({ usia: parseInt(usia), count }))
       .sort((a, b) => a.usia - b.usia);

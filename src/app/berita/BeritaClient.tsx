@@ -160,14 +160,6 @@ export default function BeritaClient({ artikel }: Props) {
                   })
                 )}
               </div>
-
-              <div className="flex justify-center items-center gap-2 mt-12">
-                <button className="w-8 h-8 rounded-[10px] bg-white border border-gray-200 text-gray-500 flex items-center justify-center hover:bg-gray-50 hover:text-brand-navy transition-colors text-xs font-bold disabled:opacity-50" disabled>&laquo;</button>
-                <button className="w-8 h-8 rounded-[10px] bg-brand-pink-start text-white flex items-center justify-center shadow-md text-xs font-bold">1</button>
-                <button className="w-8 h-8 rounded-[10px] bg-white border border-gray-200 text-gray-500 flex items-center justify-center hover:bg-gray-50 hover:text-brand-navy transition-colors text-xs font-bold">2</button>
-                <button className="w-8 h-8 rounded-[10px] bg-white border border-gray-200 text-gray-500 flex items-center justify-center hover:bg-gray-50 hover:text-brand-navy transition-colors text-xs font-bold">3</button>
-                <button className="w-8 h-8 rounded-[10px] bg-white border border-gray-200 text-gray-500 flex items-center justify-center hover:bg-gray-50 hover:text-brand-navy transition-colors text-xs font-bold">&raquo;</button>
-              </div>
             </motion.div>
         </div>
       </section>

@@ -136,7 +136,7 @@ export default function MikrotikAcademyPage() {
         {/* ============================================ */}
         {/* SECTION 1: KENAPA MEMILIH - DEEP BLUE */}
         {/* ============================================ */}
-        <section className="py-20 lg:py-24 px-6 bg-[#0B1120]">
+        <section className="py-20 lg:py-24 px-6 bg-[#0B1120] bg-grid-dark">
           <div className="max-w-6xl mx-auto">
             
             <div className="text-center mb-14">
@@ -171,7 +171,7 @@ export default function MikrotikAcademyPage() {
         {/* ============================================ */}
         {/* SECTION 2: MTCNA FOCUS - LIGHT THEME */}
         {/* ============================================ */}
-        <section className="py-20 lg:py-24 px-6 bg-slate-50">
+        <section className="py-20 lg:py-24 px-6 bg-slate-50 bg-grid-light">
           <div className="max-w-6xl mx-auto">
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -271,7 +271,7 @@ export default function MikrotikAcademyPage() {
         {/* ============================================ */}
         {/* SECTION 3: TIMELINE - DEEP BLUE */}
         {/* ============================================ */}
-        <section className="py-20 lg:py-24 px-6 bg-[#0B1120]">
+        <section className="py-20 lg:py-24 px-6 bg-[#0B1120] bg-grid-dark">
           <div className="max-w-6xl mx-auto">
             
             <div className="text-center mb-14">

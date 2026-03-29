@@ -121,8 +121,8 @@ export default function GaleriTable({ galeriList }: { galeriList: Galeri[] }) {
       }
 
       closeModal();
-      const updatedData = await fetch("/api/galeri").then((r) => r.json());
-      setData(updatedData);
+      const json = await fetch("/api/galeri").then((r) => r.json());
+      setData(json.images || []);
     } catch (error) {
       console.error("Error:", error);
       alert("Terjadi kesalahan");
@@ -131,16 +131,23 @@ export default function GaleriTable({ galeriList }: { galeriList: Galeri[] }) {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Apakah Anda yakin ingin menghapus foto ini?")) return;
+  const handleDelete = async (id: string, imageUrl: string) => {
+    if (!confirm("Yakin ingin menghapus foto ini?")) return;
 
     try {
-      const res = await fetch(`/api/galeri/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/galeri/${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageUrl }),
+      });
+      
       if (!res.ok) {
         const error = await res.json();
         alert(error.error || "Gagal menghapus");
         return;
       }
+      
+      alert("Berhasil dihapus");
       setData(data.filter((item) => item.id !== id));
     } catch (error) {
       console.error("Error:", error);
@@ -225,7 +232,7 @@ export default function GaleriTable({ galeriList }: { galeriList: Galeri[] }) {
                           <Edit2 className="w-4 h-4" />
                         </button>
                         <button
-                          onClick={() => handleDelete(item.id)}
+                          onClick={() => handleDelete(item.id, item.imageUrl)}
                           className="p-2 text-zinc-400 hover:text-red-500 hover:bg-red-500/10 rounded-md transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />

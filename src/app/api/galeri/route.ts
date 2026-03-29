@@ -6,7 +6,7 @@ export async function GET() {
     const galeri = await prisma.galeri.findMany({
       orderBy: { createdAt: "desc" },
     });
-    return NextResponse.json(galeri);
+    return NextResponse.json({ images: galeri });
   } catch (error) {
     console.error("Error fetching galeri:", error);
     return NextResponse.json({ error: "Failed to fetch galeri" }, { status: 500 });
@@ -36,3 +36,4 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to create galeri" }, { status: 500 });
   }
 }
+ 

@@ -61,10 +61,10 @@ export default function AboutContent() {
               <span className="text-brand-pink-start font-bold uppercase tracking-widest text-[10px] mb-2 block">Sambutan Pimpinan</span>
               <h2 className="text-xl md:text-2xl font-bold text-brand-navy font-serif mb-4 leading-tight">Bersama Membangun <br/><span className="text-brand-pink-start">Masa Depan Digital</span></h2>
               <div className="prose prose-sm text-brand-navy/60 font-medium leading-relaxed mb-6">
-                <p>Assalamu'alaikum Warahmatullahi Wabarakatuh,</p>
+                <p>Assalamu&apos;alaikum Warahmatullahi Wabarakatuh,</p>
                 <p>Puji syukur kehadirat Allah SWT atas segala limpahan rahmat-Nya. Di era Revolusi Industri 4.0 dan Society 5.0, penguasaan teknologi informasi bukan lagi sebuah pilihan, melainkan keharusan.</p>
                 <p>SMKS Telematika Indramayu hadir sebagai jawaban atas tantangan tersebut. Kami berkomitmen menyelenggarakan pendidikan vokasi berkualitas tinggi di bidang Teknik Komputer dan Jaringan. Dengan fasilitas modern, kurikulum tersinkronisasi industri, dan tenaga pendidik profesional, kami optimismo dapat mengantarkan peserta didik meraih kesuksesan.</p>
-                <p>Wassalamu'alaikum Warahmatullahi Wabarakatuh.</p>
+                <p>Wassalamu&apos;alaikum Warahmatullahi Wabarakatuh.</p>
               </div>
               <div>
                 <h4 className="font-bold text-brand-navy text-sm font-serif">Denny Umar Setiana, S.E., M.M.</h4>
@@ -87,7 +87,7 @@ export default function AboutContent() {
               </div>
               <h3 className="text-lg font-bold text-brand-navy font-serif mb-3">Visi Kami</h3>
               <p className="text-xs text-brand-navy/60 font-medium leading-relaxed">
-                "Menjadi lembaga pendidikan kejuruan IT terkemuka yang menghasilkan lulusan kompeten, berkarakter, berjiwa wirausaha, dan berwawasan lingkungan."
+                &quot;Menjadi lembaga pendidikan kejuruan IT terkemuka yang menghasilkan lulusan kompeten, berkarakter, berjiwa wirausaha, dan berwawasan lingkungan.&quot;
               </p>
             </motion.div>
 

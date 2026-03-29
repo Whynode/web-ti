@@ -23,6 +23,7 @@ export async function GET(request: Request) {
 
     const artikel = await prisma.artikelBlog.findMany({
       orderBy: { tanggalPublish: "desc" },
+      take: 20,
     });
 
     return NextResponse.json(artikel);
