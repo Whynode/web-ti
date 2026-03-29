@@ -26,9 +26,9 @@ export const metadata: Metadata = {
     "bursa kerja khusus indramayu",
   ],
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon.ico",
+    icon: 'icon.jpg',
+    shortcut: 'icon.jpg',
+    apple: 'icon.jpg',
   },
   openGraph: {
     title: "SMKS Telematika Indramayu | Sekolah IT & TKJ Terbaik",
