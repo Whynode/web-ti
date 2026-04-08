@@ -1,0 +1,5 @@
+﻿{
+  "Description": "File verifikasi kepemilikan domain untuk Microsoft 365 - letakkan di akar situs web",
+  "Domain": "smkti.sch.id",
+  "Id": "e858e0b8-5ffc-4169-a966-31f27363276b"
+}
