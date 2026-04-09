@@ -1,0 +1,18 @@
+{
+  "reviewer": "code-reviewer",
+  "fileReviewed": "src/app/program/mikrotik/page.tsx",
+  "status": "changes_requested",
+  "verdict": "approve",
+  "severitySummary": {
+    "blocker": 0,
+    "major": 1,
+    "minor": 2,
+    "nitpick": 1,
+    "praise": 3
+  },
+  "requiredFixes": [
+    "Add sizes='100vw' prop to hero Image component"
+  ],
+  "summaryLocation": "code-review/summary.md",
+  "timestamp": "2026-04-09T16:14:00Z"
+}
