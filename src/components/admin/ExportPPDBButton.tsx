@@ -46,6 +46,7 @@ export default function ExportPPDBButton({ data }: Props) {
       "'" + ppdb.noWA,
       ppdb.email || "-",
       ppdb.alamat || "-",
+      // @ts-ignore
       ppdb.referensi || '-',
       ppdb.status === "PENDING" ? "Pending" : ppdb.status === "DITERIMA" ? "Diterima" : "Ditolak",
       new Date(ppdb.tanggalDaftar).toLocaleDateString("id-ID", {
