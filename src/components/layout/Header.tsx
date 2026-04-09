@@ -96,28 +96,47 @@ export default function Header() {
           </Link>
 
             <nav className="hidden lg:flex">
-            <div className="flex items-center gap-10 font-sans text-[12px] font-bold tracking-wide uppercase">
+            <div className="flex items-center gap-8 font-sans text-[12px] font-bold tracking-wide uppercase">
               <Link href="/" className={`transition-colors ${getNavTextColor()}`}>Beranda</Link>
               <Link href="/about" className={`transition-colors ${getNavTextColor()}`}>Profil</Link>
-              <Link href="/informasi" className={`transition-colors ${getNavTextColor()}`}>Informasi</Link>
 
-              <Link href="/program" className={`transition-colors ${getNavTextColor()}`}>Program</Link>
-              <Link href="/program/mikrotik" className={`transition-colors text-brand-pink-start hover:text-white ${getNavTextColor()}`}>MikroTik</Link>
-              <Link href="/fasilitas" className={`transition-colors ${getNavTextColor()}`}>Fasilitas</Link>
-              <Link href="/bkk" className={`transition-colors ${getNavTextColor()}`}>BKK</Link>
-
-              <Link href="/kelas" className={`transition-colors ${getNavTextColor()}`}>Kelas</Link>
-
+              {/* Dropdown Fasilitas */}
               <div
                 className="relative"
-                onMouseEnter={() => handleDropdownEnter("lainnya")}
+                onMouseEnter={() => handleDropdownEnter("fasilitas")}
                 onMouseLeave={handleDropdownLeave}
               >
                 <div className={`flex items-center gap-1 transition-colors py-2 cursor-pointer ${getNavTextColor()}`}>
-                  <span>Lainnya</span> <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === "lainnya" ? "rotate-180" : ""}`} />
+                  <span>Fasilitas</span> <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === "fasilitas" ? "rotate-180" : ""}`} />
                 </div>
                 <AnimatePresence>
-                  {activeDropdown === "lainnya" && (
+                  {activeDropdown === "fasilitas" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute top-full left-0 pt-2 min-w-[160px]"
+                    >
+                      <div className="bg-white rounded-[10px] shadow-lg border border-gray-100 overflow-hidden py-1">
+                        <Link href="/bkk" className="block px-4 py-2 text-xs text-brand-navy/70 font-medium hover:bg-brand-navy/5 hover:text-brand-pink-start transition-colors">BKK</Link>
+                        <Link href="/kelas" className="block px-4 py-2 text-xs text-brand-navy/70 font-medium hover:bg-brand-navy/5 hover:text-brand-pink-start transition-colors">Kelas</Link>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Dropdown Informasi */}
+              <div
+                className="relative"
+                onMouseEnter={() => handleDropdownEnter("informasi")}
+                onMouseLeave={handleDropdownLeave}
+              >
+                <div className={`flex items-center gap-1 transition-colors py-2 cursor-pointer ${getNavTextColor()}`}>
+                  <span>Informasi</span> <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === "informasi" ? "rotate-180" : ""}`} />
+                </div>
+                <AnimatePresence>
+                  {activeDropdown === "informasi" && (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -125,15 +144,18 @@ export default function Header() {
                       className="absolute top-full left-0 pt-2 min-w-[180px]"
                     >
                       <div className="bg-white rounded-[10px] shadow-lg border border-gray-100 overflow-hidden py-1">
-                        <Link href="/student-life" className="block px-4 py-2 text-xs text-brand-navy/70 font-medium hover:bg-brand-navy/5 hover:text-brand-pink-start transition-colors">Student Life</Link>
                         <Link href="/galeri" className="block px-4 py-2 text-xs text-brand-navy/70 font-medium hover:bg-brand-navy/5 hover:text-brand-pink-start transition-colors">Galeri Sekolah</Link>
-                        <Link href="/berita" className="block px-4 py-2 text-xs text-brand-navy/70 font-medium hover:bg-brand-navy/5 hover:text-brand-pink-start transition-colors">Berita & Agenda</Link>
-                        <Link href="/kontak" className="block px-4 py-2 text-xs text-brand-navy/70 font-medium hover:bg-brand-navy/5 hover:text-brand-pink-start transition-colors">Hubungi Kami</Link>
+                        <Link href="/berita" className="block px-4 py-2 text-xs text-brand-navy/70 font-medium hover:bg-brand-navy/5 hover:text-brand-pink-start transition-colors">Berita Sekolah</Link>
+                        <Link href="/student-life" className="block px-4 py-2 text-xs text-brand-navy/70 font-medium hover:bg-brand-navy/5 hover:text-brand-pink-start transition-colors">Student Life</Link>
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
+
+              <Link href="/program" className={`transition-colors ${getNavTextColor()}`}>Program</Link>
+              <Link href="/program/mikrotik" className={`transition-colors text-brand-pink-start hover:text-white ${getNavTextColor()}`}>MikroTik</Link>
+              <Link href="/kontak" className={`transition-colors ${getNavTextColor()}`}>Hubungi Kami</Link>
             </div>
           </nav>
 
