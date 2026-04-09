@@ -15,6 +15,7 @@ const inter = Inter({
 
 // SEO Global - Target Top 5 Google Indramayu
 export const metadata: Metadata = {
+  metadataBase: new URL('https://smkti.sch.id'),
   title: "SMKS Telematika Indramayu | Sekolah IT & TKJ Terbaik di Indramayu",
   description: "Mencari SMK IT terbaik di Indramayu? SMKS Telematika Indramayu mencetak lulusan TKJ dan profesional teknologi yang siap kerja dan berkarir di industri global. Daftar sekarang!",
   keywords: [

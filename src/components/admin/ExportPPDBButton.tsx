@@ -39,10 +39,10 @@ export default function ExportPPDBButton({ data }: Props) {
     const rows = data.map((ppdb, index) => [
       index + 1,
       ppdb.namaLengkap,
-      ppdb.nisn,
+      "'" + ppdb.nisn,
       ppdb.asalSekolah,
       ppdb.jenisKelamin,
-      ppdb.noWA,
+      "'" + ppdb.noWA,
       ppdb.email || "-",
       ppdb.alamat || "-",
       ppdb.status === "PENDING" ? "Pending" : ppdb.status === "DITERIMA" ? "Diterima" : "Ditolak",

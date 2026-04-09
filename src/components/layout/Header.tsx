@@ -100,15 +100,15 @@ export default function Header() {
               <Link href="/" className={`transition-colors ${getNavTextColor()}`}>Beranda</Link>
               <Link href="/about" className={`transition-colors ${getNavTextColor()}`}>Profil</Link>
 
-              {/* Dropdown Fasilitas */}
+              {/* Dropdown Fasilitas - Click to /fasilitas, Hover for dropdown */}
               <div
                 className="relative"
                 onMouseEnter={() => handleDropdownEnter("fasilitas")}
                 onMouseLeave={handleDropdownLeave}
               >
-                <div className={`flex items-center gap-1 transition-colors py-2 cursor-pointer ${getNavTextColor()}`}>
+                <Link href="/fasilitas" className={`flex items-center gap-1 transition-colors py-2 ${getNavTextColor()}`}>
                   <span>Fasilitas</span> <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === "fasilitas" ? "rotate-180" : ""}`} />
-                </div>
+                </Link>
                 <AnimatePresence>
                   {activeDropdown === "fasilitas" && (
                     <motion.div
@@ -126,15 +126,15 @@ export default function Header() {
                 </AnimatePresence>
               </div>
 
-              {/* Dropdown Informasi */}
+              {/* Dropdown Informasi - Click to /informasi, Hover for dropdown */}
               <div
                 className="relative"
                 onMouseEnter={() => handleDropdownEnter("informasi")}
                 onMouseLeave={handleDropdownLeave}
               >
-                <div className={`flex items-center gap-1 transition-colors py-2 cursor-pointer ${getNavTextColor()}`}>
+                <Link href="/informasi" className={`flex items-center gap-1 transition-colors py-2 ${getNavTextColor()}`}>
                   <span>Informasi</span> <ChevronDown className={`w-3 h-3 transition-transform ${activeDropdown === "informasi" ? "rotate-180" : ""}`} />
-                </div>
+                </Link>
                 <AnimatePresence>
                   {activeDropdown === "informasi" && (
                     <motion.div

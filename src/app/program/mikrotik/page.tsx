@@ -1,86 +1,138 @@
-// src/app/program/mikrotik/page.tsx
+'use client';
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Award, BookOpen, UserCheck, ArrowRight, ShieldCheck, CheckCircle, Router, Wifi, Lock, Gauge, GitBranch, Network, FlaskConical, FileCheck, Monitor, Ticket, Briefcase, Circle } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { 
+  ArrowRight, 
+  Award,
+  CheckCircle,
+  GraduationCap,
+  Wifi,
+  Shield,
+  Server,
+  Network,
+  Gauge,
+  Lock,
+  Wrench
+} from 'lucide-react';
 import Header from '@/components/layout/Header';
 
-const benefits = [
-  {
-    icon: <Award className="w-5 h-5" />,
-    title: 'Sertifikasi Internasional',
-    description: 'Sertifikat MTCNA langsung dari MikroTik Latvia yang diakui secara global.',
-  },
-  {
-    icon: <BookOpen className="w-5 h-5" />,
-    title: 'Kurikulum Industri',
-    description: 'Materi up-to-date sesuai standar terbaru MikroTik RouterOS.',
-  },
-  {
-    icon: <UserCheck className="w-5 h-5" />,
-    title: 'Instruktur Tersertifikasi',
-    description: 'Diajar langsung oleh certified trainer (MTCRE/MTCINE).',
-  },
-];
+// Animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+} as const;
 
-const curriculum = [
-  { title: 'Routing (Static & OSPF)' },
-  { title: 'Bridging & Switch Management' },
-  { title: 'Wireless Configuration' },
-  { title: 'Firewall & Security' },
-  { title: 'QoS & Bandwidth Management' },
-  { title: 'VPN & Tunnel Protocols' },
-];
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+} as const;
 
-const certificationPath = [
-  { level: 'MTCNA', name: 'Network Associate', status: 'current' },
-  { level: 'MTCRE', name: 'Routing Engineer', status: 'next' },
-  { level: 'MTCINE', name: 'Internetworking Engineer', status: 'future' },
-];
-
-const learningSteps = [
+// Curriculum modules data with descriptions
+const curriculumModules = [
   {
-    step: '01',
-    title: 'Basic Networking',
-    description: 'Pemahaman dasar TCP/IP & Topologi',
-    icon: <Monitor className="w-5 h-5" />,
+    number: '01',
+    title: 'Initial Configuration',
+    topics: [
+      'Pengenalan RouterOS',
+      'Konfigurasi Awal Router',
+      'Akses via Winbox & Webfig',
+      'Upgrade RouterOS',
+      'Backup & Restore Konfigurasi'
+    ]
   },
   {
-    step: '02',
-    title: 'RouterOS Fundamental',
-    description: 'Eksplorasi fitur dasar MikroTik',
-    icon: <Router className="w-5 h-5" />,
+    number: '02',
+    title: 'DHCP Server',
+    topics: [
+      'DHCP Server Setup',
+      'DHCP Leases Management',
+      'DHCP Relay Agent',
+      'Konfigurasi IP Pool',
+      'DHCP Network Monitoring'
+    ]
   },
   {
-    step: '03',
-    title: 'Advanced Lab',
-    description: 'Praktik real-case: Routing, Firewall, QoS',
-    icon: <FlaskConical className="w-5 h-5" />,
+    number: '03',
+    title: 'Bridging',
+    topics: [
+      'Konsep Bridge LAN',
+      'Bridge Filter',
+      'Switch Chip Configuration',
+      'Port Bridge vs Bridge Port',
+      'STP/RSTP Protocol'
+    ]
   },
   {
-    step: '04',
-    title: 'Ujian MTCNA',
-    description: 'Simulasi & Ujian Sertifikasi Resmi',
-    icon: <FileCheck className="w-5 h-5" />,
-  },
-];
-
-const extraBenefits = [
-  {
-    icon: <Monitor className="w-6 h-6" />,
-    title: 'Akses RouterBoard Fisik',
-    description: 'Praktik langsung dengan perangkat nyata.',
+    number: '04',
+    title: 'Routing',
+    topics: [
+      'Static Routing',
+      'Dynamic Routing (RIP, OSPF)',
+      'Route Policy',
+      'ECMP Load Balancing',
+      'Route Filter & Distance'
+    ]
   },
   {
-    icon: <Ticket className="w-6 h-6" />,
-    title: 'Lisensi RouterOS Level 4',
-    description: 'Student license untuk setiap siswa.',
+    number: '05',
+    title: 'Wireless',
+    topics: [
+      'Pengenalan Wireless',
+      'AP & Client Mode',
+      'Wireless Security',
+      'WDS & Mesh',
+      'Frekuensi & Channel'
+    ]
   },
   {
-    icon: <Briefcase className="w-6 h-6" />,
-    title: 'Peluang Karir Jaringan',
-    description: 'Kontrak kerja dengan mitra industri.',
+    number: '06',
+    title: 'Firewall',
+    topics: [
+      'Firewall Filter Rules',
+      'NAT (Source/Destination NAT)',
+      'Connection Tracking',
+      'Firewall Mangle',
+      'Layer 7 Protocol'
+    ]
   },
+  {
+    number: '07',
+    title: 'QoS',
+    topics: [
+      'Queue Types (SFQ, PCQ)',
+      'Bandwidth Management',
+      'Simple Queue vs Queue Tree',
+      'Prioritas Traffic',
+      'PCQ Rate Configuration'
+    ]
+  },
+  {
+    number: '08',
+    title: 'Tunnels',
+    topics: [
+      'PPTP & L2TP',
+      'IPsec Tunnel',
+      'OVPN Configuration',
+      'EoIP & GRE Tunnel',
+      'ZeroTier Integration'
+    ]
+  },
+  {
+    number: '09',
+    title: 'Misc Tools',
+    topics: [
+      'Tool Ping & Traceroute',
+      'Bandwidth Test',
+      'Traffic Monitoring',
+      'Log Analysis',
+      'Torch & Sniffer'
+    ]
+  }
 ];
 
 export default function MikrotikAcademyPage() {
@@ -90,267 +142,415 @@ export default function MikrotikAcademyPage() {
       
       <main className="flex flex-col">
         
-        {/* HERO SECTION - Deep Blue Dark */}
-        <section className="relative w-full h-[500px] xl:h-[600px] flex items-center bg-[#0B1120]">
-          <Image
-            src="/ban-mikrotik.webp" 
-            alt="MikroTik Academy Background"
-            fill
-            className="object-cover object-right"
-            priority
-          />
-          
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0B1120] via-[#0B1120]/80 to-transparent" />
-
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full">
-            <div className="max-w-lg">
-              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1 rounded-full mb-4">
-                <ShieldCheck className="w-3.5 h-3.5 text-brand-pink-start" />
-                <span className="text-[10px] font-semibold text-white uppercase tracking-widest">
-                  Official MikroTik Academy
-                </span>
-              </div>
-              
-              <h1 className="text-4xl lg:text-[3.5rem] font-bold text-white tracking-tight leading-[1.15] mb-3">
-                Pusat Keunggulan <br />
-                <span className="text-brand-pink-start">Jaringan Masa Depan</span>
-              </h1>
-              
-              <p className="text-sm lg:text-base text-white/70 mb-6 leading-relaxed max-w-md">
-                SMK Swasta Pertama di Indramayu dengan lisensi resmi untuk mencetak Network Engineer berstandar global.
-              </p>
-              
-              <Link
-                href="/ppdb"
-                className="inline-flex items-center gap-2 bg-brand-pink-start hover:bg-[#d94f92] text-white text-xs font-bold px-6 py-2.5 rounded-lg transition-all shadow-lg shadow-brand-pink-start/20 uppercase tracking-wide"
-              >
-                Daftar PPDB <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
+        {/* ============================================ */}
+        {/* SECTION 1: HERO SECTION */}
+        {/* ============================================ */}
+        <section className="relative min-h-[600px] lg:min-h-[700px] flex items-center bg-[#0B1120]">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <Image
+              src="/ban-mikrotik.webp"
+              alt="MikroTik Academy Background"
+              fill
+              className="object-cover object-right"
+              priority
+              sizes="100vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0B1120] via-[#0B1120]/85 to-transparent" />
           </div>
-        </section>
 
-        {/* Divider */}
-        <div className="w-full border-y border-white/10 bg-[#0B1120] relative z-40" />
-
-        {/* ============================================ */}
-        {/* SECTION 1: KENAPA MEMILIH - DEEP BLUE */}
-        {/* ============================================ */}
-        <section className="py-20 lg:py-24 px-6 bg-[#0B1120] bg-grid-dark">
-          <div className="max-w-6xl mx-auto">
-            
-            <div className="text-center mb-14">
-              <h2 className="text-2xl lg:text-3xl font-bold text-white mb-3">
-                Kenapa Memilih <span className="text-brand-pink-start">Mikrotik Academy</span>
-              </h2>
-              <p className="text-white/50 text-sm max-w-xl mx-auto">
-                SMKS Telematika Indramayu
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {benefits.map((item, index) => (
-                <div 
-                  key={index}
-                  className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-brand-pink-start/20 transition-all duration-300"
-                >
-                  <div className="w-10 h-10 rounded-lg bg-brand-pink-start/10 border border-brand-pink-start/20 flex items-center justify-center mb-4 text-brand-pink-start">
-                    {item.icon}
-                  </div>
-                  <h3 className="text-base font-semibold text-white mb-2">{item.title}</h3>
-                  <p className="text-white/50 text-sm leading-relaxed">
-                    {item.description}
-                  </p>
+          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full py-16 lg:py-20">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+            >
+              {/* Hero Content */}
+              <motion.div variants={fadeInUp} className="max-w-2xl">
+                <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1 rounded-full mb-4">
+                  <Award className="w-3.5 h-3.5 text-brand-pink-start" />
+                  <span className="text-[10px] font-semibold text-white uppercase tracking-widest">
+                    Official MikroTik Academy
+                  </span>
                 </div>
-              ))}
-            </div>
-
-          </div>
-        </section>
-
-        {/* ============================================ */}
-        {/* SECTION 2: MTCNA FOCUS - LIGHT THEME */}
-        {/* ============================================ */}
-        <section className="py-20 lg:py-24 px-6 bg-slate-50 bg-grid-light">
-          <div className="max-w-6xl mx-auto">
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-              
-              {/* Left: MTCNA Explanation */}
-              <div className="order-2 lg:order-1">
-                <div className="inline-flex items-center gap-2 bg-brand-pink-start/10 border border-brand-pink-start/20 px-3 py-1 rounded-full mb-4">
-                  <span className="text-[10px] font-bold text-brand-pink-start uppercase tracking-widest">Focus</span>
-                </div>
-                <h2 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-5">
-                  MTCNA <span className="text-brand-pink-start">Certification</span>
-                </h2>
-                <p className="text-slate-600 text-sm leading-relaxed mb-6">
-                  MikroTik Certified Network Associate (MTCNA) adalah sertifikasi fundamental yang diakui secara global. Peserta akan mempelajari konsep jaringan tingkat lanjut termasuk routing, bridging, firewall, wireless, hingga manajemen bandwidth.
+                
+                <h1 className="text-4xl lg:text-[3.5rem] font-bold text-white tracking-tight leading-[1.15] mb-4">
+                  Mikrotik <span className="text-brand-pink-start">Academy</span>
+                </h1>
+                
+                <p className="text-sm lg:text-base text-white/70 mb-8 leading-relaxed max-w-lg">
+                  Raih masa depan cerah sebagai Network Engineer profesional dengan sertifikasi internasional dari MikroTik Academy di SMKS Telematika Indramayu.
                 </p>
-                <div className="space-y-3">
-                  {[
-                    'Konsep TCP/IP dan subnetting',
-                    'Static Routing & OSPF',
-                    'Bridging dan Wireless',
-                    'Firewall Filter & NAT',
-                    'Hotspot & User Management',
-                    'Queue & Bandwidth Control',
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <CheckCircle className="w-4 h-4 text-brand-pink-start flex-shrink-0" />
-                      <span className="text-slate-700 text-sm">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right: Certification Path with Glow */}
-              <div className="order-1 lg:order-2">
-                <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-lg">
-                  <h3 className="text-sm font-semibold text-slate-700 mb-6 uppercase tracking-wider">Certification Path</h3>
-                  
-                  <div className="space-y-4">
-                    {certificationPath.map((cert, index) => (
-                      <div key={cert.level} className="relative">
-                        <div className={`flex items-center gap-4 p-4 rounded-xl border transition-all duration-300 ${
-                          cert.status === 'current' 
-                            ? 'bg-brand-pink-start/10 border-brand-pink-start/30' 
-                            : 'bg-slate-50 border-slate-200'
-                        }`}>
-                          <div className={`w-14 h-14 rounded-xl flex items-center justify-center font-bold text-xs border ${
-                            cert.status === 'current'
-                              ? 'bg-gradient-to-br from-brand-pink-start to-brand-blue-start border-brand-pink-start text-white shadow-lg'
-                              : 'bg-slate-100 border-slate-200 text-slate-400'
-                          }`}>
-                            {cert.level}
-                          </div>
-                          
-                          <div className="flex-1">
-                            <p className={`text-sm font-semibold ${
-                              cert.status === 'current' ? 'text-slate-900' : 'text-slate-400'
-                            }`}>{cert.name}</p>
-                            <p className="text-[10px] uppercase tracking-wider mt-0.5 ${
-                              cert.status === 'current' ? 'text-brand-pink-start' : 'text-slate-300'
-                            }">
-                              {cert.status === 'current' ? 'Sedang Dipelajari' : cert.status === 'next' ? 'Selanjutnya' : 'Tingkat Lanjut'}
-                            </p>
-                          </div>
-
-                          {cert.status === 'current' && (
-                            <div className="w-2 h-2 rounded-full bg-brand-pink-start animate-pulse" />
-                          )}
-                        </div>
-                        
-                        {index < certificationPath.length - 1 && (
-                          <div className="absolute left-1/2 -bottom-4 w-0.5 h-4 bg-slate-200 -translate-x-1/2">
-                            <div className={`w-full h-1/2 ${
-                              cert.status === 'current' ? 'bg-gradient-to-b from-brand-pink-start to-transparent' : ''
-                            }`} />
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mt-8 pt-6 border-t border-slate-200">
-                    <div className="flex justify-between text-[10px] text-slate-400 mb-2">
-                      <span>Progress</span>
-                      <span>33%</span>
-                    </div>
-                    <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
-                      <div className="h-full w-[33%] bg-gradient-to-r from-brand-pink-start to-brand-blue-start rounded-full" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
+                
+                <Link
+                  href="/ppdb"
+                  className="inline-flex items-center gap-2 bg-brand-pink-start hover:bg-[#d94f92] text-white text-xs font-bold px-6 py-3 rounded-lg transition-all shadow-lg shadow-brand-pink-start/20 uppercase tracking-wide"
+                >
+                  Daftar Sekarang <ArrowRight className="w-4 h-4" />
+                </Link>
+              </motion.div>
+            </motion.div>
           </div>
         </section>
 
         {/* ============================================ */}
-        {/* SECTION 3: TIMELINE - DEEP BLUE */}
+        {/* SECTION 2: SAMBUTAN KEPALA SEKOLAH */}
         {/* ============================================ */}
-        <section className="py-20 lg:py-24 px-6 bg-[#0B1120] bg-grid-dark">
+        <section className="py-16 lg:py-20 px-6 bg-white">
           <div className="max-w-6xl mx-auto">
-            
-            <div className="text-center mb-14">
-              <h2 className="text-2xl lg:text-3xl font-bold text-white mb-3">
-                Alur Pembelajaran <span className="text-brand-pink-start">& Sertifikasi</span>
-              </h2>
-              <p className="text-white/50 text-sm">
-                Jalur kompetensi dari dasar hingga sertifikasi
-              </p>
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={staggerContainer}
+              className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start"
+            >
+              {/* Photo Placeholder */}
+              <motion.div variants={fadeInUp} className="w-full lg:w-1/3">
+                <div className="w-full h-64 lg:h-80 bg-gray-200 rounded-lg flex items-center justify-center">
+                  <span className="text-gray-400 text-sm">Gambar akan diisi manual</span>
+                </div>
+              </motion.div>
+
+              {/* Sambutan Text */}
+              <motion.div variants={fadeInUp} className="flex-1">
+                <h2 className="text-xl lg:text-2xl font-bold text-slate-900 mb-4">
+                  Sambutan Kepala Sekolah
+                </h2>
+                <div className="space-y-4 text-slate-600 text-sm lg:text-base leading-relaxed">
+                  <p>
+                    <strong className="text-brand-pink-start">MikroTik Academy</strong> adalah program kolaborasi resmi antara SMKS Telematika Indramayu dengan MikroTik Latvia untuk mencetak tenaga ahli jaringan komputer bersertifikat internasional.
+                  </p>
+                  <p>
+                    Kami merasa sangat bangga menjadi mitra resmi MikroTik Academy pertama dan satu-satunya di wilayah Indramayu. Program ini merupakan bukti komitmen kami dalam memberikan pendidikan berkualitas tinggi yang sesuai dengan standar industri teknologi informasi global.
+                  </p>
+                  <p>
+                    Melalui kurikulum yang terstruktur dan pelatihan intensif dengan perangkat nyata, kami optimis lulusan kami akan memiliki kompetensi yang diakui secara internasional dan siap menghadapi tantangan di dunia kerja.
+                  </p>
+                  <div className="flex items-center gap-2 mt-4">
+                    <CheckCircle className="w-5 h-5 text-brand-pink-start" />
+                    <span className="text-slate-700 font-medium">Mitra Resmi MikroTik Academy</span>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ============================================ */}
+        {/* SECTION 3: TENTANG MIKROTIK ACADEMY */}
+        {/* ============================================ */}
+        <section className="py-16 lg:py-20 px-6 bg-slate-50">
+          <div className="max-w-6xl mx-auto">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={staggerContainer}
+              className="text-center mb-12"
+            >
+              <motion.div variants={fadeInUp}>
+                <div className="inline-flex items-center gap-2 bg-brand-pink-start/10 border border-brand-pink-start/20 px-3 py-1 rounded-full mb-4">
+                  <GraduationCap className="w-3.5 h-3.5 text-brand-pink-start" />
+                  <span className="text-[10px] font-bold text-brand-pink-start uppercase tracking-widest">Tentang Program</span>
+                </div>
+              </motion.div>
+              <motion.div variants={fadeInUp}>
+                <h2 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-4">
+                  Apa itu <span className="text-brand-pink-start">MikroTik Academy</span>?
+                </h2>
+              </motion.div>
+            </motion.div>
+
+            {/* Description Cards */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeInUp}
+                className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-brand-pink-start/10 flex items-center justify-center mb-4">
+                  <Server className="w-7 h-7 text-brand-pink-start" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-3">Apa itu MikroTik Academy?</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  MikroTik Academy adalah program pendidikan resmi yang dikelola oleh MikroTik Latvia untuk mencetak Network Engineer profesional yang menguasai teknologi router, wireless, dan keamanan jaringan menggunakan perangkat MikroTik RouterOS.
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeInUp}
+                className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-brand-blue-start/10 flex items-center justify-center mb-4">
+                  <Network className="w-7 h-7 text-brand-blue-start" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-3">Sistem Pembelajaran</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Pembelajaran dilakukan secara intensif dengan metode teori dan praktik langsung menggunakan perangkat routerboard asli. Siswa akan mempelajari konfigurasi router, manajemen bandwidth, wireless networking, hingga keamanan jaringan tingkat lanjut.
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeInUp}
+                className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-green-100 flex items-center justify-center mb-4">
+                  <Award className="w-7 h-7 text-green-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-3">Sertifikasi Internasional</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Lulusan program ini berhak mengikuti ujian sertifikasi MTCNA (MikroTik Certified Network Associate) yang diakui secara global. Sertifikasi ini membuka peluang karir yang luas di berbagai perusahaan jaringan dan ISP di seluruh dunia.
+                </p>
+              </motion.div>
             </div>
 
-            <div className="relative">
-              {/* Horizontal Line */}
-              <div className="hidden lg:block absolute top-8 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-brand-pink-start to-transparent" />
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {learningSteps.map((step, index) => (
-                  <div key={index} className="relative flex flex-col items-center text-center">
-                    {/* Node Circle */}
-                    <div className="w-16 h-16 rounded-full bg-[#0B1120] border-2 border-brand-pink-start flex items-center justify-center text-brand-pink-start shadow-lg shadow-brand-pink-start/20 mb-4 z-10">
-                      {step.icon}
-                    </div>
-                    
-                    {/* Step Number */}
-                    <span className="text-[10px] font-bold text-brand-pink-start uppercase tracking-widest mb-1">
-                      Step {step.step}
-                    </span>
-                    
-                    {/* Content */}
-                    <h3 className="text-base font-semibold text-white mb-1">{step.title}</h3>
-                    <p className="text-white/50 text-xs leading-relaxed max-w-[140px]">
-                      {step.description}
-                    </p>
-
-                    {/* Connector Line (mobile) */}
-                    {index < learningSteps.length - 1 && (
-                      <div className="lg:hidden absolute -bottom-6 left-1/2 w-0.5 h-6 bg-brand-pink-start/30 -translate-x-1/2" />
-                    )}
+            {/* Keunggulan List */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+              className="bg-white border border-slate-200 rounded-2xl p-8"
+            >
+              <h3 className="text-lg font-semibold text-slate-900 mb-6 text-center">Keunggulan Program</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[
+                  'Instruktur bersertifikat MTCRE & MTCINE',
+                  'Akses laboratorium dengan perangkat MikroTik nyata',
+                  'Lisensi RouterOS Level 4 untuk setiap siswa',
+                  'Simulasi ujian sertifikasi resmi',
+                  'Peluang magang di perusahaan jaringan',
+                  'Sertifikat penyelesaian program',
+                  'Persiapan intensif ujian MTCNA',
+                  'Networking dengan komunitas profesional'
+                ].map((item, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 text-brand-pink-start flex-shrink-0" />
+                    <span className="text-slate-700 text-sm">{item}</span>
                   </div>
                 ))}
               </div>
-            </div>
-
+            </motion.div>
           </div>
         </section>
 
         {/* ============================================ */}
-        {/* SECTION 4: EXTRA BENEFITS - LIGHT THEME */}
+        {/* SECTION 4: SERTIFIKAT MIKROTIK */}
         {/* ============================================ */}
-        <section className="py-20 lg:py-24 px-6 bg-slate-50">
+        <section className="py-16 lg:py-20 px-6 bg-white">
           <div className="max-w-6xl mx-auto">
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {extraBenefits.map((item, index) => (
-                <div 
-                  key={index}
-                  className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:border-brand-pink-start/20 transition-all duration-300 text-center"
-                >
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-pink-start/10 to-brand-blue-start/10 border border-brand-pink-start/20 flex items-center justify-center mx-auto mb-4 text-brand-pink-start">
-                    {item.icon}
-                  </div>
-                  <h3 className="text-base font-semibold text-slate-900 mb-2">{item.title}</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">
-                    {item.description}
-                  </p>
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={staggerContainer}
+              className="text-center mb-10"
+            >
+              <motion.div variants={fadeInUp}>
+                <div className="inline-flex items-center gap-2 bg-brand-pink-start/10 border border-brand-pink-start/20 px-3 py-1 rounded-full mb-4">
+                  <Award className="w-3.5 h-3.5 text-brand-pink-start" />
+                  <span className="text-[10px] font-bold text-brand-pink-start uppercase tracking-widest">Sertifikasi</span>
                 </div>
+              </motion.div>
+              <motion.div variants={fadeInUp}>
+                <h2 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-4">
+                  Sertifikat <span className="text-brand-pink-start">MikroTik Academy</span>
+                </h2>
+              </motion.div>
+            </motion.div>
+
+            {/* Certificate Image - Placeholder (file not found in public/mik-cer) */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+              className="w-full max-w-2xl mx-auto"
+            >
+              <div className="relative w-full aspect-[3/2] bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
+                <span className="text-gray-400 text-sm">Sertifikat MikroTik Academy - Akan diisi manual</span>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ============================================ */}
+        {/* SECTION 5: KURIKULUM MTCNA GRID (9 MODUL) */}
+        {/* ============================================ */}
+        <section className="py-16 lg:py-20 px-6 bg-[#0B1120]">
+          <div className="max-w-6xl mx-auto">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={staggerContainer}
+              className="text-center mb-12"
+            >
+              <motion.div variants={fadeInUp}>
+                <div className="inline-flex items-center gap-2 bg-brand-pink-start/10 border border-brand-pink-start/20 px-3 py-1 rounded-full mb-4">
+                  <GraduationCap className="w-3.5 h-3.5 text-brand-pink-start" />
+                  <span className="text-[10px] font-bold text-brand-pink-start uppercase tracking-widest">Kurikulum</span>
+                </div>
+              </motion.div>
+              <motion.div variants={fadeInUp}>
+                <h2 className="text-2xl lg:text-3xl font-bold text-white mb-3">
+                  Modul <span className="text-brand-pink-start">MTCNA</span>
+                </h2>
+              </motion.div>
+              <motion.div variants={fadeInUp}>
+                <p className="text-white/70 text-sm max-w-xl mx-auto">
+                  9 modul pembelajaran lengkap yang mencakup seluruh aspek jaringan MikroTik
+                </p>
+              </motion.div>
+            </motion.div>
+
+            {/* 9 Module Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+              {curriculumModules.map((module, index) => (
+                <motion.div
+                  key={index}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  variants={fadeInUp}
+                  className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-brand-pink-start/30 transition-all duration-300 group"
+                >
+                  {/* Module Header */}
+                  <div className="flex items-start gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-brand-pink-start/10 border border-brand-pink-start/20 flex items-center justify-center text-brand-pink-start font-bold text-xs flex-shrink-0">
+                      {module.number}
+                    </div>
+                    <h3 className="text-white font-semibold text-sm pt-1">
+                      {module.title}
+                    </h3>
+                  </div>
+                  
+                  {/* Topics List */}
+                  <ul className="space-y-2">
+                    {module.topics.map((topic, topicIndex) => (
+                      <li key={topicIndex} className="flex items-start gap-2">
+                        <CheckCircle className="w-3.5 h-3.5 text-brand-pink-start flex-shrink-0 mt-0.5" />
+                        <span className="text-white/60 text-xs leading-relaxed">
+                          {topic}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
               ))}
             </div>
+          </div>
+        </section>
 
-            {/* CTA */}
-            <div className="text-center mt-14">
+        {/* ============================================ */}
+        {/* SECTION 6: PROFIL INSTRUKTUR */}
+        {/* ============================================ */}
+        <section className="py-16 lg:py-20 px-6 bg-slate-50">
+          <div className="max-w-4xl mx-auto">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={staggerContainer}
+              className="text-center mb-10"
+            >
+              <motion.div variants={fadeInUp}>
+                <div className="inline-flex items-center gap-2 bg-brand-pink-start/10 border border-brand-pink-start/20 px-3 py-1 rounded-full mb-4">
+                  <Award className="w-3.5 h-3.5 text-brand-pink-start" />
+                  <span className="text-[10px] font-bold text-brand-pink-start uppercase tracking-widest">Instruktur</span>
+                </div>
+              </motion.div>
+              <motion.div variants={fadeInUp}>
+                <h2 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-3">
+                  Profil <span className="text-brand-pink-start">Instruktur</span>
+                </h2>
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+              className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm"
+            >
+              <div className="flex flex-col lg:flex-row gap-8">
+                {/* Photo Placeholder */}
+                <div className="flex-shrink-0">
+                  <div className="w-40 h-40 lg:w-48 lg:h-48 bg-gray-200 rounded-2xl flex items-center justify-center">
+                    <span className="text-gray-400 text-sm">Gambar akan diisi manual</span>
+                  </div>
+                </div>
+
+                {/* Instructor Info */}
+                <div className="flex-1">
+                  <h3 className="text-xl lg:text-2xl font-bold text-slate-900 mb-3">
+                    Nama Instruktur
+                  </h3>
+                  
+                  {/* Badges */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <span className="inline-flex items-center gap-1.5 bg-brand-pink-start/10 border border-brand-pink-start/20 text-brand-pink-start text-xs font-semibold px-3 py-1 rounded-full">
+                      <Award className="w-3.5 h-3.5" />
+                      MTCNA
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 bg-brand-blue-start/10 border border-brand-blue-start/20 text-brand-blue-start text-xs font-semibold px-3 py-1 rounded-full">
+                      <Network className="w-3.5 h-3.5" />
+                      MTCRE
+                    </span>
+                  </div>
+
+                  <p className="text-slate-600 text-sm leading-relaxed">
+                    Instruktur profesional dengan pengalaman di bidang jaringan komputer. Spesialis dalam konfigurasi MikroTik RouterOS, jaringan wireless, dan keamanan jaringan. Memiliki sertifikasi internasional dan aktif dalam implementasi proyek jaringan untuk berbagai perusahaan.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Separate Section for Instructor Certificates - Same width as main card */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+              className="mt-8"
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {/* Certificate 1 - Portrait */}
+                <div className="aspect-[3/4] bg-gray-200 rounded-lg flex items-center justify-center">
+                  <span className="text-gray-400 text-sm text-center px-4">Gambar akan diisi manual</span>
+                </div>
+                {/* Certificate 2 - Portrait */}
+                <div className="aspect-[3/4] bg-gray-200 rounded-lg flex items-center justify-center">
+                  <span className="text-gray-400 text-sm text-center px-4">Gambar akan diisi manual</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* CTA Button */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+              className="text-center mt-10"
+            >
               <Link
                 href="/ppdb"
                 className="inline-flex items-center gap-2 bg-brand-pink-start hover:bg-[#d94f92] text-white text-xs font-bold px-8 py-3 rounded-lg transition-all shadow-lg shadow-brand-pink-start/20 uppercase tracking-wide"
               >
                 Daftar PPDB Sekarang <ArrowRight className="w-4 h-4" />
               </Link>
-            </div>
-
+            </motion.div>
           </div>
         </section>
 
