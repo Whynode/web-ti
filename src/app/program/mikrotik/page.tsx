@@ -494,7 +494,7 @@ export default function MikrotikAcademyPage() {
                 {/* Instructor Info */}
                 <div className="flex-1">
                   <h3 className="text-xl lg:text-2xl font-bold text-slate-900 mb-3">
-                    Nama Instruktur
+                    FATHONI
                   </h3>
                   
                   {/* Badges */}
