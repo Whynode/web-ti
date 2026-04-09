@@ -32,6 +32,7 @@ export default function ExportPPDBButton({ data }: Props) {
       "No WA",
       "Email",
       "Alamat",
+      "Referensi Pengajak",
       "Status",
       "Tanggal Daftar",
     ];
@@ -45,6 +46,7 @@ export default function ExportPPDBButton({ data }: Props) {
       "'" + ppdb.noWA,
       ppdb.email || "-",
       ppdb.alamat || "-",
+      ppdb.referensi || '-',
       ppdb.status === "PENDING" ? "Pending" : ppdb.status === "DITERIMA" ? "Diterima" : "Ditolak",
       new Date(ppdb.tanggalDaftar).toLocaleDateString("id-ID", {
         day: "numeric",

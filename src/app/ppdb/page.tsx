@@ -210,6 +210,17 @@ export default function PPDB() {
                     />
                   </div>
 
+                  {/* Referensi Pengajak */}
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Siapa yang mengajak Anda sekolah di sini? <span className="text-gray-400">(Opsional)</span></label>
+                    <input 
+                      type="text" 
+                      name="referensi"
+                      className="w-full bg-gray-50 border border-gray-200 rounded-[10px] px-4 py-3 text-sm focus:outline-none focus:border-brand-pink-start transition-colors" 
+                      placeholder="Nama orang yang mengajak"
+                    />
+                  </div>
+
                   {/* Submit Button */}
                   <button 
                     type="submit" 

@@ -188,7 +188,8 @@ model PPDB {
   email           String?
   alamat          String?
   nilaiRata       Float?      @map("nilai_rata")
- JurusanPilihan  String      @map("jurusan_pilihan")
+  JurusanPilihan  String      @map("jurusan_pilihan")
+  referensi      String?      @map("referensi")
   status          StatusPPDB @default(PENDING)
   catatan         String?     @db.Text
   tanggalDaftar   DateTime    @default(now()) @map("tanggal_daftar")
