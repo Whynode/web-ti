@@ -18,7 +18,7 @@ export default function StudentLifeContent() {
   return (
     <main className="min-h-screen bg-[#FDFDFD] text-gray-900 pb-20">
 
-      <section className="relative pt-32 pb-20 bg-brand-navy bg-grid-dark overflow-hidden">
+       <section className="relative pt-32 pb-20 bg-brand-navy overflow-hidden">
         <div className="container mx-auto px-6 max-w-[1120px] relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <span className="text-brand-pink-start font-bold uppercase tracking-widest text-[10px] mb-4 block">Aktivitas & Ekstrakurikuler</span>
@@ -28,7 +28,7 @@ export default function StudentLifeContent() {
         </div>
       </section>
 
-      <section className="py-20 bg-[#FDFDFD] bg-grid-light">
+       <section className="py-20 bg-[#FDFDFD]">
         <div className="container mx-auto px-6 max-w-[1120px]">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} className="text-center mb-12">
             <span className="text-brand-pink-start font-bold uppercase tracking-widest text-[9px] mb-3 block">Kepemimpinan</span>
@@ -56,7 +56,7 @@ export default function StudentLifeContent() {
         </div>
       </section>
 
-      <section className="py-20 bg-brand-navy bg-grid-dark relative overflow-hidden">
+       <section className="py-20 bg-brand-navy relative overflow-hidden">
         <div className="container mx-auto px-6 max-w-[1120px] relative z-10">
           <div className="flex flex-col lg:flex-row gap-12 items-start">
             <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="lg:w-1/3 sticky top-32">

@@ -4,6 +4,8 @@ import prisma from "@/lib/prisma";
 import { ArrowLeft } from "lucide-react";
 import { tambahKelas } from "@/app/admin/kelas/actions";
 
+export const dynamic = 'force-dynamic';
+
 async function getGuru() {
   try {
     const guru = await prisma.guru.findMany({

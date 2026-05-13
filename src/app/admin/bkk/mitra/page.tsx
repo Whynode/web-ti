@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import MitraTable from "./MitraTable";
 
+export const dynamic = 'force-dynamic';
+
 export default async function MitraPage() {
   const mitraList = await prisma.mitraIndustri.findMany({
     orderBy: { createdAt: "desc" },

@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 
 type Guru = {
-  id: number;
+  id: string;
   nama: string;
   posisi: string;
   mapel: string;
@@ -36,7 +36,7 @@ type Guru = {
 type AkademikData = {
   totalSiswa: number;
   totalKelas: number;
-  daftarKelas: { id: number; namaKelas: string }[];
+  daftarKelas: { id: string; namaKelas: string }[];
   rasioSiswaRombel: number;
   distribusiKelas: { X: number; XI: number; XII: number };
   distribusiJenisKelamin: { lakiLaki: number; perempuan: number };

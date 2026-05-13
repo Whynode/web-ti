@@ -2,11 +2,19 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Mail, Phone, MapPin, Printer } from "lucide-react";
 import NewsletterForm from "@/components/ui/NewsletterForm";
 import FooterGallery from "./FooterGallery";
 
 export default function Footer() {
+  const pathname = usePathname();
+  
+  // Hide footer on admin routes
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+  
   const schoolName = "SMKS TELEMATIKA";
   const schoolAddress = "Jalan Raya Sindangkerta Lohbener, Indramayu, Jawa Barat 45252";
   const schoolPhone = "(0234) 123456";

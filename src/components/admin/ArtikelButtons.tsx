@@ -4,7 +4,7 @@ import { Trash2, Pencil } from "lucide-react";
 import { hapusArtikel } from "@/app/admin/blog/actions";
 
 interface HapusArtikelButtonProps {
-  id: number;
+  id: string;
   judul: string;
 }
 
@@ -32,7 +32,7 @@ export function HapusArtikelButton({ id, judul }: HapusArtikelButtonProps) {
 }
 
 interface EditArtikelButtonProps {
-  id: number;
+  id: string;
 }
 
 export function EditArtikelButton({ id }: EditArtikelButtonProps) {

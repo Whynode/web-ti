@@ -5,13 +5,15 @@ import { Plus, Users, GraduationCap, Crown, User } from "lucide-react";
 import { EditSiswaButton, HapusSiswaButton } from "@/components/admin/KelasSiswaButtons";
 import SiswaTableClient from "./SiswaTableClient";
 
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   searchParams: Promise<{ kelas?: string }>;
 }
 
-async function getSiswa(kelasId?: number) {
+async function getSiswa(kelasId?: string) {
   try {
-    const siswa = await prisma.siswa.findMany({
+    return await prisma.siswa.findMany({
       where: kelasId ? { kelasId } : undefined,
       include: {
         kelas: {
@@ -26,7 +28,6 @@ async function getSiswa(kelasId?: number) {
         { nama: "asc" },
       ],
     });
-    return siswa;
   } catch (error) {
     console.error("Error fetching siswa:", error);
     return [];
@@ -79,7 +80,7 @@ function getPeranBadge(peran: string) {
 
 export default async function SiswaManagementPage({ searchParams }: PageProps) {
   const params = await searchParams;
-  const kelasId = params.kelas ? parseInt(params.kelas) : undefined;
+  const kelasId = params.kelas || undefined;
   const siswaList = await getSiswa(kelasId);
   const kelasList = await getKelas();
 

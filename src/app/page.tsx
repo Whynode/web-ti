@@ -200,10 +200,10 @@ export default function Home() {
 
       {/* Marquee Divider */}
       <div className="border-y border-white/10 bg-[#0B1120]">
-        <MarqueeTicker variant="dark" articles={(artikel.latest as { id: number; judul: string; slug: string }[]).map(a => ({ text: a.judul, link: `/berita/${a.slug}` }))} />
+        <MarqueeTicker variant="dark" articles={(artikel.latest as { id: string; judul: string; slug: string }[]).map(a => ({ text: a.judul, link: `/berita/${a.slug}` }))} />
       </div>
 
-      <HomepageBlogSection pinned={artikel.pinned as { id: number; judul: string; slug: string; konten: string; thumbnailUrl: string | null; tanggalPublish: Date; kategori: string; isPinned: boolean } | null} latest={artikel.latest as { id: number; judul: string; slug: string; konten: string; thumbnailUrl: string | null; tanggalPublish: Date; kategori: string; isPinned: boolean }[]} />
+      <HomepageBlogSection pinned={artikel.pinned as { id: string; judul: string; slug: string; konten: string; thumbnailUrl: string | null; tanggalPublish: Date; kategori: string; isPinned: boolean } | null} latest={artikel.latest as { id: string; judul: string; slug: string; konten: string; thumbnailUrl: string | null; tanggalPublish: Date; kategori: string; isPinned: boolean }[]} />
 
       {/* 4. Fasilitas */}
       <section className="py-16 bg-brand-navy relative overflow-hidden bg-grid-dark">

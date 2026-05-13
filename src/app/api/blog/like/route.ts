@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { likeSchema } from "@/lib/validations/api";
 
 export async function POST(request: Request) {
   try {
@@ -10,21 +11,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Format data tidak valid" }, { status: 400 });
     }
 
-    const { blogId } = body;
+    // Zod validation for UUID
+    const validated = likeSchema.safeParse(body);
 
-    // Validasi blogId harus ada dan berupa number yang valid
-    if (blogId === undefined || blogId === null) {
-      return NextResponse.json({ error: "Blog ID diperlukan" }, { status: 400 });
+    if (!validated.success) {
+      return NextResponse.json(
+        { error: "Validation failed", details: validated.error.issues },
+        { status: 400 }
+      );
     }
 
-    const parsedBlogId = Number(blogId);
-    if (isNaN(parsedBlogId) || parsedBlogId <= 0 || !Number.isInteger(parsedBlogId)) {
-      return NextResponse.json({ error: "Blog ID tidak valid" }, { status: 400 });
-    }
+    const { artikelId } = validated.data;
 
-    // Cek apakah blog exists
+    // Check if blog exists
     const blogExists = await prisma.artikelBlog.findUnique({
-      where: { id: parsedBlogId },
+      where: { id: artikelId },
       select: { id: true, likesCount: true },
     });
 
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
     }
 
     const updatedBlog = await prisma.artikelBlog.update({
-      where: { id: parsedBlogId },
+      where: { id: artikelId },
       data: { likesCount: { increment: 1 } },
     });
 
@@ -44,7 +45,6 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Error updating like:", error);
     
-    // Tangani error Prisma untuk record not found
     if (error && typeof error === 'object' && 'code' in error && error.code === 'P2025') {
       return NextResponse.json({ error: "Berita tidak ditemukan" }, { status: 404 });
     }

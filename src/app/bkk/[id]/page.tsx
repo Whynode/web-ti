@@ -4,11 +4,13 @@ import Image from "next/image";
 import { ArrowLeft, MapPin, Clock, Building2, ExternalLink, Globe } from "lucide-react";
 import prisma from "@/lib/prisma";
 
+export const dynamic = 'force-dynamic';
+
 type PageProps = {
   params: Promise<{ id: string }>;
 };
 
-async function getLowongan(id: number) {
+async function getLowongan(id: string) {
   try {
     const lowongan = await prisma.lowonganKerja.findUnique({
       where: { id },
@@ -23,7 +25,7 @@ async function getLowongan(id: number) {
 
 export default async function BKKDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const lowongan = await getLowongan(Number(id));
+  const lowongan = await getLowongan(id);
 
   if (!lowongan) {
     notFound();

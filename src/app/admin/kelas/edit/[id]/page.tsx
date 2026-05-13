@@ -5,11 +5,13 @@ import prisma from "@/lib/prisma";
 import { ArrowLeft } from "lucide-react";
 import { updateKelas } from "@/app/admin/kelas/actions";
 
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-async function getKelas(id: number) {
+async function getKelas(id: string) {
   try {
     const kelas = await prisma.kelas.findUnique({
       where: { id },
@@ -36,7 +38,7 @@ async function getGuru() {
 
 export default async function EditKelasPage({ params }: PageProps) {
   const { id } = await params;
-  const kelas = await getKelas(Number(id));
+  const kelas = await getKelas(id);
   const guruList = await getGuru();
 
   if (!kelas) {

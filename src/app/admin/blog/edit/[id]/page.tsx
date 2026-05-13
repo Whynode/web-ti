@@ -3,11 +3,13 @@ import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
 import EditArtikelForm from "./EditArtikelForm";
 
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-async function getArtikel(id: number) {
+async function getArtikel(id: string) {
   try {
     const artikel = await prisma.artikelBlog.findUnique({
       where: { id },
@@ -21,7 +23,7 @@ async function getArtikel(id: number) {
 
 export default async function EditArtikelPage({ params }: PageProps) {
   const { id } = await params;
-  const artikel = await getArtikel(Number(id));
+  const artikel = await getArtikel(id);
 
   if (!artikel) {
     notFound();

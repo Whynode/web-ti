@@ -17,7 +17,7 @@ const itemVariants = {
 
 type Props = {
   artikel: {
-    id: number;
+    id: string;
     judul: string;
     slug: string;
     konten: string;
@@ -54,7 +54,7 @@ export default function BeritaClient({ artikel }: Props) {
   return (
     <main className="min-h-screen bg-[#FDFDFD] text-gray-900 pb-20">
 
-      <section className="relative pt-32 pb-20 bg-brand-navy bg-grid-dark overflow-hidden">
+       <section className="relative pt-32 pb-20 bg-brand-navy overflow-hidden">
         <div className="container mx-auto px-6 max-w-[1120px] relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <span className="text-brand-pink-start font-bold uppercase tracking-widest text-[10px] mb-4 block">Informasi Terkini</span>
@@ -64,7 +64,7 @@ export default function BeritaClient({ artikel }: Props) {
         </div>
       </section>
 
-      <section className="py-20 bg-[#FDFDFD] bg-grid-light">
+       <section className="py-20 bg-[#FDFDFD]">
         <div className="container mx-auto px-6 max-w-7xl">
           <motion.div
             variants={containerVariants} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}

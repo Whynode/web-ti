@@ -5,6 +5,8 @@ import { Plus, Pencil, Users } from "lucide-react";
 import HapusGuruButton from "@/components/admin/HapusGuruButton";
 import GuruTableClient from "./GuruTableClient";
 
+export const dynamic = 'force-dynamic';
+
 async function getGuru() {
   try {
     const guru = await prisma.guru.findMany({

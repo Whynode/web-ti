@@ -7,7 +7,7 @@ import { Users, BookOpen, ChevronRight, Award, GraduationCap } from "lucide-reac
 import PlaceholderImage from "@/components/ui/PlaceholderImage";
 
 type KelasData = {
-  id: number;
+  id: string;
   namaKelas: string;
   totalSiswa: number;
   waliKelas: string;

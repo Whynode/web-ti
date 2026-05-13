@@ -71,29 +71,29 @@ export default function Header() {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${getHeaderStyle()}`}>
-        <div className="w-full max-w-[1400px] px-6 lg:px-12 mx-auto flex items-center justify-between">
+<header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${getHeaderStyle()}`}>
+          <div className="w-full max-w-[1120px] mx-auto px-6 flex items-center justify-between">
 
-          <Link href="/" className="flex items-center gap-3 z-50">
-            <div className={`relative w-10 h-10 rounded-[10px] overflow-hidden transition-colors ${isScrolled ? 'bg-brand-pink-start shadow-md' : 'bg-white'} ${isScrolled ? 'text-white' : 'text-brand-pink-start'}`}>
-              <Image
-                src="/logo-telematika.webp"
-                alt="Logo SMK Telematika Indramayu"
-                width={40}
-                height={40}
-                className="object-cover"
-                priority
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className={`font-serif font-bold text-xl leading-none tracking-tight ${getTextColor()}`}>
-                Telematika
-              </span>
-              <span className={`text-[9px] font-bold tracking-[0.2em] uppercase mt-1 ${isScrolled ? 'text-brand-blue-start' : 'text-brand-pink-start'}`}>
-                Indramayu
-              </span>
-            </div>
-          </Link>
+            <Link href="/" className="flex items-center gap-6 z-50">
+              <div className={`relative w-8 h-8 rounded-[10px] overflow-hidden transition-colors ${isScrolled ? 'bg-brand-pink-start shadow-md' : 'bg-white'} ${isScrolled ? 'text-white' : 'text-brand-pink-start'}`}>
+                <Image
+                  src="/logo-telematika.webp"
+                  alt="Logo SMK Telematika Indramayu"
+                  width={32}
+                  height={32}
+                  className="object-cover"
+                  priority
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className={`font-serif font-bold text-xl leading-none tracking-tight ${getTextColor()}`}>
+                  Telematika
+                </span>
+                <span className={`text-[9px] font-bold tracking-[0.2em] uppercase mt-1 ${isScrolled ? 'text-brand-blue-start' : 'text-brand-pink-start'}`}>
+                  Indramayu
+                </span>
+              </div>
+            </Link>
 
             <nav className="hidden lg:flex">
             <div className="flex items-center gap-8 font-sans text-[12px] font-bold tracking-wide uppercase">
@@ -181,7 +181,7 @@ export default function Header() {
                 <Search className="w-4 h-4" />
               </button>
             </div>
-            <Link href="/ppdb" className="bg-brand-pink-start hover:bg-[#d94f92] text-white text-[12px] font-bold px-6 py-2.5 rounded-[10px] transition-all shadow-md shadow-brand-pink-start/20 uppercase tracking-wide">
+            <Link href="/ppdb" className="bg-brand-pink-start hover:bg-[#d94f92] text-white font-bold px-4 py-2 rounded-[10px] transition-all">
               Daftar PPDB
             </Link>
           </div>

@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import type { PeranSiswa } from "@prisma/client";
 
 export async function tambahSiswa(
   formData: FormData
@@ -57,18 +58,18 @@ export async function tambahSiswa(
       }
 
       fotoUrl = publicUrlData.publicUrl;
-    } catch (err: any) {
-      console.error("Exception in Supabase Upload:", err);
-      return { error: `Kesalahan fatal saatunggah foto: ${err.message}`, uploadFailed: true };
-    }
+      } catch (err) {
+        console.error("Exception in Supabase Upload:", err);
+        return { error: `Kesalahan fatal saatunggah foto: ${err instanceof Error ? err.message : 'Unknown error'}`, uploadFailed: true };
+      }
   }
 
   try {
     const created = await prisma.siswa.create({
       data: {
         nama: nama.trim(),
-        peran: peranValue as any,
-        kelasId: parseInt(kelasId),
+          peran: peranValue as PeranSiswa,
+        kelasId: kelasId,
         fotoUrl,
         jenisKelamin: jenisKelaminValue,
         tanggalLahir: tanggalLahir ? new Date(tanggalLahir) : null,
@@ -87,7 +88,7 @@ export async function tambahSiswa(
 }
 
 export async function updateSiswa(
-  id: number,
+  id: string,
   formData: FormData
 ): Promise<{ error?: string; uploadFailed?: boolean } | void> {
   const nama = formData.get("nama") as string;
@@ -115,15 +116,15 @@ export async function updateSiswa(
   try {
     const updateData: {
       nama: string;
-      peran: any;
-      kelasId: number;
+      peran: PeranSiswa;
+      kelasId: string;
       fotoUrl?: string | null;
       jenisKelamin: string;
       tanggalLahir?: Date | null;
     } = {
       nama: nama.trim(),
-      peran: peranValue as any,
-      kelasId: parseInt(kelasId),
+        peran: peranValue as PeranSiswa,
+      kelasId: kelasId,
       jenisKelamin: jenisKelaminValue,
       tanggalLahir: tanggalLahir ? new Date(tanggalLahir) : null,
     };
@@ -158,9 +159,9 @@ export async function updateSiswa(
         }
 
         newFotoUrl = publicUrlData.publicUrl;
-      } catch (err: any) {
+      } catch (err) {
         console.error("Exception in Supabase Upload:", err);
-        return { error: `Kesalahan fatal saatunggah foto: ${err.message}`, uploadFailed: true };
+        return { error: `Kesalahan fatal saatunggah foto: ${err instanceof Error ? err.message : 'Unknown error'}`, uploadFailed: true };
       }
     }
 
@@ -195,7 +196,7 @@ export async function updateSiswa(
   }
 }
 
-export async function hapusSiswa(id: number): Promise<void> {
+export async function hapusSiswa(id: string): Promise<void> {
   try {
     await prisma.siswa.delete({
       where: { id },
@@ -208,7 +209,7 @@ export async function hapusSiswa(id: number): Promise<void> {
   revalidatePath("/admin/siswa");
 }
 
-export async function hapusSiswaBulk(ids: number[]): Promise<void> {
+export async function hapusSiswaBulk(ids: string[]): Promise<void> {
   try {
     await prisma.siswa.deleteMany({
       where: { id: { in: ids } },

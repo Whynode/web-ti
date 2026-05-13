@@ -9,7 +9,7 @@ import HapusGuruButton from "@/components/admin/HapusGuruButton";
 import { hapusGuruBulk } from "./actions";
 
 type Guru = {
-  id: number;
+  id: string;
   nama: string;
   posisi: string;
   mapel: string;
@@ -22,7 +22,7 @@ type Props = {
 
 export default function GuruTableClient({ guruList }: Props) {
   const router = useRouter();
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const toggleSelectAll = () => {
@@ -33,7 +33,7 @@ export default function GuruTableClient({ guruList }: Props) {
     }
   };
 
-  const toggleSelectRow = (id: number) => {
+  const toggleSelectRow = (id: string) => {
     if (selectedIds.includes(id)) {
       setSelectedIds(selectedIds.filter(itemId => itemId !== id));
     } else {

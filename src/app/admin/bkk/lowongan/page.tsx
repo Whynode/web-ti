@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import LowonganTable from "./LowonganTable";
 
+export const dynamic = 'force-dynamic';
+
 export default async function LowonganPage() {
   const lowonganList = await prisma.lowonganKerja.findMany({
     include: { mitra: true },

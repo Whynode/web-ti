@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Calendar, ArrowRight, Pin } from "lucide-react";
 
 type Artikel = {
-  id: number;
+  id: string;
   judul: string;
   slug: string;
   konten: string;

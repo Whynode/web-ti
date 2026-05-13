@@ -28,7 +28,7 @@ export default function AboutContent() {
   return (
     <main className="min-h-screen bg-[#FDFDFD] text-gray-900 pb-16">
 
-      <section className="relative pt-32 pb-20 bg-brand-navy bg-grid-dark overflow-hidden">
+       <section className="relative pt-32 pb-20 bg-brand-navy overflow-hidden">
         <div className="container mx-auto px-6 max-w-[1120px] relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <span className="text-brand-pink-start font-bold uppercase tracking-widest text-[10px] mb-3 block">Mengenal Lebih Dekat</span>

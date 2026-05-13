@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
 
-const DEFAULT_ADMIN_PASSWORD = "ADMINtelindra17";
+const DEFAULT_ADMIN_PASSWORD = process.env.DEFAULT_ADMIN_PASSWORD ?? "ADMINtelindra17";
 const BCRYPT_SALT_ROUNDS = 10;
 
 export async function handleLogin(formData: FormData) {

@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import TambahSiswaForm from "./TambahSiswaForm";
 
+export const dynamic = 'force-dynamic';
+
 async function getKelas() {
   try {
     const kelas = await prisma.kelas.findMany({

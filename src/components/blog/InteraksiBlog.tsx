@@ -13,7 +13,7 @@ type Komentar = {
 };
 
 type InteraksiBlogProps = {
-  blogId: number;
+  blogId: string;
   initialLikes: number;
 };
 

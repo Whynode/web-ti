@@ -5,11 +5,13 @@ import prisma from "@/lib/prisma";
 import { ArrowLeft } from "lucide-react";
 import EditSiswaForm from "./EditSiswaForm";
 
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-async function getSiswa(id: number) {
+async function getSiswa(id: string) {
   try {
     const siswa = await prisma.siswa.findUnique({
       where: { id },
@@ -37,7 +39,7 @@ async function getKelas() {
 
 export default async function EditSiswaPage({ params }: PageProps) {
   const { id } = await params;
-  const siswa = await getSiswa(Number(id));
+  const siswa = await getSiswa(id);
   const kelasList = await getKelas();
 
   if (!siswa) {

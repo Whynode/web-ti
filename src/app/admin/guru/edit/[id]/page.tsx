@@ -3,11 +3,13 @@ import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
 import EditGuruForm from "./EditGuruForm";
 
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-async function getGuru(id: number) {
+async function getGuru(id: string) {
   try {
     const guru = await prisma.guru.findUnique({
       where: { id },
@@ -21,7 +23,7 @@ async function getGuru(id: number) {
 
 export default async function EditGuruPage({ params }: PageProps) {
   const { id } = await params;
-  const guru = await getGuru(Number(id));
+  const guru = await getGuru(id);
 
   if (!guru) {
     notFound();

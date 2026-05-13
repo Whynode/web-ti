@@ -1,24 +1,26 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { komentarSchema, formatZodError } from "@/lib/validations/api";
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const blogId = searchParams.get("blogId");
 
-    // Validasi blogId
-    if (!blogId || typeof blogId !== "string" || blogId.trim() === "") {
+    // Validate blogId as UUID
+    if (!blogId || typeof blogId !== "string") {
       return NextResponse.json({ error: "Blog ID diperlukan" }, { status: 400 });
     }
 
-    const parsedBlogId = Number(blogId);
-    if (isNaN(parsedBlogId) || parsedBlogId <= 0) {
+    // UUID format validation
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(blogId)) {
       return NextResponse.json({ error: "Blog ID tidak valid" }, { status: 400 });
     }
 
     const komentar = await prisma.komentar.findMany({
       where: { 
-        blogId: parsedBlogId,
+        blogId: blogId,
         parentId: null,
       },
       include: {
@@ -45,29 +47,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Format data tidak valid" }, { status: 400 });
     }
 
-    const { nama, isi, blogId, parentId } = body;
+    // Zod validation
+    const validated = komentarSchema.safeParse(body);
 
-    // Validasi blogId
-    if (!blogId || typeof blogId !== "number" || blogId <= 0) {
-      return NextResponse.json({ error: "Blog ID diperlukan dan harus berupa angka valid" }, { status: 400 });
+    if (!validated.success) {
+      return NextResponse.json(
+        { error: "Validation failed", details: formatZodError(validated.error) },
+        { status: 400 }
+      );
     }
 
-    // Validasi isi komentar (tidak boleh kosong atau hanya spasi)
-    if (!isi || typeof isi !== "string" || isi.trim().length === 0) {
-      return NextResponse.json({ error: "Isi komentar tidak boleh kosong" }, { status: 400 });
-    }
+    const { nama, isi, blogId, parentId } = validated.data;
 
-    // Batasi panjang komentar untuk keamanan
-    if (isi.trim().length > 2000) {
-      return NextResponse.json({ error: "Komentar terlalu panjang (maksimal 2000 karakter)" }, { status: 400 });
-    }
-
-    // Validasi parentId jika ada
-    if (parentId !== null && parentId !== undefined && typeof parentId !== "string") {
-      return NextResponse.json({ error: "Parent ID tidak valid" }, { status: 400 });
-    }
-
-    // Cek apakah blog exists
+    // Check if blog exists
     const blogExists = await prisma.artikelBlog.findUnique({
       where: { id: blogId },
     });
@@ -78,7 +70,7 @@ export async function POST(request: Request) {
 
     const komentar = await prisma.komentar.create({
       data: {
-        nama: (typeof nama === "string" && nama.trim().length > 0) ? nama.trim().slice(0, 100) : "Anonim",
+        nama: nama || "Anonim",
         isi: isi.trim(),
         blogId,
         parentId: parentId || null,
@@ -89,12 +81,11 @@ export async function POST(request: Request) {
   } catch (error: unknown) {
     console.error("Error creating komentar:", error);
     
-    // Tangani error Prisma untuk foreign key violation
+    // Handle Prisma errors
     if (error && typeof error === 'object' && 'code' in error && error.code === 'P2003') {
       return NextResponse.json({ error: "Referensi tidak valid" }, { status: 400 });
     }
     
-    // Tangani error untuk parentId yang tidak ditemukan
     if (error && typeof error === 'object' && 'code' in error && error.code === 'P2025') {
       return NextResponse.json({ error: "Komentar parent tidak ditemukan" }, { status: 404 });
     }

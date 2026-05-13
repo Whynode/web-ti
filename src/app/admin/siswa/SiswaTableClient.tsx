@@ -39,7 +39,7 @@ function getPeranBadge(peran: string) {
 }
 
 type SiswaType = {
-  id: number;
+  id: string;
   nama: string;
   peran: string;
   fotoUrl: string | null;
@@ -57,7 +57,7 @@ type Props = {
 
 export default function SiswaTableClient({ siswaList }: Props) {
   const router = useRouter();
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const toggleSelectAll = () => {
@@ -68,7 +68,7 @@ export default function SiswaTableClient({ siswaList }: Props) {
     }
   };
 
-  const toggleSelectRow = (id: number) => {
+  const toggleSelectRow = (id: string) => {
     if (selectedIds.includes(id)) {
       setSelectedIds(selectedIds.filter(itemId => itemId !== id));
     } else {

@@ -2,6 +2,8 @@ import React from "react";
 import { Users, BookOpen, GraduationCap, Award } from "lucide-react";
 import prisma from "@/lib/prisma";
 
+export const dynamic = 'force-dynamic';
+
 async function getStats() {
   try {
     const [totalSiswa, totalGuru, totalKelas, totalAlumni] = await Promise.all([

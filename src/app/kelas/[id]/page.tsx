@@ -2,6 +2,8 @@ import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import KelasDetailClient from "./KelasDetailClient";
 
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -9,7 +11,7 @@ type Props = {
 async function getKelasDetail(id: string) {
   try {
     const kelas = await prisma.kelas.findUnique({
-      where: { id: parseInt(id) },
+      where: { id },
       include: {
         waliKelas: true,
         siswa: {

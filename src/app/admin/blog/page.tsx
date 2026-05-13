@@ -5,6 +5,8 @@ import { Plus, FileText, Calendar } from "lucide-react";
 import { HapusArtikelButton, EditArtikelButton } from "@/components/admin/ArtikelButtons";
 import BlogTableClient from "./BlogTableClient";
 
+export const dynamic = 'force-dynamic';
+
 async function getArtikel() {
   try {
     const artikel = await prisma.artikelBlog.findMany({

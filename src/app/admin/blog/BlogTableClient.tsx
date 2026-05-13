@@ -7,7 +7,7 @@ import { HapusArtikelButton, EditArtikelButton } from "@/components/admin/Artike
 import { hapusArtikelBulk } from "./actions";
 
 type Artikel = {
-  id: number;
+  id: string;
   judul: string;
   slug: string;
   tanggalPublish: Date;
@@ -19,7 +19,7 @@ type Props = {
 
 export default function BlogTableClient({ artikelList }: Props) {
   const router = useRouter();
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const toggleSelectAll = () => {
@@ -30,7 +30,7 @@ export default function BlogTableClient({ artikelList }: Props) {
     }
   };
 
-  const toggleSelectRow = (id: number) => {
+  const toggleSelectRow = (id: string) => {
     if (selectedIds.includes(id)) {
       setSelectedIds(selectedIds.filter(itemId => itemId !== id));
     } else {

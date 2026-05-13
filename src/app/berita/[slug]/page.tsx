@@ -4,6 +4,8 @@ import { ArrowLeft, Calendar, User } from "lucide-react";
 import prisma from "@/lib/prisma";
 import InteraksiBlog from "@/components/blog/InteraksiBlog";
 
+export const dynamic = 'force-dynamic';
+
 const sanitizeHtml = (html: string): string => {
   const allowedTags = ['p', 'br', 'strong', 'b', 'em', 'i', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'img', 'blockquote', 'pre', 'code', 'span', 'div', 'table', 'tr', 'td', 'th', 'thead', 'tbody'];
   const allowedAttrs = ['href', 'src', 'alt', 'title', 'class', 'target', 'rel'];

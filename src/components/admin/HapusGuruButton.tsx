@@ -4,7 +4,7 @@ import { Trash2 } from "lucide-react";
 import { hapusGuru } from "@/app/admin/guru/actions";
 
 interface HapusGuruButtonProps {
-  id: number;
+  id: string;
   nama: string;
 }
 

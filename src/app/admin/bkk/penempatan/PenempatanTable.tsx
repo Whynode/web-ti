@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Plus, Trash2, Edit2, Building2, User, Calendar } from "lucide-react";
 
 type Penempatan = {
-  id: number;
+  id: string;
   namaAlumni: string;
   tahunLulus: number;
   perusahaanTempatKerja: string;
@@ -80,7 +80,7 @@ export default function PenempatanTable({ penempatanList }: { penempatanList: Pe
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (!confirm("Apakah Anda yakin ingin menghapus data ini?")) return;
 
     try {

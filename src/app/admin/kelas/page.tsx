@@ -4,6 +4,8 @@ import prisma from "@/lib/prisma";
 import { Plus, GraduationCap, Users, BookOpen } from "lucide-react";
 import { EditKelasButton, HapusKelasButton } from "@/components/admin/KelasSiswaButtons";
 
+export const dynamic = 'force-dynamic';
+
 async function getKelas() {
   try {
     const kelas = await prisma.kelas.findMany({

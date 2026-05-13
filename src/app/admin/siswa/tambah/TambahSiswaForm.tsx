@@ -6,7 +6,7 @@ import { ArrowLeft, Save, Loader2, X, ImageIcon } from "lucide-react";
 import { tambahSiswa } from "../actions";
 
 interface Kelas {
-  id: number;
+  id: string;
   namaKelas: string;
   waliKelas: {
     nama: string;

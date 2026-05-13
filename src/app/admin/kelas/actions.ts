@@ -17,7 +17,7 @@ export async function tambahKelas(formData: FormData): Promise<void> {
     await prisma.kelas.create({
       data: {
         namaKelas: namaKelas.trim(),
-        waliKelasId: parseInt(waliKelasId),
+        waliKelasId: waliKelasId,
         deskripsi: deskripsi && deskripsi.trim() !== "" ? deskripsi.trim() : null,
       },
     });
@@ -33,7 +33,7 @@ export async function tambahKelas(formData: FormData): Promise<void> {
 }
 
 export async function updateKelas(
-  id: number,
+  id: string,
   formData: FormData
 ): Promise<void> {
   const namaKelas = formData.get("namaKelas") as string;
@@ -44,12 +44,12 @@ export async function updateKelas(
     throw new Error("Nama kelas dan wali kelas wajib dipilih");
   }
 
-  try {
+try {
     await prisma.kelas.update({
       where: { id },
       data: {
         namaKelas: namaKelas.trim(),
-        waliKelasId: parseInt(waliKelasId),
+        waliKelasId: waliKelasId,
         deskripsi: deskripsi && deskripsi.trim() !== "" ? deskripsi.trim() : null,
       },
     });
@@ -65,7 +65,7 @@ export async function updateKelas(
   redirect("/admin/kelas");
 }
 
-export async function hapusKelas(id: number): Promise<void> {
+export async function hapusKelas(id: string): Promise<void> {
   try {
     await prisma.kelas.delete({
       where: { id },

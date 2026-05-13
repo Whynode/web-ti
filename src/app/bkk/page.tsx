@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import BKKClient from "./BKKClient";
 
+export const dynamic = 'force-dynamic';
+
 async function getLowongan() {
   try {
     return await prisma.lowonganKerja.findMany({

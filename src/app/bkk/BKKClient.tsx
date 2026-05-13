@@ -30,7 +30,7 @@ type Mitra = {
 };
 
 type LowonganBKK = {
-  id: number;
+  id: string;
   judul: string;
   lokasi: string;
   tipePekerjaan: string;

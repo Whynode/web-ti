@@ -11,7 +11,7 @@ type Mitra = {
 };
 
 type Lowongan = {
-  id: number;
+  id: string;
   judul: string;
   tipePekerjaan: string;
   lokasi: string;
@@ -161,7 +161,7 @@ export default function LowonganTable({
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (!confirm("Apakah Anda yakin ingin menghapus lowongan ini?")) return;
 
     try {

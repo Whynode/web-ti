@@ -27,59 +27,62 @@ enum PeranSiswa {
 }
 
 model User {
-  id           String   @id @default(uuid())
+  id           String   @id @default(uuid()) @db.Uuid
   username     String   @unique
   passwordHash String   @map("password_hash")
   role         RoleUser @default(GURU)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  Guru         Guru?
 
   @@map("users")
 }
 
 model Guru {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid()) @db.Uuid
   nama      String
   posisi    String
   mapel     String
   fotoUrl   String?  @map("foto_url")
   createdAt DateTime @default(now())
 
-  kelas     Kelas[]
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String? @unique @db.Uuid
+  kelas  Kelas[]
 
   @@map("guru")
 }
 
 model Kelas {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid()) @db.Uuid
   namaKelas   String   @map("nama_kelas")
-  waliKelasId Int?     @map("wali_kelas_id")
+  waliKelasId String?  @map("wali_kelas_id") @db.Uuid
   deskripsi   String?
   createdAt   DateTime @default(now())
 
-  waliKelas  Guru?    @relation(fields: [waliKelasId], references: [id])
-  siswa      Siswa[]
+  waliKelas Guru?   @relation(fields: [waliKelasId], references: [id])
+  siswa     Siswa[]
 
   @@map("kelas")
 }
 
 model Siswa {
-  id            Int          @id @default(autoincrement())
-  nama          String
-  peran         PeranSiswa   @default(SISWA)
-  fotoUrl       String?      @map("foto_url")
-  kelasId       Int          @map("kelas_id")
-  jenisKelamin  String       @default("L") @map("jenis_kelamin")
-  tanggalLahir  DateTime?    @map("tanggal_lahir")
-  createdAt     DateTime     @default(now())
+  id           String     @id @default(uuid()) @db.Uuid
+  nama         String
+  peran        PeranSiswa @default(SISWA)
+  fotoUrl      String?    @map("foto_url")
+  kelasId      String     @map("kelas_id") @db.Uuid
+  jenisKelamin String     @default("L") @map("jenis_kelamin")
+  tanggalLahir DateTime?  @map("tanggal_lahir")
+  createdAt    DateTime   @default(now())
 
-  kelas         Kelas        @relation(fields: [kelasId], references: [id])
+  kelas Kelas @relation(fields: [kelasId], references: [id])
 
   @@map("siswa")
 }
 
 model MateriElearning {
-  id          Int       @id @default(autoincrement())
+  id          String    @id @default(uuid()) @db.Uuid
   judul       String
   tipeMedia   TipeMedia @map("tipe_media")
   linkUrl     String    @map("link_url")
@@ -90,84 +93,84 @@ model MateriElearning {
 }
 
 model ArtikelBlog {
-  id             Int       @id @default(autoincrement())
+  id             String   @id @default(uuid()) @db.Uuid
   judul          String
-  slug           String    @unique
-  konten         String    @db.Text
-  thumbnailUrl   String?   @map("thumbnail_url")
-  tanggalPublish DateTime  @default(now()) @map("tanggal_publish")
-  createdAt      DateTime  @default(now())
-  kategori       String    @default("Umum")
-  isPinned       Boolean   @default(false) @map("is_pinned")
-  likesCount     Int       @default(0) @map("likes_count")
+  slug           String   @unique
+  konten         String   @db.Text
+  thumbnailUrl   String?  @map("thumbnail_url")
+  tanggalPublish DateTime @default(now()) @map("tanggal_publish")
+  createdAt      DateTime @default(now())
+  kategori       String   @default("Umum")
+  isPinned       Boolean  @default(false) @map("is_pinned")
+  likesCount     Int      @default(0) @map("likes_count")
 
-  komentar       Komentar[]
+  komentar Komentar[]
 
   @@map("artikel_blog")
 }
 
 model Komentar {
-  id        String       @id @default(cuid())
+  id        String      @id @default(cuid())
   nama      String
   isi       String
-  blogId    Int          @map("blog_id")
-  blog      ArtikelBlog  @relation(fields: [blogId], references: [id], onDelete: Cascade)
-  parentId  String?      @map("parent_id")
-  parent    Komentar?    @relation("BalasanKomentar", fields: [parentId], references: [id], onDelete: Cascade)
-  balasan   Komentar[]   @relation("BalasanKomentar")
-  createdAt DateTime     @default(now())
+  blogId    String      @map("blog_id") @db.Uuid
+  blog      ArtikelBlog @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  parentId  String?     @map("parent_id")
+  parent    Komentar?   @relation("BalasanKomentar", fields: [parentId], references: [id], onDelete: Cascade)
+  balasan   Komentar[]  @relation("BalasanKomentar")
+  createdAt DateTime    @default(now())
 
   @@map("komentar")
 }
 
 model StatistikSekolah {
-  id            Int      @id @default(1)
-  totalSiswa    Int      @map("total_siswa")
-  totalGuru     Int      @map("total_guru")
-  totalKelas    Int      @map("total_kelas")
-  totalAlumni   Int      @map("total_alumni")
-  updatedAt     DateTime @updatedAt
+  id          Int      @id @default(1)
+  totalSiswa  Int      @map("total_siswa")
+  totalGuru   Int      @map("total_guru")
+  totalKelas  Int      @map("total_kelas")
+  totalAlumni Int      @map("total_alumni")
+  updatedAt   DateTime @updatedAt
 
   @@map("statistik_sekolah")
 }
 
 model MitraIndustri {
-  id              String   @id @default(cuid())
-  namaPerusahaan  String   @map("nama_perusahaan")
-  logoUrl         String?  @map("logo_url")
-  websiteUrl      String?  @map("website_url")
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id             String   @id @default(uuid()) @db.Uuid
+  namaPerusahaan String   @map("nama_perusahaan")
+  logoUrl        String?  @map("logo_url")
+  websiteUrl     String?  @map("website_url")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  lowongan        LowonganKerja[]
+  lowongan LowonganKerja[]
 
   @@map("mitra_industri")
 }
 
 model LowonganKerja {
-  id              Int       @id @default(autoincrement())
-  judul           String
-  tipePekerjaan   String    @map("tipe_pekerjaan")
-  lokasi          String
-  deskripsi       String    @db.Text
-  posterUrl       String?   @map("poster_url")
-  status          String    @default("BUKA")
-  mitraId         String    @map("mitra_id")
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  id            String   @id @default(uuid()) @db.Uuid
+  judul         String
+  tipePekerjaan String   @map("tipe_pekerjaan")
+  lokasi        String
+  deskripsi     String   @db.Text
+  posterUrl     String?  @map("poster_url")
+  status        String   @default("BUKA")
+  mitraId       String   @map("mitra_id") @db.Uuid
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  mitra           MitraIndustri @relation(fields: [mitraId], references: [id])
+  mitra MitraIndustri @relation(fields: [mitraId], references: [id])
 
   @@map("lowongan_kerja")
 }
 
 model PenempatanAlumni {
-  id                  Int      @id @default(autoincrement())
-  namaAlumni          String   @map("nama_alumni")
-  tahunLulus           Int      @map("tahun_lulus")
-  perusahaanTempatKerja String @map("perusahaan_tempat_kerja")
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  id                    String   @id @default(uuid()) @db.Uuid
+  namaAlumni            String   @map("nama_alumni")
+  tahunLulus            Int      @map("tahun_lulus")
+  perusahaanTempatKerja String   @map("perusahaan_tempat_kerja")
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 
   @@map("penempatan_alumni")
 }
@@ -179,22 +182,22 @@ enum StatusPPDB {
 }
 
 model PPDB {
-  id              String      @id @default(uuid())
-  namaLengkap     String      @map("nama_lengkap")
-  nisn            String      @unique
-  asalSekolah     String      @map("asal_sekolah")
-  jenisKelamin    String      @map("jenis_kelamin")
-  noWA            String      @map("no_wa")
-  email           String?
-  alamat          String?
-  nilaiRata       Float?      @map("nilai_rata")
-  JurusanPilihan  String      @map("jurusan_pilihan")
-  referensi      String?      @map("referensi")
-  status          StatusPPDB @default(PENDING)
-  catatan         String?     @db.Text
-  tanggalDaftar   DateTime    @default(now()) @map("tanggal_daftar")
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  id             String     @id @default(uuid()) @db.Uuid
+  namaLengkap    String     @map("nama_lengkap")
+  nisn           String     @unique
+  asalSekolah    String     @map("asal_sekolah")
+  jenisKelamin   String     @map("jenis_kelamin")
+  noWA           String     @map("no_wa")
+  email          String?
+  alamat         String?
+  nilaiRata      Float?     @map("nilai_rata")
+  JurusanPilihan String     @map("jurusan_pilihan")
+  referensi      String?    @map("referensi")
+  status         StatusPPDB @default(PENDING)
+  catatan        String?    @db.Text
+  tanggalDaftar  DateTime   @default(now()) @map("tanggal_daftar")
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 
   @@map("ppdb")
 }

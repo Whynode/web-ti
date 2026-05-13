@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import PenempatanTable from "./PenempatanTable";
 
+export const dynamic = 'force-dynamic';
+
 export default async function PenempatanPage() {
   const penempatanList = await prisma.penempatanAlumni.findMany({
     orderBy: { createdAt: "desc" },

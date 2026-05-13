@@ -25,13 +25,13 @@ type StrukturKelas = {
 
 type Props = {
   data: {
-    id: number;
+    id: string;
     namaKelas: string;
     deskripsi: string | null;
     totalSiswa: number;
   waliKelas: { nama: string; posisi: string; avatar: string; fotoUrl: string | null };
     struktur: StrukturKelas;
-    siswa: { id: number; nama: string; peran: string; fotoUrl: string | null }[];
+    siswa: { id: string; nama: string; peran: string; fotoUrl: string | null }[];
   };
 };
 

@@ -4,7 +4,7 @@ import { Trash2, Pencil, Users } from "lucide-react";
 import { hapusKelas } from "@/app/admin/kelas/actions";
 
 interface HapusKelasButtonProps {
-  id: number;
+  id: string;
   namaKelas: string;
 }
 
@@ -32,7 +32,7 @@ export function HapusKelasButton({ id, namaKelas }: HapusKelasButtonProps) {
 }
 
 interface EditKelasButtonProps {
-  id: number;
+  id: string;
 }
 
 export function EditKelasButton({ id }: EditKelasButtonProps) {
@@ -48,7 +48,7 @@ export function EditKelasButton({ id }: EditKelasButtonProps) {
 }
 
 interface HapusSiswaButtonProps {
-  id: number;
+  id: string;
   nama: string;
 }
 
@@ -76,7 +76,7 @@ export function HapusSiswaButton({ id, nama }: HapusSiswaButtonProps) {
 }
 
 interface EditSiswaButtonProps {
-  id: number;
+  id: string;
 }
 
 export function EditSiswaButton({ id }: EditSiswaButtonProps) {

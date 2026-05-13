@@ -3,6 +3,9 @@ import Link from "next/link";
 import { Users, BookOpen, Briefcase, FileText, GraduationCap, ArrowRight, ShieldCheck } from "lucide-react";
 import { ClockDisplay, DateDisplay } from "@/components/ui/ClockDisplay";
 
+// Force dynamic rendering - prevents static build during npm run build
+export const dynamic = 'force-dynamic';
+
 async function getStats() {
   let retries = 3;
   while (retries > 0) {

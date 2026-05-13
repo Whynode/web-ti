@@ -6,7 +6,7 @@ import { ArrowLeft, Save, Loader2, X, ImageIcon } from "lucide-react";
 import { updateSiswa } from "@/app/admin/siswa/actions";
 
 interface Kelas {
-  id: number;
+  id: string;
   namaKelas: string;
   waliKelas: {
     nama: string;
@@ -14,11 +14,11 @@ interface Kelas {
 }
 
 interface Siswa {
-  id: number;
+  id: string;
   nama: string;
   peran: string;
   fotoUrl: string | null;
-  kelasId: number;
+  kelasId: string;
   kelas: Kelas;
   jenisKelamin: string;
   tanggalLahir: Date | null;

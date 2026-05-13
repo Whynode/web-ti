@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import KelasClient from "./KelasClient";
 
+export const dynamic = 'force-dynamic';
+
 async function getKelasWithStats() {
   try {
     const kelas = await prisma.kelas.findMany({

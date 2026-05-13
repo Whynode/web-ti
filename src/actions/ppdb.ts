@@ -64,13 +64,13 @@ export async function daftarPPDB(prevState: FormState, formData: FormData): Prom
     revalidatePath('/admin/ppdb')
 
     return { success: true, message: 'Pendaftaran berhasil! Silakan tunggu info selanjutnya via WhatsApp.' }
-  } catch (error: any) {
-    if (error.code === 'P2002') {
-      return { success: false, message: 'NISN sudah terdaftar sebelumnya', errors: { nisn: 'NISN sudah terdaftar' } }
-    }
-    console.error('PPDB Error:', error)
-    return { success: false, message: 'Terjadi kesalahan server. Silakan coba lagi.' }
-  }
+   } catch (error: any) {
+     if (error.code === 'P2002') {
+       return { success: false, message: 'NISN sudah terdaftar sebelumnya', errors: { nisn: 'NISN sudah terdaftar' } }
+     }
+     console.error('PPDB Error:', error)
+     return { success: false, message: 'Terjadi kesalahan server. Silakan coba lagi.' }
+   }
 }
 
 export async function updateStatusPPDB(id: string, status: 'PENDING' | 'DITERIMA' | 'DITOLAK') {

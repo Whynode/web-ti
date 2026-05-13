@@ -7,7 +7,7 @@ import { ArrowLeft, Save, Loader2, X, ImageIcon } from "lucide-react";
 import { updateGuru } from "@/app/admin/guru/actions";
 
 interface Guru {
-  id: number;
+  id: string;
   nama: string;
   posisi: string;
   mapel: string;

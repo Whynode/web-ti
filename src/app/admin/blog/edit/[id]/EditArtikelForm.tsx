@@ -9,7 +9,7 @@ import RichEditor from "@/components/RichEditor";
 
 interface EditArtikelFormProps {
   artikel: {
-    id: number;
+    id: string;
     judul: string;
     konten: string;
     thumbnailUrl: string | null;

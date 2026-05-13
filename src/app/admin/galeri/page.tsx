@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import GaleriTable from "./GaleriTable";
 
+export const dynamic = 'force-dynamic';
+
 export default async function GaleriPage() {
   const galeriList = await prisma.galeri.findMany({
     orderBy: { createdAt: "desc" },

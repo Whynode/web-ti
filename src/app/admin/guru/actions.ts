@@ -70,9 +70,9 @@ export async function tambahGuru(
       fotoUrl = publicUrlData.publicUrl;
       console.log("[DEBUG] Upload successful, fotoUrl set to:", fotoUrl);
       uploadSuccess = true;
-    } catch (err: any) {
+    } catch (err) {
       console.error("Exception in Supabase Upload:", err);
-      return { error: `Kesalahan fatal saatunggah foto: ${err.message}`, uploadFailed: true };
+      return { error: `Kesalahan fatal saatunggah foto: ${err instanceof Error ? err.message : 'Unknown error'}`, uploadFailed: true };
     }
 
     if (!uploadSuccess) {
@@ -110,7 +110,7 @@ export async function tambahGuru(
 }
 
 export async function updateGuru(
-  id: number,
+  id: string,
   formData: FormData
 ): Promise<{ error?: string; uploadFailed?: boolean } | void> {
   const nama = formData.get("nama") as string;
@@ -182,10 +182,10 @@ export async function updateGuru(
 
         newFotoUrl = publicUrlData.publicUrl;
         uploadSuccess = true;
-      } catch (err: any) {
-        console.error("Exception in Supabase Upload:", err);
-        return { error: `Kesalahan fatal saatunggah foto: ${err.message}`, uploadFailed: true };
-      }
+       } catch (err) {
+         console.error("Exception in Supabase Upload:", err);
+         return { error: `Kesalahan fatal saatunggah foto: ${err instanceof Error ? err.message : 'Unknown error'}`, uploadFailed: true };
+       }
 
       if (!uploadSuccess) {
         return { error: "Upload foto gagal. Data tidak akan disimpan.", uploadFailed: true };
@@ -224,7 +224,7 @@ export async function updateGuru(
   }
 }
 
-export async function hapusGuru(id: number): Promise<void> {
+export async function hapusGuru(id: string): Promise<void> {
   try {
     await prisma.guru.delete({
       where: { id },
@@ -237,7 +237,7 @@ export async function hapusGuru(id: number): Promise<void> {
   revalidatePath("/admin/guru");
 }
 
-export async function hapusGuruBulk(ids: number[]): Promise<void> {
+export async function hapusGuruBulk(ids: string[]): Promise<void> {
   try {
     await prisma.guru.deleteMany({
       where: { id: { in: ids } },

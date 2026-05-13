@@ -1,28 +1,44 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { supabase } from "@/lib/supabase";
+import { requireAdmin } from "@/lib/auth/server";
+import { galeriUpdateSchema, idParamsSchema, formatZodError } from "@/lib/validations/api";
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    await requireAdmin();
+    
     const { id } = await params;
-    const body = await request.json();
-    const { judul, kategori, imageUrl } = body;
+    
+    // Validate ID parameter
+    const idValidation = idParamsSchema.safeParse({ id });
+    if (!idValidation.success) {
+      return NextResponse.json(
+        { error: "Invalid ID format" },
+        { status: 400 }
+      );
+    }
 
-    if (!judul || !kategori) {
-      return NextResponse.json({ error: "Judul dan kategori wajib diisi" }, { status: 400 });
+    const body = await request.json();
+    const validated = galeriUpdateSchema.safeParse(body);
+
+    if (!validated.success) {
+      return NextResponse.json(
+        { error: "Validation failed", details: formatZodError(validated.error) },
+        { status: 400 }
+      );
     }
 
     const galeri = await prisma.galeri.update({
       where: { id },
-      data: {
-        judul,
-        kategori,
-        imageUrl: imageUrl || undefined,
-      },
+      data: validated.data,
     });
 
     return NextResponse.json(galeri);
   } catch (error) {
+    if (error instanceof NextResponse) {
+      return error;
+    }
     console.error("Error updating galeri:", error);
     return NextResponse.json({ error: "Failed to update galeri" }, { status: 500 });
   }
@@ -30,47 +46,57 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    await requireAdmin();
+    
     const { id } = await params;
+    
+    // Validate ID parameter
+    const idValidation = idParamsSchema.safeParse({ id });
+    if (!idValidation.success) {
+      return NextResponse.json(
+        { error: "Invalid ID format" },
+        { status: 400 }
+      );
+    }
+
     const body = await request.json();
     const imageUrl = body?.imageUrl as string | undefined;
 
-    // Validasi: imageUrl wajib ada
     if (!imageUrl) {
       return NextResponse.json({ error: "imageUrl diperlukan" }, { status: 400 });
     }
 
-    // Ekstrak nama file dari URL (robust parsing)
+    // Extract filename from URL
     let fileName: string | null = null;
     try {
       const url = new URL(imageUrl);
       const pathParts = url.pathname.split('/');
       fileName = pathParts[pathParts.length - 1];
     } catch {
-      // Fallback: ambil bagian setelah slash terakhir
       const parts = imageUrl.split('/');
       fileName = parts[parts.length - 1];
     }
 
-    // Debug: log nama file sebelum hapus
     if (!fileName) {
       return NextResponse.json({ error: "Tidak dapat menentukan nama file dari imageUrl" }, { status: 400 });
     }
-    console.log("Mencoba menghapus file:", fileName);
 
-    // Hapus dari Supabase Storage
+    // Delete from Supabase Storage
     const { error: storageError } = await supabase.storage.from("public-images").remove([fileName]);
     
     if (storageError) {
       console.error("Storage delete error:", storageError);
-      // JANGAN lanjut hapus DB jika storage gagal!
       return NextResponse.json({ error: "Gagal menghapus file di storage" }, { status: 500 });
     }
 
-    // Hapus dari Database (hanya jika storage BERHASIL)
+    // Delete from Database
     await prisma.galeri.delete({ where: { id } });
 
     return NextResponse.json({ success: true });
   } catch (error) {
+    if (error instanceof NextResponse) {
+      return error;
+    }
     console.error("Error deleting galeri:", error);
     return NextResponse.json({ error: "Failed to delete galeri" }, { status: 500 });
   }

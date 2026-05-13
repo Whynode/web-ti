@@ -65,7 +65,7 @@ export async function tambahArtikel(formData: FormData): Promise<void> {
 }
 
 export async function updateArtikel(
-  id: number,
+  id: string,
   formData: FormData
 ): Promise<void> {
   const judul = formData.get("judul") as string;
@@ -78,7 +78,13 @@ export async function updateArtikel(
     throw new Error("Judul dan konten wajib diisi");
   }
 
-  const updateData: any = {
+  const updateData: {
+    judul: string;
+    konten: string;
+    kategori: string;
+    isPinned: boolean;
+    thumbnailUrl?: string | null;
+  } = {
     judul: judul.trim(),
     konten: konten.trim(),
     kategori,
@@ -111,7 +117,7 @@ export async function updateArtikel(
   redirect("/admin/blog");
 }
 
-export async function hapusArtikel(id: number): Promise<void> {
+export async function hapusArtikel(id: string): Promise<void> {
   try {
     await prisma.artikelBlog.delete({
       where: { id },
@@ -126,7 +132,7 @@ export async function hapusArtikel(id: number): Promise<void> {
   revalidatePath("/");
 }
 
-export async function hapusArtikelBulk(ids: number[]): Promise<void> {
+export async function hapusArtikelBulk(ids: string[]): Promise<void> {
   try {
     await prisma.artikelBlog.deleteMany({
       where: { id: { in: ids } },
