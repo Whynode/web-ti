@@ -10,8 +10,11 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function handleSubmit(formData: FormData) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     setError(null);
+    const formData = new FormData(event.currentTarget);
+
     startTransition(async () => {
       const result = await handleLogin(formData);
       if (result?.error) {
@@ -51,7 +54,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form action={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label
                 htmlFor="username"
